@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Grilla de Asignaciones</title>
+ 
+  <link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/grilla.css">
+<link rel="stylesheet" href="css/asignacion.css">
+<link rel="stylesheet" href="css/acciones.css">
+<link rel="stylesheet" href="css/leyenda.css">
+<link rel="stylesheet" href="css/turnos.css">
+<link rel="stylesheet" href="css/modal.css">
+<link rel="stylesheet" href="css/formulario.css">
+<link rel="stylesheet" href="css/comentarios.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+  <h2>Grilla Semanal de Asignaciones Marechal</h2>
+
+ <div id="bloque-entidades">
+  <div id="leyenda-colores">
+    <strong>Colores por entidad:</strong>
+    <div class="leyenda-row" id="leyenda-dinamica"></div>
+  </div>
+
+  <div class="acciones-celda" id="acciones-entidades">
+    <button class="btn-agregar btn-entidad" id="btn-agregar-entidad">➕</button>
+    <button class="btn-eliminar btn-entidad" id="btn-eliminar-entidad">❌</button>
+  </div>
+</div>
+
+  <div id="turno-tabs">
+    <button class="tab-btn" data-turno="Matutino">Matutino</button>
+    <button class="tab-btn" data-turno="Vespertino">Vespertino</button>
+    <button class="tab-btn" data-turno="Nocturno">Nocturno</button>
+      <a href="http://localhost/sis_asignacion/aulas/primer_piso/pisos.php"><button class="tab-btn" id="almapa">AL MAPA</button></a> 
+    
+    
+
+  </div>
+  <div id="comentario-global" class="comentario-flotante"></div>
+
+
+  <div id="grilla-container">Cargando grilla...</div>
+ <div id="modal-formulario"></div>
+  <script src="js/grilla.js"></script>
+    <script src="js/form_asignacion.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/alertas.js"></script>
+
+    
+</body>
+</html>

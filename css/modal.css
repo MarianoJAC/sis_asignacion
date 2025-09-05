@@ -1,0 +1,193 @@
+/* 🔒 Contenedor general del modal */
+#modal-formulario {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* 📦 Contenido interno del modal */
+.modal-contenido {
+  background: #fff;
+  padding: 28px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 🧩 Formulario en dos columnas */
+.modal-formulario {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+}
+
+/* 📐 Campo individual */
+.modal-formulario .campo-formulario {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 🏷️ Etiquetas */
+.modal-formulario .campo-formulario label {
+  font-weight: 600;
+  margin-bottom: 2px;
+  color: #333;
+}
+
+/* 🧵 Selects */
+.modal-formulario select {
+  padding: 8px 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ✏️ Campos de texto */
+.modal-formulario input[type="text"] {
+  padding: 8px 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 🎨 Selector de color compacto */
+.campo-formulario.color-entidad {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-formulario input[type="color"] {
+  width: 48px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-top: 4px;
+}
+
+/* 🧱 Campos que deben ocupar toda la fila */
+.modal-formulario .fila-completa {
+  grid-column: 1 / -1;
+}
+
+/* 🎯 Botones alineados */
+.form-buttons.fila-completa {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.form-buttons button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  background-color: #efefef;
+  color: #222;
+}
+
+.form-buttons button:hover {
+  background-color: #ddd;
+}
+
+/* 🧾 Título institucional */
+.modal-formulario .modal-titulo {
+  grid-column: 1 / -1;
+  font-size: 22px;
+  margin-bottom: 12px;
+  text-align: center;
+  color: #333;
+}
+
+/* ⚠️ Aviso de error */
+.aviso-error {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  color: #d32f2f;
+  font-size: 14px;
+  text-align: center;
+}
+
+.modal-eliminar-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.opciones-entidad-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 columnas fijas */
+  gap: 12px 16px;
+}
+
+.opciones-entidad-grid label {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  background-color: #fafafa;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 15px;
+  border: 1px solid #ddd;
+  transition: background-color 0.2s;
+}
+
+.opciones-entidad-grid label:hover {
+  background-color: #f0f0f0;
+}
+
+.modal-entidad {
+  background: #fff;
+  padding: 20px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 360px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-entidad .modal-titulo {
+  text-align: center;
+  font-size: 22px;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.modal-entidad .form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+
+
+

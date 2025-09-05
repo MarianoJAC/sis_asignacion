@@ -1,0 +1,88 @@
+/* 🔹 Contenedor de botones dentro de celdas */
+.acciones-celda {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.acciones-celda button {
+  background: #f5f5f5;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s ease;
+}
+.acciones-celda :hover {
+  display: inline-flex;
+}
+
+#bloque-entidades:hover #acciones-entidades {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+
+/* 🔹 Botones funcionales de asignación */
+.btn-agregar,
+.btn-eliminar-asignacion,
+.btn-editar-asignacion {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  font-size: 18px;
+  border-radius: 50%;
+  border: none;
+  width: 36px;
+  height: 36px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* 🔹 Mostrar botones solo al hacer hover sobre la celda */
+.celda-asignacion:hover .btn-agregar,
+.celda-asignacion:hover .btn-eliminar-asignacion,
+.celda-asignacion:hover .btn-editar-asignacion {
+  display: inline-flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 🔹 Contenedor de acciones de entidad */
+#acciones-entidades {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  pointer-events: none;
+}
+
+
+
+/* 🔹 Botones de entidad (estilo visual separado) */
+#acciones-entidades button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  font-size: 18px;
+  border-radius: 50%;
+  border: none;
+  width: 36px;
+  height: 36px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* 🔹 Hover visual para botones de entidad */
+#acciones-entidades button:hover {
+  background-color: #f5f5f5;;
+}
