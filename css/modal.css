@@ -8,7 +8,7 @@
   height: 100vh;
   background: rgba(0, 0, 0, 0.4);
   justify-content: center;
-  align-items: center;
+  align-items: left;
   z-index: 9999;
 }
 
