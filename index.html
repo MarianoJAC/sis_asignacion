@@ -3,53 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <title>Grilla de Asignaciones</title>
- 
-  <link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/grilla.css">
-<link rel="stylesheet" href="css/asignacion.css">
-<link rel="stylesheet" href="css/acciones.css">
-<link rel="stylesheet" href="css/leyenda.css">
-<link rel="stylesheet" href="css/turnos.css">
-<link rel="stylesheet" href="css/modal.css">
-<link rel="stylesheet" href="css/formulario.css">
-<link rel="stylesheet" href="css/comentarios.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <!-- 🧼 Estilos institucionales -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/grilla.css">
+  <link rel="stylesheet" href="css/asignacion.css">
+  <link rel="stylesheet" href="css/acciones.css">
+  <link rel="stylesheet" href="css/leyenda.css">
+  <link rel="stylesheet" href="css/turnos.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/formulario.css">
+  <link rel="stylesheet" href="css/comentarios.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- 🧠 Ícono institucional (opcional) -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
   <h2>Grilla Semanal de Asignaciones Marechal</h2>
 
- <div id="bloque-entidades">
-  <div id="leyenda-colores">
-    <strong>Colores por entidad:</strong>
-    <div class="leyenda-row" id="leyenda-dinamica"></div>
+  <!-- 🟢 Leyenda de entidades -->
+  <div id="bloque-entidades">
+    <div id="leyenda-colores">
+      <strong>Colores por entidad:</strong>
+      <div class="leyenda-row" id="leyenda-dinamica"></div>
+    </div>
+
+    <div class="acciones-celda" id="acciones-entidades">
+      <button class="btn-agregar btn-entidad" id="btn-agregar-entidad">➕</button>
+      <button class="btn-eliminar btn-entidad" id="btn-eliminar-entidad">❌</button>
+    </div>
   </div>
 
-  <div class="acciones-celda" id="acciones-entidades">
-    <button class="btn-agregar btn-entidad" id="btn-agregar-entidad">➕</button>
-    <button class="btn-eliminar btn-entidad" id="btn-eliminar-entidad">❌</button>
-  </div>
-</div>
-
+  <!-- 🟢 Tabs de turno -->
   <div id="turno-tabs">
     <button class="tab-btn" data-turno="Matutino">Matutino</button>
     <button class="tab-btn" data-turno="Vespertino">Vespertino</button>
     <button class="tab-btn" data-turno="Nocturno">Nocturno</button>
-      <a href='aulas/primer_piso/pisos.php'><button class="tab-btn" id="almapa">al mapita</button></a> 
-    
-    
-
+    <a href="aulas/primer_piso/pisos.php">
+      <button class="tab-btn" id="almapa">al mapita</button>
+    </a>
   </div>
+
+  <!-- 🟡 Comentario flotante -->
   <div id="comentario-global" class="comentario-flotante"></div>
 
-
+  <!-- 🟢 Contenedor principal -->
   <div id="grilla-container">Cargando grilla...</div>
- <div id="modal-formulario"></div>
-  <script src="js/grilla.js"></script>
-    <script src="js/form_asignacion.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="js/alertas.js"></script>
+  <div id="modal-formulario"></div>
 
-    
+  <!-- 🧠 Scripts modulares (orden blindado) -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Utilidades y alertas -->
+  <script src="js/grilla.alertas.js"></script>
+  <script src="js/grilla.validaciones.js"></script>
+
+  <!-- Modales y render -->
+  <script src="js/grilla.modales.js"></script>
+  <script src="js/grilla.render.js"></script>
+
+  <!-- Eventos y formularios -->
+  <script src="js/grilla.eventos.js"></script>
+  <script src="js/grilla.formularios.js"></script>
+
+  <!-- Núcleo final -->
+  <script src="js/grilla.core.js"></script>
 </body>
 </html>

@@ -17,7 +17,7 @@ function options($tabla, $id_col, $name_col) {
 ?>
 
 <div class="modal-contenido">
-  <form class="modal-formulario" action="acciones/guardar_asignacion.php" method="post" autocomplete="off">
+  <form id="form-agregar-asignacion" class="modal-formulario" autocomplete="off">
     <input type="hidden" name="aula_id" value="<?= $aula_id ?>">
     <input type="hidden" name="dia" value="<?= $dia ?>">
     <input type="hidden" name="turno" value="<?= $turno ?>">

@@ -6,6 +6,31 @@ $aula_id = $_GET['aula_id'] ?? '';
 $dia = $_GET['dia'] ?? '';
 $turno = $_GET['turno'] ?? '';
 
+// 🧪 Trazas para auditoría
+error_log("🧪 ID recibido: " . $id);
+error_log("🧪 Aula ID: " . $aula_id);
+error_log("🧪 Día: " . $dia);
+error_log("🧪 Turno: " . $turno);
+
+// 🚫 Validación de ID
+if (!ctype_digit($id)) {
+  error_log("❌ ID inválido: " . $id);
+  echo '<div class="modal-contenido"><p class="mensaje-error">ID inválido</p></div>';
+  exit;
+}
+
+// 🔍 Buscar asignación
+$query = "SELECT * FROM asignaciones WHERE Id = '$id'";
+$result = mysqli_query($conexion, $query);
+$asignacion = mysqli_fetch_assoc($result);
+
+if (!$asignacion) {
+  error_log("❌ Asignación no encontrada para ID: " . $id);
+  echo '<div class="modal-contenido"><p class="mensaje-error">Asignación no encontrada</p></div>';
+  exit;
+}
+
+
 function options($tabla, $id_col, $name_col, $selected = '') {
   global $conexion;
   $result = mysqli_query($conexion, "SELECT $id_col, $name_col FROM $tabla ORDER BY $name_col");
@@ -28,10 +53,10 @@ if (!$asignacion) {
 }
 ?>
 
-<div class="modal-contenido">
+
   <p style="margin-bottom:10px;"><strong>Turno actual:</strong> <?= htmlspecialchars($asignacion['turno']) ?></p>
 
-  <form id="form-editar-asignacion" class="modal-formulario" action="acciones/editar_asignacion.php" method="post" autocomplete="off">
+<form id="form-editar-asignacion" class="modal-formulario" autocomplete="off">
     <input type="hidden" name="id" value="<?= $id ?>">
     <input type="hidden" name="aula_id" value="<?= htmlspecialchars($aula_id ?: $asignacion['aula_id']) ?>">
     <input type="hidden" name="dia" value="<?= htmlspecialchars($dia ?: $asignacion['dia']) ?>">
@@ -94,4 +119,3 @@ if (!$asignacion) {
       <button type="submit">✅ Guardar cambios</button>
     </div>
   </form>
-</div>
