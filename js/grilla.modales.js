@@ -2,6 +2,7 @@ function abrirModal({ html, envolver = true, idEsperado = null, focoSelector = n
   const contenedor = document.getElementById('modal-formulario');
   if (!contenedor) return;
 
+  // 🧼 Limpieza previa
   contenedor.innerHTML = '';
   contenedor.insertAdjacentHTML('afterbegin',
     envolver ? `<div class="modal-contenido">${html}</div>` : html
@@ -16,15 +17,17 @@ function abrirModal({ html, envolver = true, idEsperado = null, focoSelector = n
       form.querySelector(focoSelector)?.focus();
     }
 
-    // 🛡️ Interceptor manual directo sobre el form detectado
-    const handler = handlersFormulario?.[form.id];
+    const formId = form.id.trim();
+    const handler = handlersFormulario?.[formId];
+
+    // 🛡️ Registro quirúrgico: solo si no está ya asignado
     if (typeof handler === 'function') {
       form.addEventListener('submit', e => {
         e.preventDefault();
         const submitBtn = form.querySelector('button[type="submit"]');
         if (submitBtn) submitBtn.disabled = true;
         handler(form, submitBtn);
-      }, { once: true }); // ✅ Solo una vez
+      }, { once: true }); // ✅ Solo una ejecución
     }
   });
 }
@@ -35,7 +38,6 @@ function cerrarModal() {
   if (contenedor) {
     contenedor.innerHTML = '';
     contenedor.style.display = 'none';
-    console.log('🧼 Modal cerrado');
   }
 }
 
@@ -73,7 +75,7 @@ function htmlEliminarEntidad(entidades) {
     html += `
       <div class="campo-formulario fila-completa">
         <label class="opcion-eliminar">
-          <input type="radio" name="entidad_id" value="${ent.entidad_id}">
+          <input type="radio" name="entidad_id" value="${ent.id}">
           <span style="background:${ent.color}; color:#fff; padding:4px 8px; border-radius:4px;">${ent.nombre}</span>
         </label>
       </div>`;

@@ -208,11 +208,19 @@ function procesarEdicionAsignacion(form, submitBtn) {
 }
 
 function procesarAgregarEntidad(form, submitBtn) {
-  const nombre = form.elements['nombre']?.value.trim().replace(/\s+/g, ' ');
-  const color = form.elements['color']?.value;
+  if (form.dataset.agregando === 'true') {
+    return;
+  }
+  form.dataset.agregando = 'true';
+
+  // 🧪 Trazabilidad
+  const nombre = form.elements['nombre']?.value?.trim();
+  const color = form.elements['color']?.value?.trim();
+
 
   if (!nombre || !color) {
-    mostrarMensaje('warning', 'Completá todos los campos');
+    mostrarMensaje('info', 'Completá todos los campos');
+    form.dataset.agregando = 'false';
     if (submitBtn) submitBtn.disabled = false;
     return;
   }
@@ -222,35 +230,39 @@ function procesarAgregarEntidad(form, submitBtn) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ nombre, color })
   })
-    .then(res => res.text())
-    .then(texto => {
-      try {
-        const data = JSON.parse(texto);
-        if (data.ok) {
-          mostrarMensaje('success', `Entidad "${nombre}" registrada correctamente`);
-          cerrarModal();
-          actualizarGrilla(document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino');
-          renderLeyenda();
-        } else {
-          mostrarMensaje('error', data.error || 'Error al crear entidad');
-          if (submitBtn) submitBtn.disabled = false;
-        }
-      } catch {
-        mostrarMensaje('error', 'Respuesta inválida del servidor');
+    .then(res => res.json())
+    .then(data => {
+      if (data.ok) {
+        mostrarMensaje('success', 'Entidad agregada correctamente');
+        cerrarModal();
+        actualizarGrilla(document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino');
+        renderLeyenda();
+      } else {
+        mostrarMensaje('error', data.error || 'Error al agregar entidad');
+        form.dataset.agregando = 'false';
         if (submitBtn) submitBtn.disabled = false;
       }
     })
-    .catch(() => {
+    .catch(err => {
+      console.error('❌ Error inesperado:', err);
       mostrarMensaje('error', 'Error inesperado');
+      form.dataset.agregando = 'false';
       if (submitBtn) submitBtn.disabled = false;
     });
 }
 
 function procesarEliminarEntidad(form, submitBtn) {
+  if (form.dataset.eliminando === 'true') {
+    return;
+  }
+  form.dataset.eliminando = 'true';
+
   const id = form.elements['entidad_id']?.value;
+
 
   if (!id) {
     mostrarMensaje('info', 'Seleccioná una entidad para eliminar');
+    form.dataset.eliminando = 'false';
     if (submitBtn) submitBtn.disabled = false;
     return;
   }
@@ -258,7 +270,7 @@ function procesarEliminarEntidad(form, submitBtn) {
   fetch('acciones/eliminar_entidad.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id })
+    body: JSON.stringify({ entidad_id: parseInt(id) })
   })
     .then(res => res.json())
     .then(data => {
@@ -269,15 +281,17 @@ function procesarEliminarEntidad(form, submitBtn) {
         renderLeyenda();
       } else {
         mostrarMensaje('error', data.error || 'Error al eliminar entidad');
+        form.dataset.eliminando = 'false';
         if (submitBtn) submitBtn.disabled = false;
       }
     })
-    .catch(() => {
+    .catch(err => {
+      console.error('❌ Error inesperado:', err);
       mostrarMensaje('error', 'Error inesperado');
+      form.dataset.eliminando = 'false';
       if (submitBtn) submitBtn.disabled = false;
     });
 }
-
 function procesarEliminarAsignacion(form, submitBtn) {
   const id = form.elements['asignacion_id']?.value;
 

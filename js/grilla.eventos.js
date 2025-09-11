@@ -24,22 +24,25 @@ document.addEventListener('click', e => {
   if (id === 'btn-eliminar-entidad') {
     e.stopPropagation();
     fetch('acciones/get_entidades.php')
-      .then(res => res.json())
-      .then(entidades => {
-        if (!Array.isArray(entidades) || entidades.length === 0) {
-          mostrarMensaje('info', 'No hay entidades para eliminar');
-          return;
-        }
-        abrirModal({
-          html: htmlEliminarEntidad(entidades),
-          idEsperado: 'form-eliminar-entidad',
-          focoSelector: 'button[type="submit"]',
-          contexto: { entidades }
-        });
-      })
-      .catch(() => {
-        mostrarMensaje('error', 'No se pudo cargar las entidades');
-      });
+  .then(res => res.json())
+  .then(data => {
+    const entidades = data.entidades;
+
+    if (!Array.isArray(entidades) || entidades.length === 0) {
+      mostrarMensaje('info', 'No hay entidades para eliminar');
+      return;
+    }
+
+    abrirModal({
+      html: htmlEliminarEntidad(entidades),
+      idEsperado: 'form-eliminar-entidad',
+      focoSelector: 'button[type="submit"]',
+      contexto: { entidades }
+    });
+  })
+  .catch(() => {
+    mostrarMensaje('error', 'No se pudo cargar las entidades');
+  });
     return;
   }
 
