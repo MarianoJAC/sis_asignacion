@@ -80,18 +80,19 @@ if (aulaIdFiltrada) {
   let botonesEliminar = '';
   let botonesEditar = '';
 
-  // 🟢 Mostrar disponibilidad siempre primero
+
+  // 🟢 Mostrar disponibilidad solo si hay asignaciones
+if (asignacionesDia.length > 0) {
   const huecos = calcularDisponibilidad(turnoSeleccionado, asignacionesDia);
   if (huecos.length > 0) {
     celdaHTML += `
       <div class="disponible-wrapper">
-        <div class="disponible-label">🟢 Ver disponibilidad</div>
+        <div class="disponible-label">🟢 Disponibilidad</div>
         <div class="disponible-detalle">${huecos.join('<br>')}</div>
       </div>
     `;
-  } else if (asignacionesDia.length === 0) {
-    celdaHTML += `<div class="disponible" style="text-align:center; color:green; margin-bottom:6px;">Disponible</div>`;
   }
+}
 
   // 🧱 Renderizar asignaciones
   asignacionesDia.forEach(asig => {

@@ -32,7 +32,7 @@ $classrooms_second_floor = [
 <body>
     <!-- Primer Piso -->
     <section class="mapa piso primer-piso">
-        <img src="../imagenes/primer_piso.jpg" alt="Mapa del primer piso">
+        <img src="../imagenes/piso1.png" alt="Mapa del primer piso">
         <a href="#segPiso" id="priPiso" class="marca-agua">Planta Baja</a>
         <a href="../index.html" class="volver"><button class="tab-btn">VOLVER</button></a>
 
@@ -50,7 +50,7 @@ $classrooms_second_floor = [
 
     <!-- Segundo Piso -->
     <section class="mapa piso segundo-piso">
-        <img src="../imagenes/segundo_piso.jpg" alt="Mapa del segundo piso">
+        <img src="../imagenes/piso2.png" alt="Mapa del segundo piso">
         <a href="#priPiso" id="segPiso" class="marca-agua">Primer Piso</a>
         <a href="../index.html" class="volver"><button class="tab-btn">VOLVER</button></a>
 
