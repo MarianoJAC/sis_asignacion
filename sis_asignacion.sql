@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 10.123.0.78:3306
--- Tiempo de generación: 21-08-2025 a las 17:07:32
+-- Tiempo de generación: 12-09-2025 a las 23:44:24
 -- Versión del servidor: 8.0.16
 -- Versión de PHP: 8.2.29
 
@@ -47,8 +47,6 @@ CREATE TABLE `asignaciones` (
 --
 
 INSERT INTO `asignaciones` (`Id`, `turno`, `dia`, `carrera`, `anio`, `profesor`, `materia`, `aula_id`, `hora_inicio`, `hora_fin`, `entidad_id`, `comentarios`) VALUES
-(24, 'Matutino', 'Martes', 'Terapéutica Kinefisiátrica en Geriatría', '1', 'No', 'Terapéutica Kinefisiátrica en Geriatría -ateneo I-', 1, '09:00:00', '12:00:00', 1, 'COM 8'),
-(27, 'Matutino', 'Miércoles', 'Enfermeria', '2', 'No', 'Enfermeria', 1, '07:30:00', '13:50:00', 4, ''),
 (28, 'Matutino', 'Viernes', 'Desarrollo de las Capacidades Funcionales', '1', 'No', 'Desarrollo de las Capacidades Funcionales', 1, '09:00:00', '12:00:00', 1, 'COM 20'),
 (30, 'Vespertino', 'Viernes', 'Desarrollo de las Capacidades Funcionales', '1', 'No', 'Desarrollo de las Capacidades Funcionales', 1, '13:00:00', '16:00:00', 1, 'COM 21'),
 (32, 'Vespertino', 'Jueves', 'Lsa', '1', 'No', 'Lsa', 1, '15:00:00', '17:30:00', 5, ''),
@@ -134,7 +132,11 @@ INSERT INTO `asignaciones` (`Id`, `turno`, `dia`, `carrera`, `anio`, `profesor`,
 (125, 'Nocturno', 'Jueves', 'Software', '3', 'Evelyn', 'No', 5, '19:00:00', '22:00:00', 3, ''),
 (126, 'Nocturno', 'Martes', 'Software', '2', 'Matias Cerdeira', 'Algebra y Logica', 10, '20:00:00', '22:00:00', 3, ''),
 (127, 'Nocturno', 'Miércoles', 'Software', '2', 'Inés del Castillo', 'Programación', 10, '19:00:00', '22:00:00', 3, ''),
-(128, 'Matutino', 'Sábado', 'Software', '2', 'Matías Cerdeira', 'Estadística y Probabilidades', 6, '08:00:00', '10:00:00', 3, '');
+(128, 'Matutino', 'Sábado', 'Software', '2', 'Matías Cerdeira', 'Estadística y Probabilidades', 6, '08:00:00', '10:00:00', 3, ''),
+(174, 'Matutino', 'Viernes', 'Prueba', '1', 'Prueba', 'Prueba', 1, '08:31:00', '12:31:00', 4, ''),
+(176, 'Nocturno', 'Martes', 'Asdasd', '1A', 'Asdasd', 'Asdasd', 1, '08:00:00', '12:00:00', 4, ''),
+(177, 'Nocturno', 'Martes', 'Asd', '1A', 'Asd', 'Asd', 2, '08:10:00', '11:00:00', 6, ''),
+(242, 'Nocturno', 'Lunes', 'Asdasd', '1B', 'Asdasd', 'Asdasd', 1, '19:00:00', '21:00:00', 4, '');
 
 -- --------------------------------------------------------
 
@@ -193,6 +195,27 @@ INSERT INTO `entidades` (`entidad_id`, `nombre`, `color`) VALUES
 (5, 'Ofertas independientes', '#ba68c8'),
 (6, 'Curso ingreso UNLAM', '#a1887f');
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `role` enum('admin','viewer') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci TABLESPACE `cruvei_asignaciones`;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `username`, `password`, `role`) VALUES
+(1, 'admin', '22377', 'admin'),
+(2, 'usuario', '1234', 'viewer');
+
 --
 -- Índices para tablas volcadas
 --
@@ -215,7 +238,15 @@ ALTER TABLE `aulas`
 -- Indices de la tabla `entidades`
 --
 ALTER TABLE `entidades`
-  ADD PRIMARY KEY (`entidad_id`);
+  ADD PRIMARY KEY (`entidad_id`),
+  ADD UNIQUE KEY `nombre` (`nombre`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -225,7 +256,7 @@ ALTER TABLE `entidades`
 -- AUTO_INCREMENT de la tabla `asignaciones`
 --
 ALTER TABLE `asignaciones`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=244;
 
 --
 -- AUTO_INCREMENT de la tabla `aulas`
@@ -237,7 +268,13 @@ ALTER TABLE `aulas`
 -- AUTO_INCREMENT de la tabla `entidades`
 --
 ALTER TABLE `entidades`
-  MODIFY `entidad_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `entidad_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
