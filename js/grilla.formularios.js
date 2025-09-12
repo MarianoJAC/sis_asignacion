@@ -1,5 +1,16 @@
+import { mostrarMensaje } from './grilla.alertas.js';
+import { cerrarModal, abrirModal } from './grilla.modales.js';
+import { actualizarGrilla } from './grilla.render.js';
+import { renderLeyenda } from './grilla.eventos.js';
+import { esHorarioValido, haySolapamiento } from './grilla.validaciones.js';
+import {
+  htmlEliminarAsignacion,
+  htmlEliminarEntidad,
+  htmlNuevaEntidad
+} from './grilla.modales.js';
+
 // 🧩 Mapeo de handlers por ID
-const handlersFormulario = {
+export const handlersFormulario = {
   'form-agregar-asignacion': procesarAgregarAsignacion,
   'form-seleccionar-edicion': procesarSeleccionEdicion,
   'form-editar-asignacion': procesarEdicionAsignacion,
@@ -30,9 +41,8 @@ document.addEventListener('submit', e => {
 
 function procesarAgregarAsignacion(form, submitBtn) {
   if (!form || !submitBtn) return;
-
-  // 🛡️ Bloqueo de doble envío
   if (submitBtn.dataset.enviando === 'true') return;
+
   submitBtn.dataset.enviando = 'true';
   submitBtn.disabled = true;
 
@@ -83,7 +93,20 @@ function procesarAgregarAsignacion(form, submitBtn) {
         if (data.ok) {
           mostrarMensaje('success', data.mensaje || 'Asignación registrada con éxito');
           cerrarModal();
-          actualizarGrilla(datos.turno);
+
+          // 🧠 Reconsultar backend para obtener datos actualizados
+          const turnoActual = datos.turno || 'Matutino';
+          fetch('acciones/get_grilla.php')
+            .then(res => res.json())
+            .then(grilla => {
+              window.datosGlobales = grilla;
+              actualizarGrilla(turnoActual);
+              renderLeyenda();
+            })
+            .catch(() => {
+              mostrarMensaje('error', 'No se pudo actualizar la grilla');
+            });
+
         } else {
           mostrarMensaje('error', data.error || 'Error al guardar asignación');
           submitBtn.disabled = false;
@@ -111,7 +134,7 @@ function procesarSeleccionEdicion(form, submitBtn) {
   if (!id || !aula_id || !dia || !turno) {
     mostrarMensaje('warning', 'Faltan datos para editar');
     if (submitBtn) submitBtn.disabled = false;
-    return;
+    return; // 🧼 limpieza por error ya no requiere bandera
   }
 
   fetch(`acciones/form_editar_asignacion.php?id=${id}&aula_id=${aula_id}&dia=${dia}&turno=${turno}`)
@@ -124,21 +147,37 @@ function procesarSeleccionEdicion(form, submitBtn) {
         contexto: { id, aula_id, dia, turno }
       });
 
-      // 🛡️ Interceptor manual justo después de abrir el modal
+      // 🛡️ Interceptor quirúrgico para botón "Cancelar"
       setTimeout(() => {
         const formEdit = document.getElementById('form-editar-asignacion');
-        if (formEdit) {
-          formEdit.addEventListener('submit', e => {
+        if (!formEdit) return;
+
+        // 🧼 Clon defensivo para eliminar listeners previos
+        const formClonado = formEdit.cloneNode(true);
+        formEdit.replaceWith(formClonado);
+
+        // Interceptar submit
+        formClonado.addEventListener('submit', e => {
+          e.preventDefault();
+          const submitBtn = formClonado.querySelector('button[type="submit"]');
+          if (submitBtn) submitBtn.disabled = true;
+          procesarEdicionAsignacion(formClonado, submitBtn);
+        }, { once: true });
+
+        // Interceptar cancelar
+        const btnCancelar = formClonado.querySelector('button[id^="btn-cancelar"]');
+        if (btnCancelar) {
+          btnCancelar.addEventListener('click', e => {
             e.preventDefault();
-            const submitBtn = formEdit.querySelector('button[type="submit"]');
-            if (submitBtn) submitBtn.disabled = true;
-            procesarEdicionAsignacion(formEdit, submitBtn);
-          });
+            e.stopPropagation();
+            cerrarModal();
+            console.log('🚫 Edición cancelada');
+          }, { once: true });
         }
       }, 50);
     })
     .catch(() => {
-      mostrarMensaje('error', 'No se pudo cargar el formulario');
+      mostrarMensaje('error', 'Error inesperado');
       if (submitBtn) submitBtn.disabled = false;
     });
 }
@@ -165,14 +204,12 @@ function procesarEdicionAsignacion(form, submitBtn) {
     return;
   }
 
-  // 🧠 Validación de horario
   if (!esHorarioValido(datos.hora_inicio, datos.hora_fin, datos.turno)) {
     mostrarMensaje('warning', `El horario no coincide con el turno ${datos.turno}. Usá un rango permitido.`);
     if (submitBtn) submitBtn.disabled = false;
     return;
   }
 
-  // 🧠 Validación de solapamiento (excluyendo la asignación actual)
   if (haySolapamiento(datos.turno, datos.hora_inicio, datos.hora_fin, datos.aula_id, datos.dia, datos.id)) {
     mostrarMensaje('error', 'Ya existe una asignación en ese horario para esa aula y día.');
     if (submitBtn) submitBtn.disabled = false;
@@ -191,7 +228,20 @@ function procesarEdicionAsignacion(form, submitBtn) {
         if (data.ok) {
           mostrarMensaje('success', data.mensaje || 'Asignación actualizada');
           cerrarModal();
-          actualizarGrilla(datos.turno);
+
+          // 🧠 Reconsultar backend para obtener datos actualizados
+          const turnoActual = datos.turno || 'Matutino';
+          fetch('acciones/get_grilla.php')
+            .then(res => res.json())
+            .then(grilla => {
+              window.datosGlobales = grilla;
+              actualizarGrilla(turnoActual);
+              renderLeyenda();
+            })
+            .catch(() => {
+              mostrarMensaje('error', 'No se pudo actualizar la grilla');
+            });
+
         } else {
           mostrarMensaje('error', data.error || 'Error al actualizar asignación');
           if (submitBtn) submitBtn.disabled = false;
@@ -208,15 +258,11 @@ function procesarEdicionAsignacion(form, submitBtn) {
 }
 
 function procesarAgregarEntidad(form, submitBtn) {
-  if (form.dataset.agregando === 'true') {
-    return;
-  }
+  if (form.dataset.agregando === 'true') return;
   form.dataset.agregando = 'true';
 
-  // 🧪 Trazabilidad
   const nombre = form.elements['nombre']?.value?.trim();
   const color = form.elements['color']?.value?.trim();
-
 
   if (!nombre || !color) {
     mostrarMensaje('info', 'Completá todos los campos');
@@ -235,8 +281,20 @@ function procesarAgregarEntidad(form, submitBtn) {
       if (data.ok) {
         mostrarMensaje('success', 'Entidad agregada correctamente');
         cerrarModal();
-        actualizarGrilla(document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino');
-        renderLeyenda();
+
+        // 🧠 Reconsultar backend para obtener datos actualizados
+        const turnoActual = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+        fetch('acciones/get_grilla.php')
+          .then(res => res.json())
+          .then(grilla => {
+            window.datosGlobales = grilla;
+            actualizarGrilla(turnoActual);
+            renderLeyenda();
+          })
+          .catch(() => {
+            mostrarMensaje('error', 'No se pudo actualizar la grilla');
+          });
+
       } else {
         mostrarMensaje('error', data.error || 'Error al agregar entidad');
         form.dataset.agregando = 'false';
@@ -250,15 +308,11 @@ function procesarAgregarEntidad(form, submitBtn) {
       if (submitBtn) submitBtn.disabled = false;
     });
 }
-
 function procesarEliminarEntidad(form, submitBtn) {
-  if (form.dataset.eliminando === 'true') {
-    return;
-  }
+  if (form.dataset.eliminando === 'true') return;
   form.dataset.eliminando = 'true';
 
   const id = form.elements['entidad_id']?.value;
-
 
   if (!id) {
     mostrarMensaje('info', 'Seleccioná una entidad para eliminar');
@@ -277,8 +331,20 @@ function procesarEliminarEntidad(form, submitBtn) {
       if (data.ok) {
         mostrarMensaje('success', 'Entidad eliminada correctamente');
         cerrarModal();
-        actualizarGrilla(document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino');
-        renderLeyenda();
+
+        // 🧠 Reconsultar backend para obtener datos actualizados
+        const turnoActual = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+        fetch('acciones/get_grilla.php')
+          .then(res => res.json())
+          .then(grilla => {
+            window.datosGlobales = grilla;
+            actualizarGrilla(turnoActual);
+            renderLeyenda();
+          })
+          .catch(() => {
+            mostrarMensaje('error', 'No se pudo actualizar la grilla');
+          });
+
       } else {
         mostrarMensaje('error', data.error || 'Error al eliminar entidad');
         form.dataset.eliminando = 'false';
@@ -313,7 +379,20 @@ function procesarEliminarAsignacion(form, submitBtn) {
         if (data.ok) {
           mostrarMensaje('success', data.mensaje || 'Asignación eliminada correctamente');
           cerrarModal();
-          actualizarGrilla(document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino');
+
+          // 🧠 Reconsultar backend para obtener datos actualizados
+          const turnoActual = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+          fetch('acciones/get_grilla.php')
+            .then(res => res.json())
+            .then(grilla => {
+              window.datosGlobales = grilla;
+              actualizarGrilla(turnoActual);
+              renderLeyenda();
+            })
+            .catch(() => {
+              mostrarMensaje('error', 'No se pudo actualizar la grilla');
+            });
+
         } else {
           mostrarMensaje('error', data.error || 'Error al eliminar asignación');
           if (submitBtn) submitBtn.disabled = false;
@@ -339,3 +418,17 @@ function interceptarFormulario(id, handler) {
     handler(form, submitBtn);
   });
 }
+
+
+export {
+  procesarAgregarAsignacion,
+  procesarSeleccionEdicion,
+  procesarEdicionAsignacion,
+  procesarAgregarEntidad,
+  procesarEliminarEntidad,
+  procesarEliminarAsignacion,
+  interceptarFormulario,
+  htmlNuevaEntidad,
+  htmlEliminarEntidad,
+  htmlEliminarAsignacion
+};

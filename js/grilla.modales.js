@@ -1,3 +1,6 @@
+
+import { handlersFormulario } from './grilla.formularios.js';
+
 function abrirModal({ html, envolver = true, idEsperado = null, focoSelector = null, contexto = null }) {
   const contenedor = document.getElementById('modal-formulario');
   if (!contenedor) return;
@@ -19,6 +22,7 @@ function abrirModal({ html, envolver = true, idEsperado = null, focoSelector = n
 
     const formId = form.id.trim();
     const handler = handlersFormulario?.[formId];
+    
 
     // 🛡️ Registro quirúrgico: solo si no está ya asignado
     if (typeof handler === 'function') {
@@ -29,6 +33,7 @@ function abrirModal({ html, envolver = true, idEsperado = null, focoSelector = n
         handler(form, submitBtn);
       }, { once: true }); // ✅ Solo una ejecución
     }
+    
   });
 }
 
@@ -120,3 +125,11 @@ function htmlEliminarAsignacion(asignaciones, aula, dia, turno) {
 
   return html;
 }
+
+export {
+  abrirModal,
+  cerrarModal,
+  htmlNuevaEntidad,
+  htmlEliminarEntidad,
+  htmlEliminarAsignacion
+};

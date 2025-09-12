@@ -1,5 +1,5 @@
 
-function mostrarMensaje(tipo = 'info', texto = '', opciones = {}) {
+export function mostrarMensaje(tipo = 'info', texto = '', opciones = {}) {
   Swal.fire({
     icon: tipo, // 'success', 'error', 'warning', 'info'
     text: texto,

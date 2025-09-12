@@ -103,3 +103,38 @@
   font-size: 0.8rem;
   border-radius: 4px;
 }
+
+.disponible-wrapper {
+  text-align: center;
+  margin-bottom: 6px;
+  cursor: default;
+  background-color: #fafafa;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-style: italic;
+  font-size: 0.95rem; /* 🔍 más grande */
+  color: #555;
+  position: relative;
+  overflow: hidden;
+}
+
+.disponible-label {
+  color: green;
+  font-weight: bold;
+  font-size: 0.85rem; /* ✅ más visible */
+}
+
+.disponible-detalle {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  font-size: 0.95rem; /* ✅ más legible */
+  margin-top: 6px;
+  color: #333;
+  line-height: 1.4;
+}
+
+.disponible-wrapper:hover .disponible-detalle {
+  max-height: 300px; /* ✅ espacio suficiente */
+}

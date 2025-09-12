@@ -1,10 +1,18 @@
+
+import { abrirModal, cerrarModal } from './grilla.modales.js';
+import { mostrarMensaje } from './grilla.alertas.js';
+import { htmlNuevaEntidad, htmlEliminarEntidad, htmlEliminarAsignacion } from './grilla.formularios.js';
+
+
+
+
 document.addEventListener('click', e => {
   const id = e.target.id;
 
   // Tabs de turno
   if (e.target.classList.contains('tab-btn')) {
     const turno = e.target.dataset.turno;
-    renderGrilla(turno);
+    actualizarGrilla(turno); // ✅ mantiene el aula seleccionada
     return;
   }
 
@@ -104,6 +112,7 @@ document.addEventListener('click', e => {
     });
     return;
   }
+  
 
   // Botón de eliminar asignación
   if (e.target.classList.contains('btn-eliminar-asignacion') && id !== 'btn-eliminar-entidad') {
@@ -120,6 +129,8 @@ document.addEventListener('click', e => {
       return;
     }
 
+    
+
     abrirModal({
       html: htmlEliminarAsignacion(asignaciones, aula, dia, turno),
       idEsperado: 'form-eliminar-asignacion',
@@ -130,7 +141,7 @@ document.addEventListener('click', e => {
   }
 });
 
-function renderLeyenda() {
+export function renderLeyenda() {
   fetch('acciones/get_entidades.php')
     .then(res => res.json())
     .then(data => {
