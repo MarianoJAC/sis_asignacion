@@ -17,10 +17,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <!-- 🧠 Ícono institucional (opcional) -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="./iconos/calendario.ico" type="image/x-icon">
 </head>
 <body>
-  <h2>Grilla Semanal de Asignaciones Marechal</h2>
+  <h2>Grilla de Asignaciones Marechal</h2>
 
   <!-- 🟢 Leyenda de entidades -->
   <div id="bloque-entidades">
@@ -59,16 +59,26 @@
 <!-- Núcleo primero: define datosGlobales -->
 <script type="module" src="js/grilla.core.js"></script>
 <script type="module">
-  import { cargarAsignacionesPorAula, actualizarGrilla } from './js/grilla.core.js';
 
-  const params = new URLSearchParams(window.location.search);
-  const aulaId = params.get('aula_id');
-  window.aulaSeleccionada = aulaId || null;
+ import {
+  cargarAsignacionesPorAula,
+  cargarAsignacionesPorAulaTodosLosTurnos,
+  actualizarGrilla
+} from './js/grilla.core.js';
 
-  if (aulaId) {
-    console.log('🧭 Aula seleccionada desde mapa:', aulaId);
-    cargarAsignacionesPorAula(aulaId);
+const params = new URLSearchParams(window.location.search);
+const aulaId = params.get('aula_id');
+const origen = params.get('origen');
+window.aulaSeleccionada = aulaId || null;
+
+if (aulaId) {
+  console.log('🧭 Aula seleccionada:', aulaId, '| Origen:', origen);
+  if (origen === 'mapa') {
+    cargarAsignacionesPorAulaTodosLosTurnos(aulaId); // 🧩 render extendido
+  } else {
+    cargarAsignacionesPorAula(aulaId); // ✅ comportamiento normal
   }
+}
 
   // 🧠 Interceptar clicks de pestañas
   document.querySelectorAll('.tab-btn').forEach(btn => {

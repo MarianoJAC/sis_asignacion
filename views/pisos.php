@@ -28,39 +28,37 @@ $classrooms_second_floor = [
     <title>Mapa de Aulas</title>
     <link rel="stylesheet" href="../css/mapa_pisos.css">
     <link rel="stylesheet" href="../css/turnos.css">
+    <link rel="icon" href="../iconos/calendario.ico" type="image/x-icon">
 </head>
 <body>
-    <!-- Primer Piso -->
-    <section class="mapa piso primer-piso">
-        <img src="../imagenes/piso1.png" alt="Mapa del primer piso">
-        <a href="#segPiso" id="priPiso" class="marca-agua">Planta Baja</a>
-        <a href="../index.html" class="volver"><button class="tab-btn">VOLVER</button></a>
+<!-- Primer Piso -->
+<section class="mapa piso primer-piso">
+    <img src="../imagenes/piso1.png" alt="Mapa del primer piso">
+    <a href="#segPiso" id="priPiso" class="marca-agua">Planta Baja</a>
 
-        <?php foreach ($classrooms_first_floor as $classroom): ?>
-            <a href="../index.html?aula_id=<?php echo $classroom['id']; ?>"
-               class="aula <?php echo $classroom['class']; ?>">
-               <?php echo $classroom['name']; ?>
-            </a>
-        <?php endforeach; ?>
+    <?php foreach ($classrooms_first_floor as $classroom): ?>
+        <a href="../index.html?aula_id=<?php echo $classroom['id']; ?>&origen=mapa"
+           class="aula <?php echo $classroom['class']; ?>">
+           <?php echo $classroom['name']; ?>
+        </a>
+    <?php endforeach; ?>
 
-        <div class="flechabajo">
-            <a href="#segPiso"><img class="flecha" src="../imagenes/flechabajo.png" alt="abajo"></a>
-        </div>
-    </section>
+    <div class="flechabajo">
+        <a href="#segPiso"><img class="flecha" src="../imagenes/flechabajo.png" alt="abajo"></a>
+    </div>
+</section>
+
 
     <!-- Segundo Piso -->
     <section class="mapa piso segundo-piso">
         <img src="../imagenes/piso2.png" alt="Mapa del segundo piso">
         <a href="#priPiso" id="segPiso" class="marca-agua">Primer Piso</a>
-        <a href="../index.html" class="volver"><button class="tab-btn">VOLVER</button></a>
-
-        <?php foreach ($classrooms_second_floor as $classroom): ?>
-            <a href="../index.html?aula_id=<?php echo $classroom['id']; ?>"
-               class="aula <?php echo $classroom['class']; ?>">
-               <?php echo $classroom['name']; ?>
-            </a>
-        <?php endforeach; ?>
-
+<?php foreach ($classrooms_second_floor as $classroom): ?>
+  <a href="../index.html?aula_id=<?php echo $classroom['id']; ?>&origen=mapa"
+     class="aula <?php echo $classroom['class']; ?>">
+     <?php echo $classroom['name']; ?>
+  </a>
+<?php endforeach; ?>
         <div class="flecharriba">
             <a href="#priPiso"><img class="flecha" src="../imagenes/flecharriba.png" alt="arriba"></a>
         </div>

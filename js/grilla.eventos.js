@@ -2,6 +2,7 @@
 import { abrirModal, cerrarModal } from './grilla.modales.js';
 import { mostrarMensaje } from './grilla.alertas.js';
 import { htmlNuevaEntidad, htmlEliminarEntidad, htmlEliminarAsignacion } from './grilla.formularios.js';
+import { actualizarGrilla } from './grilla.render.js';
 
 
 

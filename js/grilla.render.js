@@ -9,14 +9,14 @@ export const iconoRecurso = {
   'Ninguno': '<i class="fas fa-ban"></i>'
 };
 
-export function renderGrilla(turnoSeleccionado, datos = window.datosGlobales, aulaIdFiltrada = null) {
-   console.log('🧪 Aulas filtradas:', aulaIdFiltrada);
+export function renderGrilla(turnoSeleccionado, datos = window.datosGlobales, aulaIdFiltrada = null, targetId = null) {
+  
   if (!datos || !datos.dias || !datos.aulas || !datos.asignaciones) {
     console.warn('⚠️ Datos no disponibles para renderizar grilla');
     mostrarMensaje('error', 'Los datos aún no están cargados');
     return;
   }
-
+  const ocultarColumnaAula = aulaIdFiltrada && targetId !== 'principal'; // 🛡️ ocultar si es render extendido
   const { dias, aulas, asignaciones } = datos;
 
   const diasFiltrados = dias.filter(dia => dia.trim() && dia.trim() !== ' ');
@@ -40,13 +40,16 @@ export function renderGrilla(turnoSeleccionado, datos = window.datosGlobales, au
   : aulas;
 
 // 🧠 Actualizar título dinámico
-if (aulaIdFiltrada) {
-  const aula = aulas.find(a => a.aula_id == aulaIdFiltrada);
-  if (aula) {
-    document.querySelector('h2').textContent = `Grilla de ${aula.nombre} - Turno ${turnoSeleccionado}`;
+if (!targetId) { // 🛡️ Solo actualizar título si es render principal
+  if (aulaIdFiltrada) {
+    const aula = aulas.find(a => a.aula_id == aulaIdFiltrada);
+    if (aula) {
+      document.querySelector('h2').textContent = `Grilla de ${aula.nombre}`;
+    }
+  } else {
+    document.querySelector('h2').textContent = `Grilla Semanal de Asignaciones Marechal`;
   }
-} else {
-  document.querySelector('h2').textContent = `Grilla Semanal de Asignaciones Marechal - Turno ${turnoSeleccionado}`;
+  console.log(`🧪 RenderGrilla ejecutado para turno: ${turnoSeleccionado} | targetId: ${targetId || 'principal'} | aulaIdFiltrada: ${aulaIdFiltrada}`);
 }
 
   const numDias = diasFiltrados.length;
@@ -55,16 +58,22 @@ if (aulaIdFiltrada) {
   const anchoDia = anchoTotalDias / numDias;
 
   let html = '<table class="grid-table"><colgroup>';
+  if (!ocultarColumnaAula) {
   html += `<col style="width: ${anchoAula}%;">`;
+}
   for (let i = 0; i < numDias; i++) {
     html += `<col style="width: ${anchoDia}%;">`;
   }
-  html += '</colgroup><thead><tr><th>Aula</th>';
+  html += '</colgroup><thead><tr>';
+if (!ocultarColumnaAula) {
+  html += '<th>Aula</th>';
+}
   diasFiltrados.forEach(dia => {
     html += `<th>${dia}</th>`;
   });
   html += '</tr></thead><tbody>';
  console.log('🧪 Aulas filtradas:', aulasFiltradas.map(a => a.nombre));
+ const mostrarNombreAula = targetId === null || targetId === 'principal';
   aulasFiltradas.forEach(aula => {
     const recursoIcono = iconoRecurso[aula.recurso] || '❓';
     let infoAula = '';
@@ -72,7 +81,14 @@ if (aulaIdFiltrada) {
       infoAula = `<small>${recursoIcono} ${aula.recurso} - Capacidad: ${aula.capacidad}</small>`;
     }
 
-    html += `<tr><td><strong>${aula.nombre}</strong><br>${infoAula}</td>`;
+html += '<tr>';
+if (!ocultarColumnaAula) {
+  html += '<td>';
+  if (mostrarNombreAula) {
+    html += `<strong>${aula.nombre}</strong><br>${infoAula}`;
+  }
+  html += '</td>';
+}
 
     diasFiltrados.forEach(dia => {
   const asignacionesDia = grid[aula.aula_id]?.[dia] || [];
@@ -142,11 +158,22 @@ if (asignacionesDia.length > 0) {
   });
 
   html += '</tbody></table>';
-  document.getElementById('grilla-container').innerHTML = html;
+  const destino = targetId
+  ? document.getElementById(targetId)
+  : document.getElementById('grilla-container');
 
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.turno === turnoSeleccionado);
-  });
+if (destino) destino.innerHTML = html;
+
+const urlParams = new URLSearchParams(window.location.search);
+const origen = urlParams.get('origen');
+
+if (!targetId || targetId === 'principal') {
+  const aula = datos.aulas?.find(a => a.aula_id == aulaIdFiltrada);
+  if (aula) {
+    document.querySelector('h2').textContent = `Grilla de ${aula.nombre} - Turno ${turnoSeleccionado}`;
+  }
+}
+
 }
 
 export function cargarAsignacionesPorAula(aulaId) {
@@ -157,13 +184,12 @@ export function cargarAsignacionesPorAula(aulaId) {
     .then(data => {
       try {
         window.datosGlobales = data;
-        renderGrilla('Matutino', data, aulaId);
 
         if (!data.aulas || data.aulas.length === 0) {
           return mostrarMensaje('Error en fetch', 'No se han cargado aulas globalmente');
         }
 
-        renderGrilla('Matutino', data, aulaId); // ✅ usamos el aulaId como filtro
+        renderGrilla('Matutino', data, aulaId); // ✅ solo una vez
         renderLeyenda();
       } catch (error) {
         console.error('❌ Error interno al renderizar:', error);
@@ -173,10 +199,12 @@ export function cargarAsignacionesPorAula(aulaId) {
 }
 
 export function actualizarGrilla(turno) {
+  const turnoSeguro = turno || 'Matutino';
   const aulaId = window.aulaSeleccionada || null;
-  console.log('🔄 Cambio de turno:', turno, '| Aula activa:', aulaId);
-  renderGrilla(turno, window.datosGlobales, aulaId); // ✅ tercer parámetro obligatorio
+  console.log('🔄 Cambio de turno:', turnoSeguro, '| Aula activa:', aulaId);
+  renderGrilla(turnoSeguro, window.datosGlobales, aulaId);
 }
+
 
 
 
@@ -205,4 +233,44 @@ export function calcularDisponibilidad(turno, asignaciones) {
   }
 
   return huecos;
+}
+
+export function renderGrillaTodosLosTurnos(datos = window.datosGlobales, aulaIdFiltrada = null) {
+  const turnos = ['Matutino', 'Vespertino', 'Nocturno']; // ✅ array real
+
+  const container = document.getElementById('grilla-container');
+  container.innerHTML = ''; // 🧼 limpieza previa
+
+  // 🧠 Actualizar título principal solo una vez
+  const aula = datos.aulas?.find(a => a.aula_id == aulaIdFiltrada);
+  if (aula) {
+    document.querySelector('h2').textContent = `Grilla extendida de ${aula.nombre} (todos los turnos)`;
+  } else {
+    document.querySelector('h2').textContent = `Grilla Semanal de Asignaciones Marechal (todos los turnos)`;
+  }
+
+  // 🧼 Desactivar pestañas de turno
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  // 🧩 Renderizar cada turno en su bloque
+  turnos.forEach(turno => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'grilla-turno-wrapper';
+
+    const titulo = document.createElement('h3');
+    titulo.textContent = `Turno ${turno}`;
+    wrapper.appendChild(titulo);
+
+    const tempDiv = document.createElement('div');
+    tempDiv.id = `grilla-${turno.toLowerCase()}`;
+    wrapper.appendChild(tempDiv);
+
+    container.appendChild(wrapper);
+
+    renderGrilla(turno, datos, aulaIdFiltrada, tempDiv.id); // ✅ render modular
+  });
+
+  renderLeyenda();
 }

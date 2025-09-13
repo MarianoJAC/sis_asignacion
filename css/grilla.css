@@ -138,3 +138,11 @@
 .disponible-wrapper:hover .disponible-detalle {
   max-height: 300px; /* ✅ espacio suficiente */
 }
+
+
+.grilla-turno-wrapper {
+  margin-bottom: 32px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
