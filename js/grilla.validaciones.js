@@ -65,12 +65,51 @@ function getFechasSemanaCompleta() {
   return fechas;
 }
 
-// 📦 Export institucional
+function calcularDisponibilidad(turno, asignaciones) {
+  const [inicioTurno, finTurno] = rangoTurno[turno];
+  const huecos = [];
+
+  let anteriorFin = inicioTurno;
+
+  asignaciones
+    .filter(a => a.turno === turno)
+    .sort((a, b) => convertirAHora(a.hora_inicio) - convertirAHora(b.hora_inicio))
+    .forEach(asig => {
+      const inicioAsignacion = convertirAHora(asig.hora_inicio);
+      const finAsignacion = convertirAHora(asig.hora_fin);
+
+      if (anteriorFin < inicioAsignacion) {
+        huecos.push(`${minutosAHora(anteriorFin)} a ${minutosAHora(inicioAsignacion)}`);
+      }
+
+      anteriorFin = Math.max(anteriorFin, finAsignacion);
+    });
+
+  if (anteriorFin < finTurno) {
+    huecos.push(`${minutosAHora(anteriorFin)} a ${minutosAHora(finTurno)}`);
+  }
+
+  return huecos;
+}
+
+function formatearFecha(fecha) {
+  const fechaISO = fecha.trim();
+  const fechaObj = new Date(fechaISO + 'T00:00:00');
+  if (isNaN(fechaObj)) {
+    return 'Fecha inválida';
+  }
+  const opciones = { weekday: 'long', day: 'numeric', month: 'short' };
+  return fechaObj.toLocaleDateString('es-AR', opciones);
+}
+
+
 export {
   rangoTurno,
   convertirAHora,
   esHorarioValido,
   haySolapamiento,
   minutosAHora,
-  getFechasSemanaCompleta
+  getFechasSemanaCompleta,
+  calcularDisponibilidad,
+  formatearFecha
 };

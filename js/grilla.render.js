@@ -1,41 +1,17 @@
 import { renderLeyenda } from './grilla.eventos.js';
 import { mostrarMensaje } from './grilla.alertas.js';
-import { rangoTurno, convertirAHora, minutosAHora, getFechasSemanaCompleta } from './grilla.validaciones.js';
+import { rangoTurno, convertirAHora, minutosAHora, getFechasSemanaCompleta, calcularDisponibilidad, formatearFecha  } from './grilla.validaciones.js';
+import { normalizarFecha } from './grilla.filtros.js';
 
-function formatearFecha(fecha) {
-  const fechaISO = normalizarFecha(fecha).trim();
-  const fechaObj = new Date(fechaISO + 'T00:00:00');
-  if (isNaN(fechaObj)) {
-    return 'Fecha inválida';
-  }
-  const opciones = { weekday: 'long', day: 'numeric', month: 'short' };
-  return fechaObj.toLocaleDateString('es-AR', opciones);
-}
-
-function normalizarFecha(fecha) {
-  const partes = fecha.split(/[\/\-]/);
-  if (partes.length === 3) {
-    const [a, b, c] = partes;
-    if (a.length === 4) return `${a}-${b.padStart(2, '0')}-${c.padStart(2, '0')}`;
-    return `${c}-${b.padStart(2, '0')}-${a.padStart(2, '0')}`;
-  }
-  return fecha;
-}
-
-function esDiaHabil(fechaStr) {
-  const limpia = normalizarFecha(fechaStr).trim();
-  const fecha = new Date(limpia + 'T00:00:00');
-  const dia = fecha.getDay();
-  return !isNaN(dia) && dia >= 1 && dia <= 6;
-}
-
-export const iconoRecurso = {
+const iconoRecurso = {
   'Proyector': '<i class="fas fa-video"></i>',
   'TV': '<i class="fas fa-tv"></i>',
   'Ninguno': '<i class="fas fa-ban"></i>'
 };
 
-export function renderGrilla(turnoSeleccionado, datos = window.datosGlobales, aulaIdFiltrada = null, targetId = null) {
+export function renderGrilla(turnoSeleccionado, datos = window.datosGlobales, aulaIdFiltrada = null, targetId = null, fechaFiltrada = null) {
+  if (window.modoExtendido && !targetId) return;
+
   if (!datos || !datos.aulas || !datos.asignaciones) {
     mostrarMensaje('error', 'Los datos aún no están cargados');
     return;
@@ -44,7 +20,10 @@ export function renderGrilla(turnoSeleccionado, datos = window.datosGlobales, au
   const ocultarColumnaAula = aulaIdFiltrada && targetId !== 'principal';
   const { aulas, asignaciones } = datos;
 
-  const fechasUnicas = getFechasSemanaCompleta();
+  const fechasUnicas = fechaFiltrada
+    ? [normalizarFecha(fechaFiltrada)]
+    : getFechasSemanaCompleta();
+
   if (fechasUnicas.length === 0) {
     mostrarMensaje('info', 'No hay asignaciones de lunes a sábado para este turno');
     return;
@@ -68,15 +47,15 @@ export function renderGrilla(turnoSeleccionado, datos = window.datosGlobales, au
     : aulas;
 
   if (!targetId) {
-  if (aulaIdFiltrada !== null) {
-    const aula = aulas.find(a => a.aula_id == aulaIdFiltrada);
-    if (aula) {
-      document.querySelector('h2').textContent = `Grilla de ${aula.nombre}`;
+    if (aulaIdFiltrada !== null) {
+      const aula = aulas.find(a => a.aula_id == aulaIdFiltrada);
+      if (aula) {
+        document.querySelector('h2').textContent = `Grilla de ${aula.nombre}`;
+      }
+    } else {
+      document.querySelector('h2').textContent = `Grilla Semanal de Asignaciones Marechal`;
     }
-  } else {
-    document.querySelector('h2').textContent = `Grilla Semanal de Asignaciones Marechal`;
   }
-}
 
   const numFechas = fechasUnicas.length;
   const anchoAula = 16;
@@ -190,109 +169,101 @@ export function renderGrilla(turnoSeleccionado, datos = window.datosGlobales, au
   if (destino) destino.innerHTML = html;
 
   if ((!targetId || targetId === 'principal') && aulaIdFiltrada !== null) {
-  const aula = datos.aulas?.find(a => a.aula_id == aulaIdFiltrada);
-  if (aula) {
-    document.querySelector('h2').textContent = `Grilla de ${aula.nombre} - Turno ${turnoSeleccionado}`;
+    const aula = datos.aulas?.find(a => a.aula_id == aulaIdFiltrada);
+    if (aula) {
+      document.querySelector('h2').textContent = `Grilla de ${aula.nombre} - Turno ${turnoSeleccionado}`;
+    } else {
+      document.querySelector('h2').textContent = `Grilla Semanal de Asignaciones Marechal - Turno ${turnoSeleccionado}`;
+    }
   }
 }
 
-}
 export function cargarAsignacionesPorAula(aulaId) {
   window.aulaSeleccionada = aulaId;
 
   fetch('acciones/get_grilla.php')
     .then(res => res.json())
     .then(data => {
-      try {
-        window.datosGlobales = data;
+  console.log('[DEBUG] Datos recibidos:', data); // 👈 acá
 
+      try {
         if (!data.aulas || data.aulas.length === 0) {
           return mostrarMensaje('error', 'No se han cargado aulas globalmente');
         }
 
-        renderGrilla('Matutino', data, aulaId);
+        window.datosGlobales = data;
+
+        if (window.modoExtendido) return;
+
+        const turnoActivo = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+        renderGrilla(turnoActivo, data, aulaId);
         renderLeyenda();
       } catch {
         mostrarMensaje('error', 'Error al procesar la grilla inicial');
       }
+    })
+    .catch(() => {
+      mostrarMensaje('error', 'No se pudo cargar la grilla del aula');
     });
 }
 
 let turnoActual = null;
 
 export function actualizarGrilla(turno) {
-  if (window.modoExtendido) {
-    console.log('⛔ Cancelado: modo extendido activo');
-    return;
-  }
-
   const turnoSeguro = turno || 'Matutino';
   const aulaId = window.aulaSeleccionada;
+
+  if (window.modoExtendido) return;
+
+  if (!window.datosGlobales || !window.datosGlobales.asignaciones) {
+    mostrarMensaje('error', 'Los datos aún no están disponibles');
+    return;
+  }
 
   if (turnoActual === turnoSeguro && aulaId === null && !window.forceRender) {
     return;
   }
 
   turnoActual = turnoSeguro;
-  renderGrilla(turnoSeguro, window.datosGlobales, aulaId);
   window.forceRender = false;
-}
 
-export function calcularDisponibilidad(turno, asignaciones) {
-  const [inicioTurno, finTurno] = rangoTurno[turno];
-  const huecos = [];
-
-  let anteriorFin = inicioTurno;
-
-  asignaciones
-    .filter(a => a.turno === turno)
-    .sort((a, b) => convertirAHora(a.hora_inicio) - convertirAHora(b.hora_inicio))
-    .forEach(asig => {
-      const inicioAsignacion = convertirAHora(asig.hora_inicio);
-      const finAsignacion = convertirAHora(asig.hora_fin);
-
-      if (anteriorFin < inicioAsignacion) {
-        huecos.push(`${minutosAHora(anteriorFin)} a ${minutosAHora(inicioAsignacion)}`);
-      }
-
-      anteriorFin = Math.max(anteriorFin, finAsignacion);
-    });
-
-  if (anteriorFin < finTurno) {
-    huecos.push(`${minutosAHora(anteriorFin)} a ${minutosAHora(finTurno)}`);
-  }
-
-  return huecos;
+  renderGrilla(turnoSeguro, window.datosGlobales, aulaId);
 }
 
 export function renderGrillaTodosLosTurnos(datos = window.datosGlobales, aulaIdFiltrada = null) {
-  console.log('🧩 renderGrillaTodosLosTurnos ejecutado');
-  console.log('🔍 aulaIdFiltrada:', aulaIdFiltrada);
-  console.log('📊 cantidad de aulas:', datos?.aulas?.length);
+  if (aulaIdFiltrada === undefined) {
+    aulaIdFiltrada = null;
+  }
 
-  const turnos = ['Matutino', 'Vespertino', 'Nocturno'];
   const container = document.getElementById('grilla-container');
+  if (!container) {
+    mostrarMensaje('error', 'No se encontró el contenedor de grilla');
+    return;
+  }
+
   container.innerHTML = '';
 
-  const aula = datos.aulas?.find(a => a.aula_id == aulaIdFiltrada);
+  const turnos = ['Matutino', 'Vespertino', 'Nocturno'];
+
+  const aula = aulaIdFiltrada !== null
+    ? datos.aulas?.find(a => a.aula_id == aulaIdFiltrada)
+    : null;
+
   if (aula) {
     document.querySelector('h2').textContent = `Grilla extendida de ${aula.nombre} (todos los turnos)`;
   } else {
     document.querySelector('h2').textContent = `Grilla Semanal de Asignaciones Marechal (todos los turnos)`;
   }
 
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
   turnos.forEach(turno => {
-    console.log(`📐 Renderizando turno: ${turno}`);
-
     const wrapper = document.createElement('div');
     wrapper.className = 'grilla-turno-wrapper';
 
     const titulo = document.createElement('h3');
     titulo.textContent = `Turno ${turno}`;
+    titulo.classList.add('grilla-turno-activa');
     wrapper.appendChild(titulo);
 
     const tempDiv = document.createElement('div');
@@ -301,18 +272,26 @@ export function renderGrillaTodosLosTurnos(datos = window.datosGlobales, aulaIdF
 
     container.appendChild(wrapper);
 
-    renderGrilla(turno, datos, aulaIdFiltrada, tempDiv.id); // ✅ corregido
+    renderGrilla(turno, datos, aulaIdFiltrada, tempDiv.id);
   });
 
   renderLeyenda();
 }
 
 export function cargarAsignacionesPorAulaTodosLosTurnos(aulaId) {
+  window.yaRenderizado = true;
+
   fetch('acciones/get_grilla.php')
     .then(res => res.json())
     .then(data => {
+      if (!data.aulas || data.aulas.length === 0) {
+        mostrarMensaje('error', 'No se recibieron aulas desde el backend');
+        return;
+      }
+
       window.datosGlobales = data;
       window.aulaSeleccionada = aulaId;
+
       renderGrillaTodosLosTurnos(data, aulaId);
     })
     .catch(() => {
@@ -320,18 +299,91 @@ export function cargarAsignacionesPorAulaTodosLosTurnos(aulaId) {
     });
 }
 
-export function filtrarGrillaPorFecha(turno, fecha) {
-  const datos = window.datosGlobales;
-  const aulaId = window.aulaSeleccionada;
+export function renderVistaGeneral() {
+  console.log('[FLOW] Renderizando vista general institucional');
 
-  const asignacionesFiltradas = datos.asignaciones.filter(a =>
-    a.fecha === fecha && a.turno === turno
-  );
+  // 🔁 Reset de banderas
+  window.modoExtendido = false;
+  window.aulaSeleccionada = null;
 
-  const grillaFiltrada = {
-    ...datos,
-    asignaciones: asignacionesFiltradas
-  };
+  // 🧼 Limpieza visual
+  const selectorFecha = document.getElementById('selector-fecha');
+  if (selectorFecha) selectorFecha.value = '';
 
-  renderGrilla(turno, grillaFiltrada, aulaId);
+  const inputBuscador = document.getElementById('input-buscador');
+  if (inputBuscador) inputBuscador.value = '';
+
+  const leyenda = document.getElementById('leyenda-dinamica');
+  if (leyenda) leyenda.innerHTML = '';
+
+  const modal = document.querySelector('.modal');
+  if (modal) modal.remove();
+
+  // 🔄 Reset de tabs activos
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+  const btnMatutino = document.querySelector('.tab-btn[data-turno="Matutino"]');
+  if (btnMatutino) btnMatutino.classList.add('active');
+
+  // 🟢 Turno base
+  const turno = 'Matutino';
+
+  // 🔄 Render institucional
+  actualizarGrilla(turno);
+  actualizarVisibilidadFiltros();
+
+}
+
+export function renderVistaExtendida(aulaId) {
+  console.log(`[FLOW] Renderizando vista extendida para aula ${aulaId}`);
+
+  // 🔁 Activar modo extendido
+  window.modoExtendido = true;
+  window.aulaSeleccionada = aulaId;
+
+  // 🧼 Limpieza visual previa
+  const selectorFecha = document.getElementById('selector-fecha');
+  if (selectorFecha) selectorFecha.value = '';
+
+  const inputBuscador = document.getElementById('input-buscador');
+  if (inputBuscador) inputBuscador.value = '';
+
+  const leyenda = document.getElementById('leyenda-dinamica');
+  if (leyenda) leyenda.innerHTML = '';
+
+  const modal = document.querySelector('.modal');
+  if (modal) modal.remove();
+
+  // 🔄 Mantener turno activo
+  const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+
+  // 🔄 Render extendido
+  actualizarGrilla(turno, aulaId);
+  actualizarVisibilidadFiltros();
+}
+
+export function actualizarVisibilidadFiltros() {
+  const mostrar = !window.modoExtendido;
+
+  const bloqueFecha = document.getElementById('bloque-filtro-fecha');
+  const bloqueBuscador = document.getElementById('bloque-buscador');
+
+  if (bloqueFecha) bloqueFecha.style.display = mostrar ? 'block' : 'none';
+  if (bloqueBuscador) bloqueBuscador.style.display = mostrar ? 'block' : 'none';
+
+  console.log(`[UI] Bloques de filtros ${mostrar ? 'visibles' : 'ocultos'} según modo ${window.modoExtendido ? 'extendido' : 'institucional'}`);
+}
+
+export function actualizarLayoutPorModo() {
+  const mostrar = !window.modoExtendido;
+
+  const filtroFecha = document.getElementById('contenedor-fecha');
+  const buscador = document.getElementById('input-buscador');
+  const btnResetFecha = document.getElementById('btn-reset-fecha');
+
+  if (filtroFecha) filtroFecha.style.display = mostrar ? 'block' : 'none';
+  if (buscador) buscador.style.display = mostrar ? 'inline-block' : 'none';
+  if (btnResetFecha) btnResetFecha.style.display = mostrar ? 'inline-block' : 'none';
+
+  console.log(`[UI] Layout actualizado: filtros ${mostrar ? 'visibles' : 'ocultos'} según modo ${window.modoExtendido ? 'extendido' : 'institucional'}`);
 }
