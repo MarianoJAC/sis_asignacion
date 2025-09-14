@@ -4,9 +4,6 @@ import { mostrarMensaje } from './grilla.alertas.js';
 import { htmlNuevaEntidad, htmlEliminarEntidad, htmlEliminarAsignacion } from './grilla.formularios.js';
 import { actualizarGrilla } from './grilla.render.js';
 
-
-
-
 document.addEventListener('click', e => {
   const id = e.target.id;
 

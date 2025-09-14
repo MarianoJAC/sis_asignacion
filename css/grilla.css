@@ -81,18 +81,17 @@
 }
 
 /* 🟨 Celdas de asignación */
-.celda-asignacion {
-  position: relative;
-  min-height: 120px;
-  max-height: 120px; /* ✅ blindaje vertical */
-  overflow-y: auto;  /* ✅ scroll interno si se excede */
-  padding: 12px 42px 12px 12px;
+.celda-asignacion .acciones-celda {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
 }
 
-
-.celda-asignacion:hover {
-  background-color: #f1f3f5;
+.celda-asignacion:hover .acciones-celda {
+  opacity: 1;
+  pointer-events: auto;
 }
+
 
 /* 📑 Celdas disponibles */
 .disponible {
