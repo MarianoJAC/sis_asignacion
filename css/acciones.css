@@ -31,7 +31,7 @@
 .btn-agregar,
 .btn-eliminar-asignacion,
 .btn-editar-asignacion {
-  display: none;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   padding: 6px;

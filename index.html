@@ -46,6 +46,21 @@
     <button class="tab-btn" id="btn-ver-todas">Todas las Aulas</button>
   </div>
 
+ <!-- 🗓️ Filtro de fecha en desplegable -->
+<div id="bloque-filtro-fecha" class="bloque-desplegable">
+  <button id="toggle-fecha" class="btn-desplegable">📅 Filtrar por fecha</button>
+  <div id="contenedor-fecha" class="contenedor-oculto">
+    <input type="date" id="selector-fecha" class="selector-fecha" />
+    <button id="btn-reset-fecha" class="btn-reset-fecha">🧹 Limpiar filtro</button>
+  </div>
+</div>
+
+<!-- 🔍 Buscador de aulas -->
+<div id="bloque-buscador" class="bloque-desplegable">
+  <label for="input-buscador"><strong>Buscar aula:</strong></label>
+  <input type="text" id="input-buscador" class="input-buscador" placeholder="Ej: Proyector, Aula 5..." />
+</div>
+
   <!-- 🟡 Comentario flotante -->
   <div id="comentario-global" class="comentario-flotante"></div>
 
@@ -60,11 +75,13 @@
 <script type="module" src="js/grilla.core.js"></script>
 <script type="module">
 
- import {
+import {
   cargarAsignacionesPorAula,
   cargarAsignacionesPorAulaTodosLosTurnos,
   actualizarGrilla
-} from './js/grilla.core.js';
+} from './js/grilla.render.js';
+
+
 
 const params = new URLSearchParams(window.location.search);
 const aulaId = params.get('aula_id');

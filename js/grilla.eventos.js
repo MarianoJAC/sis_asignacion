@@ -70,18 +70,18 @@ document.addEventListener('click', e => {
   // Botón de agregar asignación
   if (e.target.classList.contains('btn-agregar') && id !== 'btn-agregar-entidad') {
     const aula_id = e.target.dataset.aula;
-    const dia = e.target.dataset.dia;
-    const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+const fecha = e.target.dataset.fecha;
+const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
 
-    fetch(`acciones/form_crear_asignacion.php?aula_id=${aula_id}&dia=${dia}&turno=${turno}`)
-      .then(res => res.text())
-      .then(html => {
-        abrirModal({
-          html,
-          idEsperado: 'form-agregar-asignacion',
-          focoSelector: 'button[type="submit"]',
-          contexto: { aula_id, dia, turno }
-        });
+fetch(`acciones/form_crear_asignacion.php?aula_id=${aula_id}&fecha=${fecha}&turno=${turno}`)
+  .then(res => res.text())
+  .then(html => {
+    abrirModal({
+      html,
+      idEsperado: 'form-agregar-asignacion',
+      focoSelector: 'button[type="submit"]',
+      contexto: { aula_id, fecha, turno }
+    });
       })
       .catch(() => {
         mostrarMensaje('error', 'No se pudo cargar el formulario');
@@ -92,13 +92,14 @@ document.addEventListener('click', e => {
 
   // Botón de editar asignación
   if (e.target.classList.contains('btn-editar-asignacion')) {
-    const dia = e.target.dataset.dia;
-    const aula = e.target.dataset.aula;
-    const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+    const fecha = e.target.dataset.fecha;
+const aula = e.target.dataset.aula;
+const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
 
-    const asignaciones = datosGlobales.asignaciones.filter(a =>
-      a.dia === dia && a.aula_id === aula && a.turno === turno
-    );
+const asignaciones = datosGlobales.asignaciones.filter(a =>
+  a.fecha === fecha && a.aula_id == aula && a.turno === turno
+);
+
 
     if (asignaciones.length === 0) {
       mostrarMensaje('info', 'No hay asignaciones para editar');
@@ -106,24 +107,25 @@ document.addEventListener('click', e => {
     }
 
     abrirModal({
-      html: htmlSeleccionarAsignacion(asignaciones, aula, dia, turno),
-      idEsperado: 'form-seleccionar-edicion',
-      focoSelector: 'button[type="submit"]',
-      contexto: { aula, dia, turno }
-    });
+  html: htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno),
+  idEsperado: 'form-seleccionar-edicion',
+  focoSelector: 'button[type="submit"]',
+  contexto: { aula, fecha, turno }
+});
     return;
   }
   
 
   // Botón de eliminar asignación
   if (e.target.classList.contains('btn-eliminar-asignacion') && id !== 'btn-eliminar-entidad') {
-    const dia = e.target.dataset.dia;
-    const aula = e.target.dataset.aula;
-    const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+    const fecha = e.target.dataset.fecha;
+const aula = e.target.dataset.aula;
+const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
 
-    const asignaciones = datosGlobales.asignaciones.filter(a =>
-      a.dia === dia && a.aula_id === aula && a.turno === turno
-    );
+const asignaciones = datosGlobales.asignaciones.filter(a =>
+  a.fecha === fecha && a.aula_id == aula && a.turno === turno
+);
+
 
     if (asignaciones.length === 0) {
       mostrarMensaje('info', 'No hay asignaciones para eliminar');
@@ -133,11 +135,11 @@ document.addEventListener('click', e => {
     
 
     abrirModal({
-      html: htmlEliminarAsignacion(asignaciones, aula, dia, turno),
-      idEsperado: 'form-eliminar-asignacion',
-      focoSelector: 'button[type="submit"]',
-      contexto: { aula, dia, turno }
-    });
+  html: htmlEliminarAsignacion(asignaciones, aula, fecha, turno),
+  idEsperado: 'form-eliminar-asignacion',
+  focoSelector: 'button[type="submit"]',
+  contexto: { aula, fecha, turno }
+});
     return;
   }
 });
@@ -167,7 +169,7 @@ export function renderLeyenda() {
     });
 }
 
-function htmlSeleccionarAsignacion(asignaciones, aula, dia, turno) {
+function htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno) {
   let html = `<div class="modal-contenido">
     <h3>Seleccioná una asignación para editar</h3>
     <form id="form-seleccionar-edicion" class="modal-formulario">`;
@@ -181,8 +183,9 @@ function htmlSeleccionarAsignacion(asignaciones, aula, dia, turno) {
 
   html += `
     <input type="hidden" name="aula_id" value="${aula}">
-    <input type="hidden" name="dia" value="${dia}">
-    <input type="hidden" name="turno" value="${turno}">
+<input type="hidden" name="fecha" value="${fecha}">
+<input type="hidden" name="turno" value="${turno}">
+
     <div class="form-buttons">
       <button type="button" id="btn-cancelar-edicion">Cancelar</button>
       <button type="submit">✏️ Editar</button>

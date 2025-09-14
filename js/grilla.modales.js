@@ -97,7 +97,7 @@ function htmlEliminarEntidad(entidades) {
 }
 
 // ❌ HTML para eliminar asignación
-function htmlEliminarAsignacion(asignaciones, aula, dia, turno) {
+function htmlEliminarAsignacion(asignaciones, aula, fecha, turno) {
   let html = `
     <div class="modal-entidad">
       <h3 class="modal-titulo">❌ Eliminar asignación</h3>
@@ -114,7 +114,7 @@ function htmlEliminarAsignacion(asignaciones, aula, dia, turno) {
 
   html += `
       <input type="hidden" name="aula_id" value="${aula}">
-      <input type="hidden" name="dia" value="${dia}">
+      <input type="hidden" name="fecha" value="${fecha}">
       <input type="hidden" name="turno" value="${turno}">
       <div class="form-buttons fila-completa">
         <button type="button" id="btn-cancelar-eliminar">Cancelar</button>
@@ -131,5 +131,5 @@ export {
   cerrarModal,
   htmlNuevaEntidad,
   htmlEliminarEntidad,
-  htmlEliminarAsignacion
+  htmlEliminarAsignacion 
 };

@@ -2,8 +2,11 @@
 include '../config/conexion.php';
 
 $aula_id = $_GET['aula_id'] ?? '';
-$dia = $_GET['dia'] ?? '';
+$fecha = $_GET['fecha'] ?? '';
 $turno = $_GET['turno'] ?? '';
+
+// 🧪 Trazas para auditoría
+error_log("🧪 Crear asignación | Aula: $aula_id | Fecha: $fecha | Turno: $turno");
 
 function options($tabla, $id_col, $name_col) {
   global $conexion;
@@ -18,9 +21,13 @@ function options($tabla, $id_col, $name_col) {
 
 <div class="modal-contenido">
   <form id="form-agregar-asignacion" class="modal-formulario" autocomplete="off">
-    <input type="hidden" name="aula_id" value="<?= $aula_id ?>">
-    <input type="hidden" name="dia" value="<?= $dia ?>">
-    <input type="hidden" name="turno" value="<?= $turno ?>">
+    <input type="hidden" name="aula_id" value="<?= htmlspecialchars($aula_id) ?>">
+    <input type="hidden" name="turno" value="<?= htmlspecialchars($turno) ?>">
+
+    <div class="campo-formulario">
+      <label for="fecha">Fecha exacta:</label>
+      <input type="date" name="fecha" id="fecha" value="<?= htmlspecialchars($fecha) ?>" required>
+    </div>
 
     <div class="campo-formulario">
       <label for="entidad_id">Entidad:</label>
@@ -39,14 +46,12 @@ function options($tabla, $id_col, $name_col) {
       <label for="anio">Año de la carrera:</label>
       <select name="anio" id="anio" required>
         <option value="">Seleccione una opción</option>
-        <option value="1">1</option>
-        <option value="1A">1A</option>
-        <option value="1B">1B</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
+        <?php
+        $opciones = ['1', '1A', '1B', '2', '3', '4', '5', '6'];
+        foreach ($opciones as $op) {
+          echo "<option value=\"$op\">$op</option>";
+        }
+        ?>
       </select>
     </div>
 

@@ -1,33 +1,39 @@
 <?php
 include '../config/conexion.php';
+header('Content-Type: application/json');
 
-$diasSemana = [' ', 'Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 
-// 🧠 Capturar parámetro opcional
+if (!isset($conexion) || !$conexion) {
+  http_response_code(500);
+  echo json_encode(['error' => 'Conexión no establecida']);
+  exit;
+}
+
 $aula_id = isset($_GET['aula_id']) ? intval($_GET['aula_id']) : 0;
 
-// ✅ Traemos recurso y capacidad de cada aula
 $aulasQuery = mysqli_query($conexion, "SELECT aula_id, nombre, recurso, capacidad FROM aulas ORDER BY aula_id ASC");
+if (!$aulasQuery) {
+  http_response_code(500);
+  echo json_encode(['error' => 'Error en la consulta de aulas']);
+  exit;
+}
+
 $aulas = [];
 while ($fila = mysqli_fetch_assoc($aulasQuery)) {
   if (in_array(trim($fila['nombre']), ['Laboratorio', 'Aula Gabinete'])) {
     $fila['recurso'] = null;
     $fila['capacidad'] = null;
   }
-
-  // 🧠 Filtramos si se pasó aula_id
   if ($aula_id === 0 || $fila['aula_id'] == $aula_id) {
     $aulas[] = $fila;
   }
 }
 
-
-// ✅ Armamos query de asignaciones con filtro opcional
 $query = "
   SELECT 
     a.Id,
+    a.fecha,
     a.turno,
-    a.dia,
     a.carrera,
     a.anio,
     a.profesor,
@@ -49,23 +55,18 @@ if ($aula_id > 0) {
   $query .= " WHERE a.aula_id = $aula_id";
 }
 
-$query .= " ORDER BY a.hora_inicio ASC";
+$query .= " ORDER BY a.fecha ASC, a.hora_inicio ASC";
 
-// ✅ Ejecutamos y enviamos
-$asignaciones = mysqli_fetch_all(mysqli_query($conexion, $query), MYSQLI_ASSOC);
-
-if (!is_array($asignaciones)) {
-  $asignaciones = [];
-}
-
-if (!$aulasQuery || !$asignaciones) {
+$asignacionesQuery = mysqli_query($conexion, $query);
+if (!$asignacionesQuery) {
   http_response_code(500);
-  echo json_encode(['error' => 'Error en la consulta']);
+  echo json_encode(['error' => 'Error en la consulta de asignaciones']);
   exit;
 }
 
+$asignaciones = mysqli_fetch_all($asignacionesQuery, MYSQLI_ASSOC);
+
 echo json_encode([
-  'dias' => $diasSemana,
   'aulas' => $aulas,
   'asignaciones' => $asignaciones
 ]);

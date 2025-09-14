@@ -83,10 +83,12 @@
 /* 🟨 Celdas de asignación */
 .celda-asignacion {
   position: relative;
-  padding-top: 12px;
-  padding-right: 42px; /* 🧩 espacio reservado para los botones */
-  min-height: 100px;    /* opcional: asegura altura si el contenido es poco */
+  min-height: 120px;
+  max-height: 120px; /* ✅ blindaje vertical */
+  overflow-y: auto;  /* ✅ scroll interno si se excede */
+  padding: 12px 42px 12px 12px;
 }
+
 
 .celda-asignacion:hover {
   background-color: #f1f3f5;
@@ -145,4 +147,45 @@
   padding: 12px;
   border: 1px solid #ccc;
   background-color: #f9f9f9;
+}
+
+
+.bloque-desplegable {
+  margin: 12px 0;
+}
+
+.btn-desplegable {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.contenedor-oculto {
+  display: none;
+  margin-top: 8px;
+}
+
+.contenedor-visible {
+  display: block;
+}
+
+.selector-fecha,
+.btn-reset-fecha {
+  margin-right: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-buscador {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-left: 8px;
+  width: 220px;
 }

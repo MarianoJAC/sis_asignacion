@@ -23,7 +23,7 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 // 🧠 Extracción defensiva
 $aula_id    = $input['aula_id']    ?? '';
-$dia        = $input['dia']        ?? '';
+$fecha      = $input['fecha']      ?? '';
 $turno      = $input['turno']      ?? '';
 $carrera    = capitalizar($input['carrera'] ?? '');
 $anio       = $input['anio']       ?? '';
@@ -35,7 +35,7 @@ $fin        = $input['hora_fin']    ?? '';
 $comentarios = isset($input['comentarios']) ? trim($input['comentarios']) : '';
 
 // 🛡️ Validación básica
-if (!$aula_id || !$dia || !$turno || !$carrera || !$anio || !$materia || !$profesor || !$entidad || !$inicio || !$fin) {
+if (!$aula_id || !$fecha || !$turno || !$carrera || !$anio || !$materia || !$profesor || !$entidad || !$inicio || !$fin) {
   echo json_encode(['ok' => false, 'error' => 'Faltan campos obligatorios']);
   exit;
 }
@@ -49,8 +49,8 @@ if (mysqli_num_rows($check) === 0) {
 
 // 🔍 Verificación de duplicado funcional
 $verificar = $conexion->prepare("SELECT COUNT(*) FROM asignaciones WHERE 
-  aula_id = ? AND dia = ? AND turno = ? AND materia = ? AND profesor = ? AND hora_inicio = ? AND hora_fin = ?");
-$verificar->bind_param("sssssss", $aula_id, $dia, $turno, $materia, $profesor, $inicio, $fin);
+  aula_id = ? AND fecha = ? AND turno = ? AND materia = ? AND profesor = ? AND hora_inicio = ? AND hora_fin = ?");
+$verificar->bind_param("sssssss", $aula_id, $fecha, $turno, $materia, $profesor, $inicio, $fin);
 $verificar->execute();
 $verificar->bind_result($total);
 $verificar->fetch();
@@ -62,19 +62,19 @@ if ($total > 0) {
 }
 
 // 🧪 Trazabilidad
-error_log("🧪 Insertando asignación: $materia - $profesor - $dia - $turno - $inicio/$fin");
+error_log("🧪 Insertando asignación: $materia - $profesor - $fecha - $turno - $inicio/$fin");
 
 // ✅ Inserción blindada
 $stmt = $conexion->prepare("INSERT INTO asignaciones (
-  aula_id, dia, turno, carrera, anio, profesor, materia, entidad_id, hora_inicio, hora_fin, comentarios
+  aula_id, fecha, turno, carrera, anio, profesor, materia, entidad_id, hora_inicio, hora_fin, comentarios
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-$stmt->bind_param("sssssssssss", $aula_id, $dia, $turno, $carrera, $anio, $profesor, $materia, $entidad, $inicio, $fin, $comentarios);
+$stmt->bind_param("sssssssssss", $aula_id, $fecha, $turno, $carrera, $anio, $profesor, $materia, $entidad, $inicio, $fin, $comentarios);
 
 if ($stmt->execute()) {
   echo json_encode(['ok' => true, 'mensaje' => 'Asignación guardada']);
 } else {
   echo json_encode(['ok' => false, 'error' => $stmt->error]);
 }
-
 $stmt->close();
+exit;

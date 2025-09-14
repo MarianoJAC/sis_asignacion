@@ -56,11 +56,11 @@ function procesarAgregarAsignacion(form, submitBtn) {
     hora_fin: form.elements['hora_fin']?.value,
     comentarios: form.elements['comentarios']?.value.trim(),
     aula_id: form.elements['aula_id']?.value,
-    dia: form.elements['dia']?.value,
+    fecha: form.elements['fecha']?.value,
     turno: form.elements['turno']?.value
   };
 
-  if (!datos.entidad_id || !datos.materia || !datos.profesor || !datos.hora_inicio || !datos.hora_fin || !datos.aula_id || !datos.dia || !datos.turno) {
+  if (!datos.entidad_id || !datos.materia || !datos.profesor || !datos.hora_inicio || !datos.hora_fin || !datos.aula_id || !datos.fecha || !datos.turno) {
     mostrarMensaje('warning', 'Completá todos los campos obligatorios');
     submitBtn.disabled = false;
     submitBtn.dataset.enviando = 'false';
@@ -74,7 +74,7 @@ function procesarAgregarAsignacion(form, submitBtn) {
     return;
   }
 
-  if (haySolapamiento(datos.turno, datos.hora_inicio, datos.hora_fin, datos.aula_id, datos.dia)) {
+  if (haySolapamiento(datos.turno, datos.hora_inicio, datos.hora_fin, datos.aula_id, datos.fecha)) {
     mostrarMensaje('error', 'Ya existe una asignación en ese horario para esa aula y día.');
     submitBtn.disabled = false;
     submitBtn.dataset.enviando = 'false';
@@ -82,69 +82,67 @@ function procesarAgregarAsignacion(form, submitBtn) {
   }
 
   fetch('acciones/guardar_asignacion.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(datos)
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(datos)
+})
+  .then(res => {
+    if (!res.ok) throw new Error(`Error ${res.status}`);
+    return res.json();
   })
-    .then(res => res.text())
-    .then(texto => {
-      try {
-        const data = JSON.parse(texto.trim());
-        if (data.ok) {
-          mostrarMensaje('success', data.mensaje || 'Asignación registrada con éxito');
-          cerrarModal();
+  .then(data => {
+    if (data.ok) {
+      mostrarMensaje('success', data.mensaje || 'Asignación registrada con éxito');
+      cerrarModal();
 
-          // 🧠 Reconsultar backend para obtener datos actualizados
-          const turnoActual = datos.turno || 'Matutino';
-          fetch('acciones/get_grilla.php')
-            .then(res => res.json())
-            .then(grilla => {
-              window.datosGlobales = grilla;
-              actualizarGrilla(turnoActual);
-              renderLeyenda();
-            })
-            .catch(() => {
-              mostrarMensaje('error', 'No se pudo actualizar la grilla');
-            });
+      const turnoActual = datos.turno || 'Matutino';
+      fetch('acciones/get_grilla.php')
+        .then(res => res.json())
+        .then(grilla => {
+          window.datosGlobales = grilla;
+          window.forceRender = true;
+          actualizarGrilla(turnoActual);
+          renderLeyenda();
+        })
+        .catch(() => {
+          mostrarMensaje('error', 'No se pudo actualizar la grilla');
+        });
 
-        } else {
-          mostrarMensaje('error', data.error || 'Error al guardar asignación');
-          submitBtn.disabled = false;
-          submitBtn.dataset.enviando = 'false';
-        }
-      } catch {
-        mostrarMensaje('error', 'Respuesta inválida del servidor');
-        submitBtn.disabled = false;
-        submitBtn.dataset.enviando = 'false';
-      }
-    })
-    .catch(() => {
-      mostrarMensaje('error', 'Error inesperado');
+    } else {
+      console.warn('⚠️ Backend respondió sin ok:', data);
+      mostrarMensaje('error', data.error || 'Error al guardar asignación');
       submitBtn.disabled = false;
       submitBtn.dataset.enviando = 'false';
-    });
+    }
+  })
+  .catch(err => {
+    console.error('🛑 Error inesperado:', err.message);
+    mostrarMensaje('error', `Error del servidor: ${err.message}`);
+    submitBtn.disabled = false;
+    submitBtn.dataset.enviando = 'false';
+  });
 }
 
 function procesarSeleccionEdicion(form, submitBtn) {
   const id = form.elements['asignacion_id']?.value;
   const aula_id = form.elements['aula_id']?.value;
-  const dia = form.elements['dia']?.value;
+  const fecha = form.elements['fecha']?.value;;
   const turno = form.elements['turno']?.value;
 
-  if (!id || !aula_id || !dia || !turno) {
+  if (!id || !aula_id || !fecha || !turno) {
     mostrarMensaje('warning', 'Faltan datos para editar');
     if (submitBtn) submitBtn.disabled = false;
     return; // 🧼 limpieza por error ya no requiere bandera
   }
 
-  fetch(`acciones/form_editar_asignacion.php?id=${id}&aula_id=${aula_id}&dia=${dia}&turno=${turno}`)
+  fetch(`acciones/form_editar_asignacion.php?id=${id}&aula_id=${aula_id}&fecha=${fecha}&turno=${turno}`)
     .then(res => res.text())
     .then(html => {
       abrirModal({
         html,
         idEsperado: 'form-editar-asignacion',
         focoSelector: 'button[type="submit"]',
-        contexto: { id, aula_id, dia, turno }
+        contexto: { id, aula_id, fecha, turno }
       });
 
       // 🛡️ Interceptor quirúrgico para botón "Cancelar"
@@ -186,7 +184,7 @@ function procesarEdicionAsignacion(form, submitBtn) {
   const datos = {
     id: form.elements['id']?.value,
     aula_id: form.elements['aula_id']?.value,
-    dia: form.elements['dia']?.value,
+    fecha: form.elements['fecha']?.value,
     turno: form.elements['turno']?.value,
     entidad_id: form.elements['entidad_id']?.value,
     carrera: form.elements['carrera']?.value?.trim() || '',
@@ -198,7 +196,7 @@ function procesarEdicionAsignacion(form, submitBtn) {
     comentarios: form.elements['comentarios']?.value?.trim() || ''
   };
 
-  if (!datos.id || !datos.aula_id || !datos.dia || !datos.turno || !datos.entidad_id || !datos.materia || !datos.profesor || !datos.hora_inicio || !datos.hora_fin) {
+  if (!datos.id || !datos.aula_id || !datos.fecha || !datos.turno || !datos.entidad_id || !datos.materia || !datos.profesor || !datos.hora_inicio || !datos.hora_fin) {
     mostrarMensaje('warning', 'Completá todos los campos obligatorios');
     if (submitBtn) submitBtn.disabled = false;
     return;
@@ -210,51 +208,66 @@ function procesarEdicionAsignacion(form, submitBtn) {
     return;
   }
 
-  if (haySolapamiento(datos.turno, datos.hora_inicio, datos.hora_fin, datos.aula_id, datos.dia, datos.id)) {
+  if (haySolapamiento(datos.turno, datos.hora_inicio, datos.hora_fin, datos.aula_id, datos.fecha, datos.id)) {
     mostrarMensaje('error', 'Ya existe una asignación en ese horario para esa aula y día.');
     if (submitBtn) submitBtn.disabled = false;
     return;
   }
 
-  fetch('acciones/editar_asignacion.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(datos)
-  })
-    .then(res => res.text())
-    .then(texto => {
-      try {
-        const data = JSON.parse(texto.trim());
-        if (data.ok) {
-          mostrarMensaje('success', data.mensaje || 'Asignación actualizada');
-          cerrarModal();
+ fetch('acciones/editar_asignacion.php', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(datos)
+})
+  .then(res => res.text())
+  .then(texto => {
+    console.log('📨 Respuesta cruda del backend:', texto);
 
-          // 🧠 Reconsultar backend para obtener datos actualizados
-          const turnoActual = datos.turno || 'Matutino';
-          fetch('acciones/get_grilla.php')
-            .then(res => res.json())
-            .then(grilla => {
-              window.datosGlobales = grilla;
-              actualizarGrilla(turnoActual);
-              renderLeyenda();
-            })
-            .catch(() => {
-              mostrarMensaje('error', 'No se pudo actualizar la grilla');
-            });
+    try {
+      const data = JSON.parse(texto.trim());
+      console.log('📦 JSON parseado:', data);
 
-        } else {
-          mostrarMensaje('error', data.error || 'Error al actualizar asignación');
-          if (submitBtn) submitBtn.disabled = false;
-        }
-      } catch {
-        mostrarMensaje('error', 'Respuesta inválida del servidor');
+      if (data.ok) {
+        mostrarMensaje('success', data.mensaje || 'Asignación actualizada');
+        cerrarModal();
+
+        const turnoActual = datos.turno || 'Matutino';
+        console.log('🔄 Reconsultando grilla para turno:', turnoActual);
+
+        fetch('acciones/get_grilla.php')
+          .then(res => res.json())
+          .then(grilla => {
+            console.log('📦 Datos nuevos recibidos:', grilla);
+
+            window.datosGlobales = grilla;
+            window.forceRender = true;
+            actualizarGrilla(turnoActual);
+            console.log('✅ Grilla actualizada visualmente');
+
+            renderLeyenda();
+            console.log('🎨 Leyenda renderizada');
+          })
+          .catch(() => {
+            mostrarMensaje('error', 'No se pudo actualizar la grilla');
+            console.error('🛑 Error al obtener grilla desde el backend');
+          });
+
+      } else {
+        console.warn('⚠️ Backend respondió sin ok:', data);
+        mostrarMensaje('error', data.error || 'Error al actualizar asignación');
         if (submitBtn) submitBtn.disabled = false;
       }
-    })
-    .catch(() => {
-      mostrarMensaje('error', 'Error inesperado');
+    } catch (err) {
+      console.error('❌ Error al parsear JSON:', err.message);
+      mostrarMensaje('error', 'Respuesta inválida del servidor');
       if (submitBtn) submitBtn.disabled = false;
-    });
+    }
+  })
+  .catch(err => {
+    console.error('🛑 Error inesperado en fetch:', err.message);
+    mostrarMensaje('error', 'Error inesperado');
+    if (submitBtn) submitBtn.disabled = false;
+  });
 }
 
 function procesarAgregarEntidad(form, submitBtn) {
@@ -271,10 +284,15 @@ function procesarAgregarEntidad(form, submitBtn) {
     return;
   }
 
+  const payload = { nombre, color };
+
+  // 🧪 Auditoría visual antes de enviar
+  console.log('🧪 Payload entidad:', payload);
+
   fetch('acciones/agregar_entidad.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ nombre, color })
+    body: JSON.stringify(payload)
   })
     .then(res => res.json())
     .then(data => {
@@ -282,12 +300,12 @@ function procesarAgregarEntidad(form, submitBtn) {
         mostrarMensaje('success', 'Entidad agregada correctamente');
         cerrarModal();
 
-        // 🧠 Reconsultar backend para obtener datos actualizados
         const turnoActual = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
         fetch('acciones/get_grilla.php')
           .then(res => res.json())
           .then(grilla => {
             window.datosGlobales = grilla;
+            window.forceRender = true;
             actualizarGrilla(turnoActual);
             renderLeyenda();
           })
@@ -296,6 +314,7 @@ function procesarAgregarEntidad(form, submitBtn) {
           });
 
       } else {
+        console.warn('⚠️ Error del backend:', data.error);
         mostrarMensaje('error', data.error || 'Error al agregar entidad');
         form.dataset.agregando = 'false';
         if (submitBtn) submitBtn.disabled = false;
@@ -338,6 +357,7 @@ function procesarEliminarEntidad(form, submitBtn) {
           .then(res => res.json())
           .then(grilla => {
             window.datosGlobales = grilla;
+            window.forceRender = true;
             actualizarGrilla(turnoActual);
             renderLeyenda();
           })
@@ -367,6 +387,8 @@ function procesarEliminarAsignacion(form, submitBtn) {
     return;
   }
 
+  console.log('🗑️ Eliminando asignación con ID:', id);
+
   fetch('acciones/eliminar_asignacion.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -374,35 +396,50 @@ function procesarEliminarAsignacion(form, submitBtn) {
   })
     .then(res => res.text())
     .then(texto => {
+      console.log('📨 Respuesta cruda del backend:', texto);
+
       try {
-        const data = JSON.parse(texto);
+        const data = JSON.parse(texto.trim());
+        console.log('📦 JSON parseado:', data);
+
         if (data.ok) {
           mostrarMensaje('success', data.mensaje || 'Asignación eliminada correctamente');
           cerrarModal();
 
-          // 🧠 Reconsultar backend para obtener datos actualizados
           const turnoActual = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+          console.log('🔄 Reconsultando grilla para turno:', turnoActual);
+
           fetch('acciones/get_grilla.php')
             .then(res => res.json())
             .then(grilla => {
+              console.log('📦 Datos nuevos recibidos tras eliminación:', grilla);
+
               window.datosGlobales = grilla;
+              window.forceRender = true;
               actualizarGrilla(turnoActual);
+              console.log('✅ Grilla actualizada visualmente');
+
               renderLeyenda();
+              console.log('🎨 Leyenda renderizada');
             })
             .catch(() => {
               mostrarMensaje('error', 'No se pudo actualizar la grilla');
+              console.error('🛑 Error al obtener grilla desde el backend');
             });
 
         } else {
+          console.warn('⚠️ Backend respondió sin ok:', data);
           mostrarMensaje('error', data.error || 'Error al eliminar asignación');
           if (submitBtn) submitBtn.disabled = false;
         }
-      } catch {
+      } catch (err) {
+        console.error('❌ Error al parsear JSON:', err.message);
         mostrarMensaje('error', 'Respuesta inválida del servidor');
         if (submitBtn) submitBtn.disabled = false;
       }
     })
-    .catch(() => {
+    .catch(err => {
+      console.error('🛑 Error inesperado en fetch:', err.message);
       mostrarMensaje('error', 'Error inesperado');
       if (submitBtn) submitBtn.disabled = false;
     });
