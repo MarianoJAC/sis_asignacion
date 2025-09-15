@@ -1,27 +1,30 @@
 <?php
 session_start();
 
-// Incluir la conexión a la BD (ajusta si el path es diferente)
+// Incluir la conexión a la BD
 include 'config/conexion.php';
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
 
-    // Consulta a la BD
-    $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE username = :username AND password = :password");
-    $stmt->execute(['username' => $username, 'password' => $password]);  
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($username && $password) {
+        $stmt = $pdo->prepare("SELECT id, username, password, role FROM usuarios WHERE username = :username");
+        $stmt->execute(['username' => $username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['role'] = $user['role'];
-        header('Location: index.html');  // Redirige a index.html
-        exit();
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['role'] = $user['role'];
+            header('Location: index.html');
+            exit();
+        } else {
+            $error = 'Usuario o contraseña incorrectos.';
+        }
     } else {
-        $error = 'Usuario o contraseña incorrectos.';
+        $error = 'Por favor, complete todos los campos.';
     }
 }
 
@@ -38,14 +41,13 @@ if (isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Sistema de Asignación de Aulas</title>
-    <!-- Incluir CSS si existe, ajusta paths según tu estructura -->
-    <link rel="stylesheet" href="css/estilos.css">  <!-- Asumiendo que hay un CSS en css/ -->
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
     <div class="login-container">
         <h2>Iniciar Sesión</h2>
         <?php if ($error): ?>
-            <p style="color: red;"><?php echo $error; ?></p>
+            <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
         <?php endif; ?>
         <form method="POST">
             <label for="username">Usuario:</label>

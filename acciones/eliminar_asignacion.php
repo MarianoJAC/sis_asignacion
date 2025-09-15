@@ -1,26 +1,31 @@
 <?php
 include '../config/conexion.php';
 
-error_reporting(E_ERROR | E_PARSE);
-ini_set('display_errors', 0);
-
 header('Content-Type: application/json');
 
-// 🧠 Leer JSON desde el body
-$input = json_decode(file_get_contents('php://input'), true);
-$id = $input['id'] ?? null;
+try {
+    if (!isset($pdo) || !$pdo) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Conexión no establecida']);
+        exit;
+    }
 
-if (!$id) {
-  echo json_encode(['ok' => false, 'error' => 'ID no recibido']);
-  exit;
-}
+    $data = json_decode(file_get_contents('php://input'), true);
 
-// 🧨 Eliminación segura
-$query = "DELETE FROM asignaciones WHERE Id = '$id'";
-if (mysqli_query($conexion, $query)) {
-  echo json_encode(['ok' => true, 'mensaje' => '✅ Asignación eliminada']);
-  exit;
-} else {
-  echo json_encode(['ok' => false, 'error' => mysqli_error($conexion)]);
-  exit;
+    if (!$data || !isset($data['id'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'ID de asignación no proporcionado']);
+        exit;
+    }
+
+    $stmt = $pdo->prepare("DELETE FROM asignaciones WHERE Id = :id");
+    $stmt->bindParam(':id', $data['id'], PDO::PARAM_INT);
+    $stmt->execute();
+
+    echo json_encode(['ok' => true, 'mensaje' => 'Asignación eliminada correctamente']);
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Error al eliminar asignación: ' . $e->getMessage()]);
+    exit;
 }
+?>

@@ -1,6 +1,36 @@
 * {
    font-family: 'Segoe UI', sans-serif; 
 }
+#contenedor-admin {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding-left: 24px; /* Alineado con leyenda */
+}
+
+
+
+#contenedor-logout {
+  margin-bottom: 15px;
+  padding-right: 24px; /* Alineado a la derecha */
+}
+#contenedor-botones {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+    }
+#botones-izquierda {
+      display: flex;
+      gap: 10px;
+    }
+#contenedor-botones .tab-btn {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+#contenedor-logout {
+      display: none; /* Inicialmente oculto, se mostrará según autenticación */
+    }
 
 body {
   margin: 0;
@@ -28,3 +58,7 @@ h2 {
 .swal2-container {
   z-index: 10001 !important; /* 🔝 superior al modal */
 }
+
+
+
+    

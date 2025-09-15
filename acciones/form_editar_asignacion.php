@@ -1,42 +1,44 @@
 <?php
 include '../config/conexion.php';
 
+session_start();
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    die('<div class="modal-contenido"><p class="mensaje-error">Acceso denegado</p></div>');
+}
+
 $id = $_GET['id'] ?? '';
 $aula_id = $_GET['aula_id'] ?? '';
 $turno = $_GET['turno'] ?? '';
 
-// 🧪 Trazas para auditoría
 error_log("🧪 ID recibido: " . $id);
 error_log("🧪 Aula ID: " . $aula_id);
 error_log("🧪 Turno: " . $turno);
 
-// 🚫 Validación de ID
 if (!is_numeric($id) || intval($id) <= 0) {
-  error_log("❌ ID inválido: " . $id);
-  echo '<div class="modal-contenido"><p class="mensaje-error">ID inválido</p></div>';
-  exit;
+    error_log("❌ ID inválido: " . $id);
+    echo '<div class="modal-contenido"><p class="mensaje-error">ID inválido</p></div>';
+    exit;
 }
 
-// 🔍 Buscar asignación
-$query = "SELECT * FROM asignaciones WHERE Id = '$id'";
-$result = mysqli_query($conexion, $query);
-$asignacion = mysqli_fetch_assoc($result);
+$stmt = $pdo->prepare("SELECT * FROM asignaciones WHERE Id = :id");
+$stmt->execute(['id' => $id]);
+$asignacion = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$asignacion) {
-  error_log("❌ Asignación no encontrada para ID: " . $id);
-  echo '<div class="modal-contenido"><p class="mensaje-error">Asignación no encontrada</p></div>';
-  exit;
+    error_log("❌ Asignación no encontrada para ID: " . $id);
+    echo '<div class="modal-contenido"><p class="mensaje-error">Asignación no encontrada</p></div>';
+    exit;
 }
 
 function options($tabla, $id_col, $name_col, $selected = '') {
-  global $conexion;
-  $result = mysqli_query($conexion, "SELECT $id_col, $name_col FROM $tabla ORDER BY $name_col");
-  $opts = '';
-  while ($row = mysqli_fetch_assoc($result)) {
-    $selectedAttr = ($selected == $row[$id_col]) ? 'selected' : '';
-    $opts .= "<option value='{$row[$id_col]}' $selectedAttr>{$row[$name_col]}</option>";
-  }
-  return $opts;
+    global $pdo;
+    $stmt = $pdo->query("SELECT $id_col, $name_col FROM $tabla ORDER BY $name_col");
+    $opts = '';
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $selectedAttr = ($selected == $row[$id_col]) ? 'selected' : '';
+        $opts .= "<option value='{$row[$id_col]}' $selectedAttr>{$row[$name_col]}</option>";
+    }
+    return $opts;
 }
 ?>
 
@@ -49,13 +51,12 @@ function options($tabla, $id_col, $name_col, $selected = '') {
 
   <div class="campo-formulario">
     <label for="fecha">Fecha exacta:</label>
-    <input type="date" name="fecha" id="fecha" value="<?= $asignacion['fecha'] ?>" required>
+    <input type="date" name="fecha" id="fecha" value="<?= htmlspecialchars($asignacion['fecha']) ?>" required>
   </div>
 
   <div class="campo-formulario">
     <label for="entidad_id">Entidad:</label>
     <select name="entidad_id" id="entidad_id" required>
-      <option value="">Seleccionar</option>
       <?= options('entidades', 'entidad_id', 'nombre', $asignacion['entidad_id']) ?>
     </select>
   </div>
@@ -72,8 +73,8 @@ function options($tabla, $id_col, $name_col, $selected = '') {
       <?php
       $opciones = ['1', '1A', '1B', '2', '3', '4', '5', '6'];
       foreach ($opciones as $op) {
-        $selected = $asignacion['anio'] == $op ? 'selected' : '';
-        echo "<option value=\"$op\" $selected>$op</option>";
+          $selected = $asignacion['anio'] == $op ? 'selected' : '';
+          echo "<option value=\"$op\" $selected>$op</option>";
       }
       ?>
     </select>

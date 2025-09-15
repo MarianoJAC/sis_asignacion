@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Grilla de Asignaciones</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grilla de Asignaciones Marechal</title>
 
   <!-- 🧼 Estilos institucionales -->
   <link rel="stylesheet" href="css/global.css">
@@ -16,16 +17,35 @@
   <link rel="stylesheet" href="css/comentarios.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- 🧠 Ícono institucional (opcional) -->
+  <!-- 🧠 Ícono institucional -->
   <link rel="icon" href="./iconos/calendario.ico" type="image/x-icon">
+
+  <!-- Estilos inline para alinear botones en una línea y posicionar logout a la derecha -->
+  <style>
+    #contenedor-botones {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: -10px 20px;
+    }
+    #botones-izquierda {
+      display: flex;
+      gap: 10px;
+    }
+    #contenedor-botones .tab-btn {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+    #contenedor-logout {
+      display: none; /* Inicialmente oculto, se mostrará según autenticación */
+    }
+  </style>
 </head>
 <body>
-  <h2>Grilla de Asignaciones Marechal</h2>
-
   <!-- 🟢 Leyenda de entidades -->
-  <div id="bloque-entidades">
+  <div id="bloque-entidades"><strong>Colores por entidad:</strong>
     <div id="leyenda-colores">
-      <strong>Colores por entidad:</strong>
+      
       <div class="leyenda-row" id="leyenda-dinamica"></div>
     </div>
 
@@ -35,77 +55,164 @@
     </div>
   </div>
 
-  <!-- 🟢 Tabs de turno -->
-  <div id="turno-tabs">
-    <button class="tab-btn" data-turno="Matutino">Matutino</button>
-    <button class="tab-btn" data-turno="Vespertino">Vespertino</button>
-    <button class="tab-btn" data-turno="Nocturno">Nocturno</button>
-    <a href="views/pisos.php">
-      <button class="tab-btn" id="almapa">Al Mapa</button>
-    </a>
-    <button class="tab-btn" id="btn-ver-todas">Todas las Aulas</button>
+  <!-- 🟢 Contenedor de botones (todos en una línea, logout a la derecha) -->
+  <div id="contenedor-botones">
+    <div id="botones-izquierda">
+      <!-- Tabs de turno -->
+      <button class="tab-btn active" data-turno="Matutino">Matutino</button>
+      <button class="tab-btn" data-turno="Vespertino">Vespertino</button>
+      <button class="tab-btn" data-turno="Nocturno">Nocturno</button>
+      <!-- Botones visibles para todos los usuarios -->
+      <button class="tab-btn" id="btn-al-mapa">Al Mapa</button>
+      <button class="tab-btn" id="btn-todas-aulas">Todas las Aulas</button>
+      <!-- Botón admin (visible solo para admins) -->
+      <button class="tab-btn" id="btn-admin" style="display: none;">Panel Admin</button>
+    </div>
+    <!-- Botón logout (a la derecha, visible para usuarios logueados) -->
+    <div id="contenedor-logout">
+      <button class="tab-btn" id="btn-logout">Cerrar Sesión</button>
+    </div>
   </div>
 
- <!-- 🗓️ Filtro de fecha en desplegable -->
-<div id="bloque-filtro-fecha" class="bloque-desplegable">
-  <button id="toggle-fecha" class="btn-desplegable">📅 Filtrar por fecha</button>
-  <div id="contenedor-fecha" class="contenedor-oculto">
-    <input type="date" id="selector-fecha" class="selector-fecha" />
-    <button id="btn-reset-fecha" class="btn-reset-fecha">🧹 Limpiar filtro</button>
+  <!-- 🗓️ Filtro de fecha en desplegable -->
+  <div id="bloque-filtro-fecha" class="bloque-desplegable">
+    <button id="toggle-fecha" class="btn-desplegable">📅 Filtrar por fecha</button>
+    <div id="contenedor-fecha" class="contenedor-oculto">
+      <input type="date" id="selector-fecha" class="selector-fecha">
+      <button id="btn-reset-fecha" class="btn-reset-fecha">🧹 Limpiar filtro</button>
+    </div>
   </div>
-</div>
 
-<!-- 🔍 Buscador de aulas -->
-<div id="bloque-buscador" class="bloque-desplegable">
-  <label for="input-buscador"><strong>Buscar aula:</strong></label>
-  <input type="text" id="input-buscador" class="input-buscador" placeholder="Ej: Proyector, Aula 5..." />
-</div>
+  <!-- 🔍 Buscador de aulas -->
+  <div id="bloque-buscador" class="bloque-desplegable">
+    <label for="input-buscador"><strong>Buscar aula:</strong></label>
+    <input type="text" id="input-buscador" class="input-buscador" placeholder="Ej: Proyector, Aula 5...">
+  </div>
 
   <!-- 🟡 Comentario flotante -->
   <div id="comentario-global" class="comentario-flotante"></div>
 
+  <!-- Título con ID (para compatibilidad con grilla.render.js) -->
+  <h2 id="titulo-grilla">Grilla de Asignaciones Marechal</h2>
+
   <!-- 🟢 Contenedor principal -->
   <div id="grilla-container">Cargando grilla...</div>
+
+  <!-- Modal -->
   <div id="modal-formulario"></div>
 
- <!-- 🧠 Scripts modulares (orden blindado) -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- 🧠 Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="js/grilla.core.js"></script>
+  <script type="module">
+    import {
+      cargarAsignacionesPorAula,
+      cargarAsignacionesPorAulaTodosLosTurnos,
+      actualizarGrilla,
+      renderVistaGeneral
+    } from './js/grilla.render.js';
 
-<!-- Núcleo primero: define datosGlobales -->
-<script type="module" src="js/grilla.core.js"></script>
-<script type="module">
+    // Manejo de parámetros URL
+    const params = new URLSearchParams(window.location.search);
+    const aulaId = params.get('aula_id');
+    const origen = params.get('origen');
+    window.aulaSeleccionada = aulaId || null;
 
-import {
-  cargarAsignacionesPorAula,
-  cargarAsignacionesPorAulaTodosLosTurnos,
-  actualizarGrilla
-} from './js/grilla.render.js';
-
-
-
-const params = new URLSearchParams(window.location.search);
-const aulaId = params.get('aula_id');
-const origen = params.get('origen');
-window.aulaSeleccionada = aulaId || null;
-
-if (aulaId) {
-  console.log('🧭 Aula seleccionada:', aulaId, '| Origen:', origen);
-  if (origen === 'mapa') {
-    cargarAsignacionesPorAulaTodosLosTurnos(aulaId); // 🧩 render extendido
-  } else {
-    cargarAsignacionesPorAula(aulaId); // ✅ comportamiento normal
-  }
-}
-
-  // 🧠 Interceptar clicks de pestañas
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const turno = btn.dataset.turno;
-      if (turno) {
-        actualizarGrilla(turno); // ✅ mantiene el aula seleccionada
+    if (aulaId) {
+      console.log('🧭 Aula seleccionada:', aulaId, '| Origen:', origen);
+      if (origen === 'mapa') {
+        cargarAsignacionesPorAulaTodosLosTurnos(aulaId); // 🧩 render extendido
+      } else {
+        cargarAsignacionesPorAula(aulaId); // ✅ comportamiento normal
       }
+    }
+
+    // Interceptar clicks de pestañas de turno
+    document.querySelectorAll('.tab-btn[data-turno]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn[data-turno]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const turno = btn.dataset.turno;
+        if (turno) {
+          actualizarGrilla(turno); // ✅ mantiene el aula seleccionada
+        }
+      });
     });
-  });
-</script>
+
+    // Listener para 'Al Mapa' (visible para todos)
+    document.getElementById('btn-al-mapa').addEventListener('click', () => {
+      window.location.href = 'views/pisos.php';
+    });
+
+    // Listener para 'Todas las Aulas' (visible para todos)
+    document.getElementById('btn-todas-aulas').addEventListener('click', () => {
+      renderVistaGeneral();
+    });
+
+    // Listener para 'Cerrar Sesión'
+    document.getElementById('btn-logout').addEventListener('click', () => {
+      fetch('acciones/logout.php', { method: 'POST' })
+        .then(() => {
+          window.location.href = 'login.php';
+        })
+        .catch(error => {
+          console.error('Error en logout:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo cerrar la sesión. Por favor, intenta de nuevo.',
+          });
+        });
+    });
+
+    // Listener para 'Panel Admin' (visible solo para admins)
+    document.getElementById('btn-admin').addEventListener('click', () => {
+      console.log('🛠️ Accediendo al panel de administración');
+      // Ejemplo: redirigir a una página de admin (ajusta según tu necesidad)
+      // window.location.href = 'admin_panel.php';
+    });
+
+    // Mostrar u ocultar botones según el rol del usuario
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('acciones/check_role.php')
+        .then(res => {
+          if (!res.ok) {
+            throw new Error('Error en la respuesta de check_role.php: ' + res.status);
+          }
+          return res.json();
+        })
+        .then(data => {
+          console.log('🧑 Respuesta de check_role:', data); // Para depuración
+          const isLoggedIn = data.isLoggedIn;
+          const isAdmin = data.isAdmin;
+
+          // Mostrar logout si está logueado
+          const logoutContainer = document.getElementById('contenedor-logout');
+          if (isLoggedIn) {
+            logoutContainer.style.display = 'block';
+          } else {
+            logoutContainer.style.display = 'none';
+          }
+
+          // Mostrar botón admin solo si es administrador
+          const adminButton = document.getElementById('btn-admin');
+          if (isLoggedIn && isAdmin) {
+            adminButton.style.display = 'none';
+          } else {
+            adminButton.style.display = 'none';
+          }
+        })
+        .catch(error => {
+          console.error('Error al verificar rol:', error);
+          // Mantener logout oculto en caso de error
+          document.getElementById('contenedor-logout').style.display = 'none';
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo verificar la sesión. Por favor, recarga la página.',
+          });
+        });
+    });
+  </script>
 </body>
 </html>

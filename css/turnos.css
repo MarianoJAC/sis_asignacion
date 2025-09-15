@@ -1,4 +1,4 @@
-#turno-tabs {
+.tab-container {
   display: flex;
   gap: 50px;
   margin-bottom: 0px;

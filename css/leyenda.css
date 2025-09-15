@@ -1,9 +1,13 @@
-#leyenda-colores {
+#leyenda-dinamica {
   margin-bottom: 15px;
   font-size: 1rem;
   padding-left: 24px;
   font-size: 1rem;
  
+}
+
+#bloque-entidades{
+  margin: -10px 20px;
 }
 
 

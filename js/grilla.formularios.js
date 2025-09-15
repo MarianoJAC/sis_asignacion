@@ -3,11 +3,6 @@ import { cerrarModal, abrirModal } from './grilla.modales.js';
 import { actualizarGrilla, renderGrilla } from './grilla.render.js';
 import { renderLeyenda } from './grilla.eventos.js';
 import { esHorarioValido, haySolapamiento } from './grilla.validaciones.js';
-import {
-  htmlEliminarAsignacion,
-  htmlEliminarEntidad,
-  htmlNuevaEntidad
-} from './grilla.modales.js';
 
 export const handlersFormulario = {
   'form-agregar-asignacion': procesarAgregarAsignacion,
@@ -58,24 +53,24 @@ function procesarAgregarAsignacion(form, submitBtn) {
     turno: form.elements['turno']?.value
   };
 
-  if (!datos.entidad_id || !datos.materia || !datos.profesor || !datos.hora_inicio || !datos.hora_fin || !datos.aula_id || !datos.fecha || !datos.turno) {
-    mostrarMensaje('warning', 'Completá todos los campos obligatorios');
+  if (!window.isAdmin) {
+    mostrarMensaje('warning', 'Solo los administradores pueden agregar asignaciones');
     submitBtn.disabled = false;
-    submitBtn.dataset.enviando = 'false';
+    delete submitBtn.dataset.enviando;
     return;
   }
 
   if (!esHorarioValido(datos.hora_inicio, datos.hora_fin, datos.turno)) {
-    mostrarMensaje('warning', `El horario no coincide con el turno ${datos.turno}. Usá un rango permitido.`);
+    mostrarMensaje('error', 'El horario no es válido para el turno seleccionado');
     submitBtn.disabled = false;
-    submitBtn.dataset.enviando = 'false';
+    delete submitBtn.dataset.enviando;
     return;
   }
 
   if (haySolapamiento(datos.turno, datos.hora_inicio, datos.hora_fin, datos.aula_id, datos.fecha)) {
-    mostrarMensaje('error', 'Ya existe una asignación en ese horario para esa aula y día.');
+    mostrarMensaje('error', 'El horario se solapa con otra asignación');
     submitBtn.disabled = false;
-    submitBtn.dataset.enviando = 'false';
+    delete submitBtn.dataset.enviando;
     return;
   }
 
@@ -85,18 +80,276 @@ function procesarAgregarAsignacion(form, submitBtn) {
     body: JSON.stringify(datos)
   })
     .then(res => {
-      if (!res.ok) throw new Error(`Error ${res.status}`);
+      if (!res.ok) throw new Error(`Error en guardar_asignacion: ${res.status} ${res.statusText}`);
       return res.json();
     })
     .then(data => {
       if (data.ok) {
-        mostrarMensaje('success', data.mensaje || 'Asignación registrada con éxito');
+        mostrarMensaje('success', 'Asignación guardada');
         cerrarModal();
+        actualizarGrilla(datos.turno);
+        renderLeyenda();
+      } else {
+        mostrarMensaje('error', data.error || 'Error al guardar');
+      }
+      submitBtn.disabled = false;
+      delete submitBtn.dataset.enviando;
+    })
+    .catch(err => {
+      console.error('[FORMULARIOS] Error en agregar:', err);
+      mostrarMensaje('error', 'Error de red o servidor');
+      submitBtn.disabled = false;
+      delete submitBtn.dataset.enviando;
+    });
+}
 
-        const turnoActual = datos.turno || 'Matutino';
+function procesarSeleccionEdicion(form, submitBtn) {
+  if (!form || !submitBtn) return;
+  const id = form.querySelector('input[name="asignacion_id"]:checked')?.value;
+  if (!id) {
+    mostrarMensaje('warning', 'Seleccione una asignación');
+    submitBtn.disabled = false;
+    return;
+  }
 
+  const aula_id = form.elements['aula_id'].value;
+  const fecha = form.elements['fecha'].value;
+  const turno = form.elements['turno'].value;
+
+  fetch(`acciones/get_asignacion.php?id=${id}`)
+    .then(res => {
+      if (!res.ok) throw new Error(`Error en get_asignacion: ${res.status} ${res.statusText}`);
+      return res.json();
+    })
+    .then(data => {
+      if (!data.ok || !data.asignacion) {
+        mostrarMensaje('error', 'No se encontró la asignación');
+        submitBtn.disabled = false;
+        return;
+      }
+      fetch('acciones/get_entidades.php')
+        .then(res => {
+          if (!res.ok) throw new Error(`Error en get_entidades: ${res.status} ${res.statusText}`);
+          return res.json();
+        })
+        .then(entidadesData => {
+          abrirModal({
+            html: htmlEditarAsignacion(data.asignacion, aula_id, fecha, turno, entidadesData.entidades),
+            idEsperado: 'form-editar-asignacion',
+            focoSelector: 'input#materia'
+          });
+          submitBtn.disabled = false;
+        })
+        .catch(err => {
+          console.error('[FORMULARIOS] Error en get_entidades:', err);
+          mostrarMensaje('error', 'Error al cargar entidades');
+          submitBtn.disabled = false;
+        });
+    })
+    .catch(err => {
+      console.error('[FORMULARIOS] Error en edicion:', err);
+      mostrarMensaje('error', 'Error al cargar el formulario');
+      submitBtn.disabled = false;
+    });
+}
+
+function procesarEdicionAsignacion(form, submitBtn) {
+  if (!form || !submitBtn) return;
+  if (submitBtn.dataset.enviando === 'true') return;
+
+  submitBtn.dataset.enviando = 'true';
+  submitBtn.disabled = true;
+
+  const datos = {
+    id: form.elements['id'].value,
+    aula_id: form.elements['aula_id'].value,
+    fecha: form.elements['fecha'].value,
+    turno: form.elements['turno'].value,
+    carrera: form.elements['carrera'].value.trim(),
+    anio: form.elements['anio'].value,
+    materia: form.elements['materia'].value.trim(),
+    profesor: form.elements['profesor'].value.trim(),
+    entidad_id: form.elements['entidad_id'].value,
+    hora_inicio: form.elements['hora_inicio'].value,
+    hora_fin: form.elements['hora_fin'].value,
+    comentarios: form.elements['comentarios'].value.trim()
+  };
+
+  if (!window.isAdmin) {
+    mostrarMensaje('warning', 'Solo los administradores pueden editar asignaciones');
+    submitBtn.disabled = false;
+    delete submitBtn.dataset.enviando;
+    return;
+  }
+
+  if (!esHorarioValido(datos.hora_inicio, datos.hora_fin, datos.turno)) {
+    mostrarMensaje('error', 'El horario no es válido para el turno seleccionado');
+    submitBtn.disabled = false;
+    delete submitBtn.dataset.enviando;
+    return;
+  }
+
+  if (haySolapamiento(datos.turno, datos.hora_inicio, datos.hora_fin, datos.aula_id, datos.fecha, datos.id)) {
+    mostrarMensaje('error', 'El horario se solapa con otra asignación');
+    submitBtn.disabled = false;
+    delete submitBtn.dataset.enviando;
+    return;
+  }
+
+  fetch('acciones/editar_asignacion.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(datos)
+  })
+    .then(res => {
+      if (!res.ok) throw new Error(`Error en editar_asignacion: ${res.status} ${res.statusText}`);
+      return res.json();
+    })
+    .then(data => {
+      if (data.ok) {
+        mostrarMensaje('success', 'Asignación actualizada');
+        cerrarModal();
+        actualizarGrilla(datos.turno);
+        renderLeyenda();
+      } else {
+        mostrarMensaje('error', data.error || 'Error al actualizar');
+      }
+      submitBtn.disabled = false;
+      delete submitBtn.dataset.enviando;
+    })
+    .catch(err => {
+      console.error('[FORMULARIOS] Error en editar:', err);
+      mostrarMensaje('error', 'Error de red o servidor');
+      submitBtn.disabled = false;
+      delete submitBtn.dataset.enviando;
+    });
+}
+
+function procesarAgregarEntidad(form, submitBtn) {
+  if (!form || !submitBtn) return;
+  if (submitBtn.dataset.enviando === 'true') return;
+
+  submitBtn.dataset.enviando = 'true';
+  submitBtn.disabled = true;
+
+  const datos = {
+    nombre: form.elements['nombre'].value.trim(),
+    color: form.elements['color'].value
+  };
+
+  if (!window.isAdmin) {
+    mostrarMensaje('warning', 'Solo los administradores pueden agregar entidades');
+    submitBtn.disabled = false;
+    delete submitBtn.dataset.enviando;
+    return;
+  }
+
+  fetch('acciones/guardar_entidad.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(datos)
+  })
+    .then(res => {
+      if (!res.ok) throw new Error(`Error en guardar_entidad: ${res.status} ${res.statusText}`);
+      return res.json();
+    })
+    .then(data => {
+      if (data.ok) {
+        mostrarMensaje('success', 'Entidad guardada');
+        cerrarModal();
+        renderLeyenda();
+      } else {
+        mostrarMensaje('error', data.error || 'Error al guardar entidad');
+      }
+      submitBtn.disabled = false;
+      delete submitBtn.dataset.enviando;
+    })
+    .catch(err => {
+      console.error('[FORMULARIOS] Error en entidad:', err);
+      mostrarMensaje('error', 'Error de red o servidor');
+      submitBtn.disabled = false;
+      delete submitBtn.dataset.enviando;
+    });
+}
+
+function procesarEliminarEntidad(form, submitBtn) {
+  if (!form || !submitBtn) return;
+  const id = form.querySelector('input[name="entidad_id"]:checked')?.value;
+
+  if (!id) {
+    mostrarMensaje('warning', 'Seleccione una entidad');
+    submitBtn.disabled = false;
+    return;
+  }
+
+  if (!window.isAdmin) {
+    mostrarMensaje('warning', 'Solo los administradores pueden eliminar entidades');
+    submitBtn.disabled = false;
+    return;
+  }
+
+  fetch('acciones/eliminar_entidad.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ entidad_id: id })
+  })
+    .then(res => {
+      if (!res.ok) throw new Error(`Error en eliminar_entidad: ${res.status} ${res.statusText}`);
+      return res.json();
+    })
+    .then(data => {
+      if (data.ok) {
+        mostrarMensaje('success', 'Entidad eliminada');
+        cerrarModal();
+        renderLeyenda();
+      } else {
+        mostrarMensaje('error', data.error || 'Error al eliminar');
+      }
+      submitBtn.disabled = false;
+    })
+    .catch(err => {
+      console.error('[FORMULARIOS] Error en eliminar entidad:', err);
+      mostrarMensaje('error', 'Error de red o servidor');
+      submitBtn.disabled = false;
+    });
+}
+
+function procesarEliminarAsignacion(form, submitBtn) {
+  if (!form || !submitBtn) return;
+  const id = form.querySelector('input[name="asignacion_id"]:checked')?.value || form.elements['asignacion_id']?.value;
+
+  if (!id) {
+    mostrarMensaje('warning', 'Seleccione una asignación');
+    submitBtn.disabled = false;
+    return;
+  }
+
+  const turnoActual = form.elements['turno'].value;
+
+  if (!window.isAdmin) {
+    mostrarMensaje('warning', 'Solo los administradores pueden eliminar asignaciones');
+    submitBtn.disabled = false;
+    return;
+  }
+
+  fetch('acciones/eliminar_asignacion.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id })
+  })
+    .then(res => {
+      if (!res.ok) throw new Error(`Error en eliminar_asignacion: ${res.status} ${res.statusText}`);
+      return res.json();
+    })
+    .then(data => {
+      if (data.ok) {
+        mostrarMensaje('success', 'Asignación eliminada');
+        cerrarModal();
         fetch('acciones/get_grilla.php')
-          .then(res => res.json())
+          .then(res => {
+            if (!res.ok) throw new Error(`Error en get_grilla: ${res.status} ${res.statusText}`);
+            return res.json();
+          })
           .then(grilla => {
             if (!grilla || !Array.isArray(grilla.asignaciones)) {
               mostrarMensaje('error', 'La grilla recibida es inválida');
@@ -119,352 +372,198 @@ function procesarAgregarAsignacion(form, submitBtn) {
 
             renderLeyenda();
           })
-          .catch(() => {
+          .catch(err => {
+            console.error('[FORMULARIOS] Error en actualizar grilla:', err);
             mostrarMensaje('error', 'No se pudo actualizar la grilla');
           });
-
       } else {
-        mostrarMensaje('error', data.error || 'Error al guardar asignación');
-        submitBtn.disabled = false;
-        submitBtn.dataset.enviando = 'false';
+        mostrarMensaje('error', data.error || 'Error al eliminar asignación');
       }
+      submitBtn.disabled = false;
     })
     .catch(err => {
-      mostrarMensaje('error', `Error del servidor: ${err.message}`);
+      console.error('[FORMULARIOS] Error en eliminar asignacion:', err);
+      mostrarMensaje('error', 'Error de red o servidor');
       submitBtn.disabled = false;
-      submitBtn.dataset.enviando = 'false';
     });
 }
 
-function procesarSeleccionEdicion(form, submitBtn) {
-  const id = form.elements['asignacion_id']?.value;
-  const aula_id = form.elements['aula_id']?.value;
-  const fecha = form.elements['fecha']?.value;
-  const turno = form.elements['turno']?.value;
-
-  if (!id || !aula_id || !fecha || !turno) {
-    mostrarMensaje('warning', 'Faltan datos para editar');
-    if (submitBtn) submitBtn.disabled = false;
-    return;
-  }
-
-  fetch(`acciones/form_editar_asignacion.php?id=${id}&aula_id=${aula_id}&fecha=${fecha}&turno=${turno}`)
-    .then(res => res.text())
-    .then(html => {
-      abrirModal({
-        html,
-        idEsperado: 'form-editar-asignacion',
-        focoSelector: 'button[type="submit"]',
-        contexto: { id, aula_id, fecha, turno }
-      });
-
-      setTimeout(() => {
-        const formEdit = document.getElementById('form-editar-asignacion');
-        if (!formEdit) return;
-
-        const formClonado = formEdit.cloneNode(true);
-        formEdit.replaceWith(formClonado);
-
-        formClonado.addEventListener('submit', e => {
-          e.preventDefault();
-          const submitBtn = formClonado.querySelector('button[type="submit"]');
-          if (submitBtn) submitBtn.disabled = true;
-          procesarEdicionAsignacion(formClonado, submitBtn);
-        }, { once: true });
-
-        const btnCancelar = formClonado.querySelector('button[id^="btn-cancelar"]');
-        if (btnCancelar) {
-          btnCancelar.addEventListener('click', e => {
-            e.preventDefault();
-            e.stopPropagation();
-            cerrarModal();
-          }, { once: true });
-        }
-      }, 50);
-    })
-    .catch(() => {
-      mostrarMensaje('error', 'Error inesperado');
-      if (submitBtn) submitBtn.disabled = false;
-    });
-}
-
-
-function procesarEdicionAsignacion(form, submitBtn) {
-  const datos = {
-    id: form.elements['id']?.value,
-    aula_id: form.elements['aula_id']?.value,
-    fecha: form.elements['fecha']?.value,
-    turno: form.elements['turno']?.value,
-    entidad_id: form.elements['entidad_id']?.value,
-    carrera: form.elements['carrera']?.value?.trim() || '',
-    anio: form.elements['anio']?.value,
-    materia: form.elements['materia']?.value?.trim() || '',
-    profesor: form.elements['profesor']?.value?.trim() || '',
-    hora_inicio: form.elements['hora_inicio']?.value,
-    hora_fin: form.elements['hora_fin']?.value,
-    comentarios: form.elements['comentarios']?.value?.trim() || ''
-  };
-
-  if (!datos.id || !datos.aula_id || !datos.fecha || !datos.turno || !datos.entidad_id || !datos.materia || !datos.profesor || !datos.hora_inicio || !datos.hora_fin) {
-    mostrarMensaje('warning', 'Completá todos los campos obligatorios');
-    if (submitBtn) submitBtn.disabled = false;
-    return;
-  }
-
-  if (!esHorarioValido(datos.hora_inicio, datos.hora_fin, datos.turno)) {
-    mostrarMensaje('warning', `El horario no coincide con el turno ${datos.turno}. Usá un rango permitido.`);
-    if (submitBtn) submitBtn.disabled = false;
-    return;
-  }
-
-  if (haySolapamiento(datos.turno, datos.hora_inicio, datos.hora_fin, datos.aula_id, datos.fecha, datos.id)) {
-    mostrarMensaje('error', 'Ya existe una asignación en ese horario para esa aula y día.');
-    if (submitBtn) submitBtn.disabled = false;
-    return;
-  }
-
-  fetch('acciones/editar_asignacion.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(datos)
-  })
-    .then(res => res.text())
-    .then(texto => {
-      try {
-        const data = JSON.parse(texto.trim());
-
-        if (data.ok) {
-          mostrarMensaje('success', data.mensaje || 'Asignación actualizada');
-          cerrarModal();
-
-          const turnoActual = datos.turno || 'Matutino';
-
-          fetch('acciones/get_grilla.php')
-            .then(res => res.json())
-            .then(grilla => {
-              if (!grilla || !Array.isArray(grilla.asignaciones)) {
-                mostrarMensaje('error', 'La grilla recibida es inválida');
-                return;
-              }
-
-              window.datosGlobales = grilla;
-
-              const targetId = `grilla-${turnoActual.toLowerCase()}`;
-              const destino = document.getElementById(targetId);
-
-              if (window.modoExtendido && destino) {
-                renderGrilla(turnoActual, grilla, window.aulaSeleccionada, targetId);
-              } else if (!window.modoExtendido) {
-                window.forceRender = true;
-                actualizarGrilla(turnoActual);
-              } else {
-                mostrarMensaje('error', 'No se encontró el contenedor de grilla');
-              }
-
-              renderLeyenda();
-            })
-            .catch(() => {
-              mostrarMensaje('error', 'No se pudo actualizar la grilla');
-            });
-
-        } else {
-          mostrarMensaje('error', data.error || 'Error al actualizar asignación');
-          if (submitBtn) submitBtn.disabled = false;
-        }
-      } catch {
-        mostrarMensaje('error', 'Respuesta inválida del servidor');
-        if (submitBtn) submitBtn.disabled = false;
-      }
-    })
-    .catch(() => {
-      mostrarMensaje('error', 'Error inesperado');
-      if (submitBtn) submitBtn.disabled = false;
-    });
-}
-
-
-function procesarAgregarEntidad(form, submitBtn) {
-  if (form.dataset.agregando === 'true') return;
-  form.dataset.agregando = 'true';
-
-  const nombre = form.elements['nombre']?.value?.trim();
-  const color = form.elements['color']?.value?.trim();
-
-  if (!nombre || !color) {
-    mostrarMensaje('info', 'Completá todos los campos');
-    form.dataset.agregando = 'false';
-    if (submitBtn) submitBtn.disabled = false;
-    return;
-  }
-
-  const payload = { nombre, color };
-
-  fetch('acciones/agregar_entidad.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.ok) {
-        mostrarMensaje('success', 'Entidad agregada correctamente');
-        cerrarModal();
-
-        const turnoActual = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
-        fetch('acciones/get_grilla.php')
-          .then(res => res.json())
-          .then(grilla => {
-            window.datosGlobales = grilla;
-            window.forceRender = true;
-            actualizarGrilla(turnoActual);
-            renderLeyenda();
-          })
-          .catch(() => {
-            mostrarMensaje('error', 'No se pudo actualizar la grilla');
-          });
-
-      } else {
-        mostrarMensaje('error', data.error || 'Error al agregar entidad');
-        form.dataset.agregando = 'false';
-        if (submitBtn) submitBtn.disabled = false;
-      }
-    })
-    .catch(() => {
-      mostrarMensaje('error', 'Error inesperado');
-      form.dataset.agregando = 'false';
-      if (submitBtn) submitBtn.disabled = false;
-    });
-}
-
-function procesarEliminarEntidad(form, submitBtn) {
-  if (form.dataset.eliminando === 'true') return;
-  form.dataset.eliminando = 'true';
-
-  const id = form.elements['entidad_id']?.value;
-
-  if (!id) {
-    mostrarMensaje('info', 'Seleccioná una entidad para eliminar');
-    form.dataset.eliminando = 'false';
-    if (submitBtn) submitBtn.disabled = false;
-    return;
-  }
-
-  fetch('acciones/eliminar_entidad.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ entidad_id: parseInt(id) })
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.ok) {
-        mostrarMensaje('success', 'Entidad eliminada correctamente');
-        cerrarModal();
-
-        const turnoActual = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
-        fetch('acciones/get_grilla.php')
-          .then(res => res.json())
-          .then(grilla => {
-            window.datosGlobales = grilla;
-            window.forceRender = true;
-            actualizarGrilla(turnoActual);
-            renderLeyenda();
-          })
-          .catch(() => {
-            mostrarMensaje('error', 'No se pudo actualizar la grilla');
-          });
-
-      } else {
-        mostrarMensaje('error', data.error || 'Error al eliminar entidad');
-        form.dataset.eliminando = 'false';
-        if (submitBtn) submitBtn.disabled = false;
-      }
-    })
-    .catch(() => {
-      mostrarMensaje('error', 'Error inesperado');
-      form.dataset.eliminando = 'false';
-      if (submitBtn) submitBtn.disabled = false;
-    });
-}
-
-function procesarEliminarAsignacion(form, submitBtn) {
-  const id = form.elements['asignacion_id']?.value;
-
-  if (!id) {
-    mostrarMensaje('info', 'Seleccioná una asignación para eliminar');
-    if (submitBtn) submitBtn.disabled = false;
-    return;
-  }
-
-  fetch('acciones/eliminar_asignacion.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id })
-  })
-    .then(res => res.text())
-    .then(texto => {
-      try {
-        const data = JSON.parse(texto.trim());
-
-        if (data.ok) {
-          mostrarMensaje('success', data.mensaje || 'Asignación eliminada correctamente');
-          cerrarModal();
-
-          const turnoActual = form.elements['turno']?.value || 'Matutino';
-
-          fetch('acciones/get_grilla.php')
-            .then(res => res.json())
-            .then(grilla => {
-              if (!grilla || !Array.isArray(grilla.asignaciones)) {
-                mostrarMensaje('error', 'La grilla recibida es inválida');
-                return;
-              }
-
-              window.datosGlobales = grilla;
-
-              const targetId = `grilla-${turnoActual.toLowerCase()}`;
-              const destino = document.getElementById(targetId);
-
-              if (window.modoExtendido && destino) {
-                renderGrilla(turnoActual, grilla, window.aulaSeleccionada, targetId);
-              } else if (!window.modoExtendido) {
-                window.forceRender = true;
-                actualizarGrilla(turnoActual);
-              } else {
-                mostrarMensaje('error', 'No se encontró el contenedor de grilla');
-              }
-
-              renderLeyenda();
-            })
-            .catch(() => {
-              mostrarMensaje('error', 'No se pudo actualizar la grilla');
-            });
-
-        } else {
-          mostrarMensaje('error', data.error || 'Error al eliminar asignación');
-          if (submitBtn) submitBtn.disabled = false;
-        }
-      } catch {
-        mostrarMensaje('error', 'Respuesta inválida del servidor');
-        if (submitBtn) submitBtn.disabled = false;
-      }
-    })
-    .catch(() => {
-      mostrarMensaje('error', 'Error inesperado');
-      if (submitBtn) submitBtn.disabled = false;
-    });
-}
-function interceptarFormulario(id, handler) {
-  const form = document.getElementById(id);
-  if (!form) return;
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const submitBtn = form.querySelector('button[type="submit"]');
-    if (submitBtn) submitBtn.disabled = true;
-    handler(form, submitBtn);
+function htmlAgregarAsignacion(aula, fecha, turno, entidades = []) {
+  let entidadesOptions = '<option value="">Seleccione una entidad</option>';
+  entidades.forEach(ent => {
+    entidadesOptions += `<option value="${ent.id}">${ent.nombre}</option>`;
   });
+
+  return `
+    <div class="modal-contenido">
+      <h3>Agregar Asignación</h3>
+      <form id="form-agregar-asignacion" class="modal-formulario">
+        <input type="hidden" name="aula_id" value="${aula}">
+        <input type="hidden" name="fecha" value="${fecha}">
+        <input type="hidden" name="turno" value="${turno}">
+        <label>
+          Entidad:
+          <select name="entidad_id" id="entidad_id" required>
+            ${entidadesOptions}
+          </select>
+        </label>
+        <label>
+          Carrera:
+          <input type="text" name="carrera" required>
+        </label>
+        <label>
+          Año:
+          <input type="number" name="anio" min="1" max="5" required>
+        </label>
+        <label>
+          Materia:
+          <input type="text" name="materia" required>
+        </label>
+        <label>
+          Profesor:
+          <input type="text" name="profesor" required>
+        </label>
+        <label>
+          Hora Inicio:
+          <input type="time" name="hora_inicio" required>
+        </label>
+        <label>
+          Hora Fin:
+          <input type="time" name="hora_fin" required>
+        </label>
+        <label>
+          Comentarios:
+          <textarea name="comentarios"></textarea>
+        </label>
+        <div class="form-buttons">
+          <button type="button" id="btn-cancelar">Cancelar</button>
+          <button type="submit">Guardar</button>
+        </div>
+      </form>
+    </div>
+  `;
 }
 
+function htmlEditarAsignacion(asignacion, aula, fecha, turno, entidades = []) {
+  let entidadesOptions = entidades.map(ent => 
+    `<option value="${ent.id}" ${ent.id === asignacion.entidad_id ? 'selected' : ''}>${ent.nombre}</option>`
+  ).join('');
+
+  return `
+    <div class="modal-contenido">
+      <h3>Editar Asignación</h3>
+      <form id="form-editar-asignacion" class="modal-formulario">
+        <input type="hidden" name="id" value="${asignacion.Id}">
+        <input type="hidden" name="aula_id" value="${aula}">
+        <input type="hidden" name="fecha" value="${fecha}">
+        <input type="hidden" name="turno" value="${turno}">
+        <label>
+          Entidad:
+          <select name="entidad_id" required>
+            ${entidadesOptions}
+          </select>
+        </label>
+        <label>
+          Carrera:
+          <input type="text" name="carrera" value="${asignacion.carrera}" required>
+        </label>
+        <label>
+          Año:
+          <input type="number" name="anio" value="${asignacion.anio}" min="1" max="5" required>
+        </label>
+        <label>
+          Materia:
+          <input type="text" name="materia" id="materia" value="${asignacion.materia}" required>
+        </label>
+        <label>
+          Profesor:
+          <input type="text" name="profesor" value="${asignacion.profesor}" required>
+        </label>
+        <label>
+          Hora Inicio:
+          <input type="time" name="hora_inicio" value="${asignacion.hora_inicio}" required>
+        </label>
+        <label>
+          Hora Fin:
+          <input type="time" name="hora_fin" value="${asignacion.hora_fin}" required>
+        </label>
+        <label>
+          Comentarios:
+          <textarea name="comentarios">${asignacion.comentarios || ''}</textarea>
+        </label>
+        <div class="form-buttons">
+          <button type="button" id="btn-cancelar">Cancelar</button>
+          <button type="submit">Actualizar</button>
+        </div>
+      </form>
+    </div>
+  `;
+}
+
+function htmlNuevaEntidad() {
+  return `
+    <div class="modal-contenido">
+      <h3>Agregar Entidad</h3>
+      <form id="form-agregar-entidad" class="modal-formulario">
+        <label>
+          Nombre:
+          <input type="text" name="nombre" id="nombre" required>
+        </label>
+        <label>
+          Color:
+          <input type="color" name="color" required>
+        </label>
+        <div class="form-buttons">
+          <button type="button" id="btn-cancelar">Cancelar</button>
+          <button type="submit">Guardar</button>
+        </div>
+      </form>
+    </div>
+  `;
+}
+
+function htmlEliminarEntidad(entidades) {
+  let html = `
+    <div class="modal-contenido">
+      <h3>Eliminar Entidad</h3>
+      <form id="form-eliminar-entidad" class="modal-formulario">
+  `;
+  entidades.forEach(ent => {
+    html += `
+      <label class="opcion-eliminar">
+        <input type="radio" name="entidad_id" value="${ent.id}"> ${ent.nombre}
+      </label>
+    `;
+  });
+  html += `
+        <div class="form-buttons">
+          <button type="button" id="btn-cancelar">Cancelar</button>
+          <button type="submit">Eliminar</button>
+        </div>
+      </form>
+    </div>
+  `;
+  return html;
+}
+
+function htmlEliminarAsignacion(id, aula, fecha, turno, asignacion) {
+  return `
+    <div class="modal-contenido">
+      <h3>Eliminar Asignación</h3>
+      <form id="form-eliminar-asignacion" class="modal-formulario">
+        <input type="hidden" name="asignacion_id" value="${id}">
+        <input type="hidden" name="aula_id" value="${aula}">
+        <input type="hidden" name="fecha" value="${fecha}">
+        <input type="hidden" name="turno" value="${turno}">
+        <p>¿Estás seguro de eliminar la asignación de "${asignacion.materia}" (${asignacion.hora_inicio.slice(0,5)}-${asignacion.hora_fin.slice(0,5)}) en el aula ${aula}?</p>
+        <div class="form-buttons">
+          <button type="button" id="btn-cancelar">Cancelar</button>
+          <button type="submit">Eliminar</button>
+        </div>
+      </form>
+    </div>
+  `;
+}
 
 export {
   procesarAgregarAsignacion,
@@ -473,7 +572,8 @@ export {
   procesarAgregarEntidad,
   procesarEliminarEntidad,
   procesarEliminarAsignacion,
-  interceptarFormulario,
+  htmlAgregarAsignacion,
+  htmlEditarAsignacion,
   htmlNuevaEntidad,
   htmlEliminarEntidad,
   htmlEliminarAsignacion

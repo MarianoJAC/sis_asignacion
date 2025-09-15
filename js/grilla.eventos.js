@@ -13,22 +13,22 @@ document.addEventListener('click', e => {
 
   // 🟢 Botón "Todas las Aulas"
   const btnTodas = e.target.closest('#btn-ver-todas');
-if (btnTodas) {
-  e.preventDefault();
-  console.log('[EVENTOS] Click en "Ver todas las aulas"');
+  if (btnTodas) {
+    e.preventDefault();
+    console.log('[EVENTOS] Click en "Ver todas las aulas"');
 
-  window.modoExtendido = false;
-  window.aulaSeleccionada = null;
-  window.yaRenderizado = false;
+    window.modoExtendido = false;
+    window.aulaSeleccionada = null;
+    window.yaRenderizado = false;
 
-  import('./grilla.render.js').then(mod => {
-    mod.actualizarVisibilidadFiltros();
-    mod.renderVistaGeneral();
-    renderLeyenda();
-  });
+    import('./grilla.render.js').then(mod => {
+      mod.actualizarVisibilidadFiltros();
+      mod.renderVistaGeneral();
+      renderLeyenda();
+    });
 
-  return;
-}
+    return;
+  }
 
   // 🟡 Tabs de turno
   if (e.target.classList.contains('tab-btn')) {
@@ -40,6 +40,10 @@ if (btnTodas) {
   // Botón de agregar entidad
   if (id === 'btn-agregar-entidad') {
     e.stopPropagation();
+    if (!window.isAdmin) {
+      mostrarMensaje('warning', 'Solo los administradores pueden agregar entidades');
+      return;
+    }
     abrirModal({
       html: htmlNuevaEntidad(),
       idEsperado: 'form-agregar-entidad',
@@ -52,6 +56,10 @@ if (btnTodas) {
   // Botón de eliminar entidad
   if (id === 'btn-eliminar-entidad') {
     e.stopPropagation();
+    if (!window.isAdmin) {
+      mostrarMensaje('warning', 'Solo los administradores pueden eliminar entidades');
+      return;
+    }
     fetch('acciones/get_entidades.php')
       .then(res => res.json())
       .then(data => {
@@ -68,117 +76,66 @@ if (btnTodas) {
           focoSelector: 'button[type="submit"]',
           contexto: { entidades }
         });
-      })
-      .catch(() => {
-        mostrarMensaje('error', 'No se pudo cargar las entidades');
       });
-    return;
-  }
-
-  // Botón cancelar (delegado)
-  if (
-    id === 'btn-cancelar-agregar' ||
-    id === 'btn-cancelar-eliminar' ||
-    id === 'btn-cancelar-creacion' ||
-    id === 'btn-cancelar-edicion' ||
-    id === 'btn-cancelar-eliminacion'
-  ) {
-    cerrarModal();
-    return;
-  }
-
-  // Botón de agregar asignación
-  if (e.target.classList.contains('btn-agregar') && id !== 'btn-agregar-entidad') {
-    const aula_id = e.target.dataset.aula;
-    const fecha = e.target.dataset.fecha;
-    const contenedor = e.target.closest('.grilla-turno-wrapper');
-const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '') || 'Matutino';
-
-    fetch(`acciones/form_crear_asignacion.php?aula_id=${aula_id}&fecha=${fecha}&turno=${turno}`)
-      .then(res => res.text())
-      .then(html => {
-        abrirModal({
-          html,
-          idEsperado: 'form-agregar-asignacion',
-          focoSelector: 'button[type="submit"]',
-          contexto: { aula_id, fecha, turno }
-        });
-      })
-      .catch(() => {
-        mostrarMensaje('error', 'No se pudo cargar el formulario');
-      });
-
-    return;
-  }
-
-  // Botón de editar asignación
-  if (e.target.classList.contains('btn-editar-asignacion')) {
-    const fecha = e.target.dataset.fecha;
-    const aula = e.target.dataset.aula;
-    const contenedor = e.target.closest('.grilla-turno-wrapper');
-const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '') || 'Matutino';
-
-    if (!window.datosGlobales || !Array.isArray(window.datosGlobales.asignaciones)) {
-      mostrarMensaje('error', 'Los datos aún no están cargados');
-      return;
-    }
-
-    const fechaFiltro = normalizarFecha(fecha);
-    const asignaciones = window.datosGlobales.asignaciones.filter(a =>
-      normalizarFecha(a.fecha) === fechaFiltro &&
-      a.aula_id == aula &&
-      a.turno === turno
-    );
-
-    if (asignaciones.length === 0) {
-      mostrarMensaje('info', 'No hay asignaciones para editar');
-      return;
-    }
-
-    abrirModal({
-      html: htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno),
-      idEsperado: 'form-seleccionar-edicion',
-      focoSelector: 'button[type="submit"]',
-      contexto: { aula, fecha, turno }
-    });
     return;
   }
 
   // Botón de eliminar asignación
-  if (e.target.classList.contains('btn-eliminar-asignacion') && id !== 'btn-eliminar-entidad') {
+  if (id === 'btn-eliminar-asignacion') {
+    e.stopPropagation();
+    if (!window.isAdmin) {
+      mostrarMensaje('warning', 'Solo los administradores pueden eliminar asignaciones');
+      return;
+    }
+    const aula = e.target.dataset.aulaId;
     const fecha = e.target.dataset.fecha;
-    const aula = e.target.dataset.aula;
-    const contenedor = e.target.closest('.grilla-turno-wrapper');
-const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '') || 'Matutino';
+    const turno = e.target.dataset.turno;
+    fetch(`acciones/get_asignaciones.php?aula_id=${aula}&fecha=${fecha}&turno=${turno}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!data.ok || !data.asignaciones || data.asignaciones.length === 0) {
+          mostrarMensaje('info', 'No hay asignaciones para eliminar');
+          return;
+        }
+        abrirModal({
+          html: htmlEliminarAsignacion(data.asignaciones, aula, fecha, turno),
+          idEsperado: 'form-eliminar-asignacion',
+          focoSelector: 'button[type="submit"]',
+          contexto: { asignaciones: data.asignaciones }
+        });
+      });
+    return;
+  }
 
-    if (!window.datosGlobales || !Array.isArray(window.datosGlobales.asignaciones)) {
-      mostrarMensaje('error', 'Los datos aún no están cargados');
+  // Botón de editar asignación
+  if (id === 'btn-editar-asignacion') {
+    e.stopPropagation();
+    if (!window.isAdmin) {
+      mostrarMensaje('warning', 'Solo los administradores pueden editar asignaciones');
       return;
     }
-
-    const fechaFiltro = normalizarFecha(fecha);
-    const asignaciones = window.datosGlobales.asignaciones.filter(a =>
-      normalizarFecha(a.fecha) === fechaFiltro &&
-      a.aula_id == aula &&
-      a.turno === turno
-    );
-
-    if (asignaciones.length === 0) {
-      mostrarMensaje('info', 'No hay asignaciones para eliminar');
-      return;
-    }
-
-    abrirModal({
-      html: htmlEliminarAsignacion(asignaciones, aula, fecha, turno),
-      idEsperado: 'form-eliminar-asignacion',
-      focoSelector: 'button[type="submit"]',
-      contexto: { aula, fecha, turno }
-    });
+    const aula = e.target.dataset.aulaId;
+    const fecha = e.target.dataset.fecha;
+    const turno = e.target.dataset.turno;
+    fetch(`acciones/get_asignaciones.php?aula_id=${aula}&fecha=${fecha}&turno=${turno}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!data.ok || !data.asignaciones || data.asignaciones.length === 0) {
+          mostrarMensaje('info', 'No hay asignaciones para editar');
+          return;
+        }
+        abrirModal({
+          html: htmlSeleccionarAsignacion(data.asignaciones, aula, fecha, turno),
+          idEsperado: 'form-seleccionar-edicion',
+          focoSelector: 'input[name="asignacion_id"]',
+          contexto: { asignaciones: data.asignaciones }
+        });
+      });
     return;
   }
 });
 
-export function renderLeyenda() {
+function renderLeyenda() {
   fetch('acciones/get_entidades.php')
     .then(res => res.json())
     .then(data => {
@@ -232,13 +189,11 @@ function htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno) {
 export function resetearVistaGeneral() {
   console.log('[EVENTOS] Ejecutando reset de vista general');
 
-  // 🔁 Limpia modo extendido
   window.modoExtendido = false;
   window.aulaSeleccionada = null;
 
-  // 🧼 Limpia parámetros de la URL
   const baseURL = window.location.origin + window.location.pathname;
-
-  // 🔄 Fuerza redirección sin parámetros
   window.location.href = baseURL;
 }
+
+export { renderLeyenda };
