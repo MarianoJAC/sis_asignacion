@@ -1,6 +1,6 @@
 import { mostrarMensaje } from './grilla.alertas.js';
 import { cerrarModal, abrirModal } from './grilla.modales.js';
-import { actualizarGrilla } from './grilla.render.js';
+import { actualizarGrilla, renderGrilla } from './grilla.render.js';
 import { renderLeyenda } from './grilla.eventos.js';
 import { esHorarioValido, haySolapamiento } from './grilla.validaciones.js';
 import {
@@ -94,12 +94,29 @@ function procesarAgregarAsignacion(form, submitBtn) {
         cerrarModal();
 
         const turnoActual = datos.turno || 'Matutino';
+
         fetch('acciones/get_grilla.php')
           .then(res => res.json())
           .then(grilla => {
+            if (!grilla || !Array.isArray(grilla.asignaciones)) {
+              mostrarMensaje('error', 'La grilla recibida es inválida');
+              return;
+            }
+
             window.datosGlobales = grilla;
-            window.forceRender = true;
-            actualizarGrilla(turnoActual);
+
+            const targetId = `grilla-${turnoActual.toLowerCase()}`;
+            const destino = document.getElementById(targetId);
+
+            if (window.modoExtendido && destino) {
+              renderGrilla(turnoActual, grilla, window.aulaSeleccionada, targetId);
+            } else if (!window.modoExtendido) {
+              window.forceRender = true;
+              actualizarGrilla(turnoActual);
+            } else {
+              mostrarMensaje('error', 'No se encontró el contenedor de grilla');
+            }
+
             renderLeyenda();
           })
           .catch(() => {
@@ -219,14 +236,31 @@ function procesarEdicionAsignacion(form, submitBtn) {
         if (data.ok) {
           mostrarMensaje('success', data.mensaje || 'Asignación actualizada');
           cerrarModal();
-const turnoActual = datos.turno || 'Matutino';
+
+          const turnoActual = datos.turno || 'Matutino';
 
           fetch('acciones/get_grilla.php')
             .then(res => res.json())
             .then(grilla => {
+              if (!grilla || !Array.isArray(grilla.asignaciones)) {
+                mostrarMensaje('error', 'La grilla recibida es inválida');
+                return;
+              }
+
               window.datosGlobales = grilla;
-              window.forceRender = true;
-              actualizarGrilla(turnoActual);
+
+              const targetId = `grilla-${turnoActual.toLowerCase()}`;
+              const destino = document.getElementById(targetId);
+
+              if (window.modoExtendido && destino) {
+                renderGrilla(turnoActual, grilla, window.aulaSeleccionada, targetId);
+              } else if (!window.modoExtendido) {
+                window.forceRender = true;
+                actualizarGrilla(turnoActual);
+              } else {
+                mostrarMensaje('error', 'No se encontró el contenedor de grilla');
+              }
+
               renderLeyenda();
             })
             .catch(() => {
@@ -375,14 +409,30 @@ function procesarEliminarAsignacion(form, submitBtn) {
           mostrarMensaje('success', data.mensaje || 'Asignación eliminada correctamente');
           cerrarModal();
 
-          const turnoActual = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+          const turnoActual = form.elements['turno']?.value || 'Matutino';
 
           fetch('acciones/get_grilla.php')
             .then(res => res.json())
             .then(grilla => {
+              if (!grilla || !Array.isArray(grilla.asignaciones)) {
+                mostrarMensaje('error', 'La grilla recibida es inválida');
+                return;
+              }
+
               window.datosGlobales = grilla;
-              window.forceRender = true;
-              actualizarGrilla(turnoActual);
+
+              const targetId = `grilla-${turnoActual.toLowerCase()}`;
+              const destino = document.getElementById(targetId);
+
+              if (window.modoExtendido && destino) {
+                renderGrilla(turnoActual, grilla, window.aulaSeleccionada, targetId);
+              } else if (!window.modoExtendido) {
+                window.forceRender = true;
+                actualizarGrilla(turnoActual);
+              } else {
+                mostrarMensaje('error', 'No se encontró el contenedor de grilla');
+              }
+
               renderLeyenda();
             })
             .catch(() => {

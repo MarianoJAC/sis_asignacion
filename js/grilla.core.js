@@ -2,7 +2,8 @@ import {
   renderGrilla,
   cargarAsignacionesPorAula,
   cargarAsignacionesPorAulaTodosLosTurnos,
-  actualizarVisibilidadFiltros
+  actualizarVisibilidadFiltros,
+  actualizarGrilla
 } from './grilla.render.js';
 
 import {
@@ -53,6 +54,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   cargarVistaInstitucional();
+  // ✅ Activación dinámica de pestañas de turno
+document.querySelectorAll('.tab-btn[data-turno]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // 🔄 Reset de clase activa
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const turno = btn.dataset.turno;
+    window.forceRender = true; // 🔁 fuerza render aunque sea el mismo turno
+    actualizarGrilla(turno);
+  });
+});
 });
 
 // ✅ Función blindada para vista institucional
@@ -124,3 +137,4 @@ document.getElementById('btn-reset-fecha')?.addEventListener('click', () => {
   const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
   limpiarFiltrosYRestaurar(turno);
 });
+

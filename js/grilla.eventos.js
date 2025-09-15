@@ -91,7 +91,8 @@ if (btnTodas) {
   if (e.target.classList.contains('btn-agregar') && id !== 'btn-agregar-entidad') {
     const aula_id = e.target.dataset.aula;
     const fecha = e.target.dataset.fecha;
-    const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+    const contenedor = e.target.closest('.grilla-turno-wrapper');
+const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '') || 'Matutino';
 
     fetch(`acciones/form_crear_asignacion.php?aula_id=${aula_id}&fecha=${fecha}&turno=${turno}`)
       .then(res => res.text())
@@ -114,7 +115,8 @@ if (btnTodas) {
   if (e.target.classList.contains('btn-editar-asignacion')) {
     const fecha = e.target.dataset.fecha;
     const aula = e.target.dataset.aula;
-    const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+    const contenedor = e.target.closest('.grilla-turno-wrapper');
+const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '') || 'Matutino';
 
     if (!window.datosGlobales || !Array.isArray(window.datosGlobales.asignaciones)) {
       mostrarMensaje('error', 'Los datos aún no están cargados');
@@ -146,7 +148,8 @@ if (btnTodas) {
   if (e.target.classList.contains('btn-eliminar-asignacion') && id !== 'btn-eliminar-entidad') {
     const fecha = e.target.dataset.fecha;
     const aula = e.target.dataset.aula;
-    const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
+    const contenedor = e.target.closest('.grilla-turno-wrapper');
+const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '') || 'Matutino';
 
     if (!window.datosGlobales || !Array.isArray(window.datosGlobales.asignaciones)) {
       mostrarMensaje('error', 'Los datos aún no están cargados');

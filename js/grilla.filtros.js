@@ -90,11 +90,18 @@ export function filtrarGrillaPorFecha(turno, fecha) {
   const datos = window.datosGlobales;
   const aulaId = window.modoExtendido ? null : window.aulaSeleccionada;
 
+  const fechaFiltro = normalizarFecha(fecha);
+
   const asignacionesFiltradas = datos.asignaciones.filter(a => {
     const fechaAsignacion = normalizarFecha(a.fecha);
-    const fechaFiltro = normalizarFecha(fecha);
-    return fechaAsignacion === fechaFiltro && a.turno === turno;
+    const coincide = fechaAsignacion === fechaFiltro && a.turno === turno;
+
+    // 🧪 Log por asignación
+    console.log(`[FILTRO FECHA] Asignación: ${a.id} | Fecha: ${fechaAsignacion} | Turno: ${a.turno} | Coincide: ${coincide}`);
+    return coincide;
   });
+
+  console.log('[FILTRO FECHA] Total asignaciones filtradas:', asignacionesFiltradas.length);
 
   const grillaFiltrada = {
     ...datos,
@@ -105,13 +112,17 @@ export function filtrarGrillaPorFecha(turno, fecha) {
 }
 
 export function normalizarFecha(fecha) {
+  if (!fecha) return '';
   const partes = fecha.split(/[\/\-]/);
-  if (partes.length === 3) {
-    const [a, b, c] = partes;
-    if (a.length === 4) return `${a}-${b.padStart(2, '0')}-${c.padStart(2, '0')}`;
-    return `${c}-${b.padStart(2, '0')}-${a.padStart(2, '0')}`;
-  }
-  return fecha;
+  if (partes.length !== 3) return fecha;
+
+  const [a, b, c] = partes;
+
+  // Si ya está en formato ISO (aaaa-mm-dd), devolvemos directo
+  if (a.length === 4) return `${a}-${b.padStart(2, '0')}-${c.padStart(2, '0')}`;
+
+  // Si viene como dd/mm/aaaa o dd-mm-aaaa
+  return `${c}-${b.padStart(2, '0')}-${a.padStart(2, '0')}`;
 }
 
 export function limpiarFiltrosYRestaurar(turno = 'Matutino') {
