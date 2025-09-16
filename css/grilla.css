@@ -3,13 +3,13 @@
   max-height: 75vh;
   overflow: auto;
   position: relative;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  background-color: var(--background-color-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 2px 6px var(--shadow-color);
   scrollbar-width: thin;
   scrollbar-color: #bbb #f2f2f2;
-  margin-top: 12px;
+  margin-top: var(--spacing-sm);
 }
 
 /* 🌐 Scrollbar WebKit */
@@ -29,55 +29,56 @@
   border-collapse: collapse;
   width: 100%;
   table-layout: auto;
-  background-color: #fff;
+  background-color: var(--background-color-white);
 }
 
 /* 📌 Encabezado horizontal sticky */
 .grid-table thead {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: var(--z-index-sticky-header);
 }
 .grid-table thead th {
-  background-color: #2196f3;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--background-color-white);
   font-weight: 600;
   height: 50px;
   line-height: 50px;
-  padding: 0 10px;
+  padding: 0 var(--spacing-sm);
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 /* 📌 Primera columna sticky */
 .grid-table td:first-child {
-  background-color: #f8f9fa;
+  background-color: var(--background-color-light);
   font-weight: bold;
-  font-size: 1rem;
+  font-size: var(--font-size-large);
   text-align: center;
   vertical-align: middle;
-  border-right: 2px solid #2196f3;
+  border-right: 2px solid var(--primary-color);
   position: sticky;
   left: 0;
+  z-index: var(--z-index-sticky-column);
 }
 
 /* 🧾 Celdas generales */
 .grid-table td {
   position: relative;
   overflow: visible;
-  border: 1px solid #e0e0e0;
-  padding: 12px;
-  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-normal);
   text-align: left;
   vertical-align: top;
-  z-index: 1;
+  z-index: var(--z-index-cell);
 }
 
 /* 🧭 Filas con separación */
 .grid-table tr {
-  border-bottom: 3px solid #0d47a1;
+  border-bottom: 3px solid var(--secondary-color);
 }
 
 /* 🟨 Celdas de asignación */
@@ -101,38 +102,38 @@
   text-align: center;
   padding: 10px 6px;
   font-style: italic;
-  font-size: 0.8rem;
-  border-radius: 4px;
+  font-size: var(--font-size-small);
+  border-radius: var(--border-radius-sm);
 }
 
 .disponible-wrapper {
   text-align: center;
-  margin-bottom: 6px;
+  margin-bottom: var(--spacing-xxs);
   cursor: default;
   background-color: #fafafa;
   border: 1px dashed #ccc;
-  border-radius: 4px;
-  padding: 8px;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-xs);
   font-style: italic;
-  font-size: 0.95rem; /* 🔍 más grande */
+  font-size: var(--font-size-normal); /* 🔍 más grande */
   color: #555;
   position: relative;
   overflow: hidden;
 }
 
 .disponible-label {
-  color: green;
+  color: var(--secondary-color);
   font-weight: bold;
-  font-size: 0.85rem; /* ✅ más visible */
+  font-size: var(--font-size-small); /* ✅ más visible */
 }
 
 .disponible-detalle {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease;
-  font-size: 0.95rem; /* ✅ más legible */
-  margin-top: 6px;
-  color: #333;
+  font-size: var(--font-size-normal); /* ✅ más legible */
+  margin-top: var(--spacing-xxs);
+  color: var(--text-color-dark);
   line-height: 1.4;
 }
 
@@ -142,29 +143,29 @@
 
 
 .grilla-turno-wrapper {
-  margin-bottom: 32px;
-  padding: 12px;
-  border: 1px solid #ccc;
+  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-sm);
+  border: 1px solid var(--border-color);
   background-color: #f9f9f9;
 }
 
 
 .bloque-desplegable {
-  margin: 12px 0;
+  margin: var(--spacing-sm) 0;
 }
 
 .btn-desplegable {
   background-color: #f0f0f0;
   border: 1px solid #ccc;
   padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
   font-weight: bold;
 }
 
 .contenedor-oculto {
   display: none;
-  margin-top: 8px;
+  margin-top: var(--spacing-xs);
 }
 
 .contenedor-visible {
@@ -173,18 +174,53 @@
 
 .selector-fecha,
 .btn-reset-fecha {
-  margin-right: 8px;
+  margin-right: var(--spacing-xs);
   padding: 6px 10px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
 }
 
 .input-buscador {
   padding: 6px 10px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-left: 8px;
+  border-radius: var(--border-radius-sm);
+  margin-left: var(--spacing-xs);
   width: 220px;
+}
+
+.asignacion {
+  background-color: #e3f2fd;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+  box-shadow: 0 2px 4px var(--shadow-color);
+  transition: transform 0.2s ease;
+  color: var(--text-color-dark);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.asignacion:hover {
+  transform: translateY(-2px);
+}
+
+.asignacion-texto small {
+  margin-top: var(--spacing-xxs);
+}
+
+.asignacion-texto {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  word-break: break-word;
+  font-family: inherit;
+}
+
+.asignacion-texto strong,
+.asignacion-texto span,
+.asignacion-texto small {
+  display: block;
+  margin-bottom: var(--spacing-xxs);
 }

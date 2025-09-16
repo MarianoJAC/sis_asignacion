@@ -7,9 +7,24 @@ import {
 } from './grilla.formularios.js';
 import { actualizarGrilla, renderVistaGeneral } from './grilla.render.js';
 import { normalizarFecha } from './grilla.filtros.js';
+import { getState, setState } from './grilla.state.js';
 
 document.addEventListener('click', e => {
   const id = e.target.id;
+
+  // 🔒 Cierre automático del panel de filtros si se hace clic fuera
+const contenedorFiltros = document.getElementById('contenedor-filtros');
+const toggleFiltros = document.getElementById('toggle-filtros');
+
+if (
+  contenedorFiltros?.classList.contains('contenedor-visible') &&
+  !contenedorFiltros.contains(e.target) &&
+  !toggleFiltros.contains(e.target)
+) {
+  contenedorFiltros.classList.remove('contenedor-visible');
+  contenedorFiltros.classList.add('contenedor-oculto');
+  console.log('[EVENTOS] Filtros ocultados por clic externo');
+}
 
   // 🟢 Botón "Todas las Aulas"
   const btnTodas = e.target.closest('#btn-ver-todas');
@@ -17,9 +32,11 @@ if (btnTodas) {
   e.preventDefault();
   console.log('[EVENTOS] Click en "Ver todas las aulas"');
 
-  window.modoExtendido = false;
-  window.aulaSeleccionada = null;
-  window.yaRenderizado = false;
+  setState({
+    modoExtendido: false,
+    aulaSeleccionada: null,
+    yaRenderizado: false,
+  });
 
   import('./grilla.render.js').then(mod => {
     mod.actualizarVisibilidadFiltros();
@@ -52,7 +69,7 @@ if (btnTodas) {
   // Botón de eliminar entidad
   if (id === 'btn-eliminar-entidad') {
     e.stopPropagation();
-    fetch('acciones/get_entidades.php')
+    fetch('../acciones/get_entidades.php')
       .then(res => res.json())
       .then(data => {
         const entidades = data.entidades;
@@ -69,8 +86,8 @@ if (btnTodas) {
           contexto: { entidades }
         });
       })
-      .catch(() => {
-        mostrarMensaje('error', 'No se pudo cargar las entidades');
+      .catch((err) => {
+        mostrarMensaje('error', 'No se pudo cargar las entidades: ' + err.message);
       });
     return;
   }
@@ -94,7 +111,7 @@ if (btnTodas) {
     const contenedor = e.target.closest('.grilla-turno-wrapper');
 const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '') || 'Matutino';
 
-    fetch(`acciones/form_crear_asignacion.php?aula_id=${aula_id}&fecha=${fecha}&turno=${turno}`)
+    fetch(`../acciones/form_crear_asignacion.php?aula_id=${aula_id}&fecha=${fecha}&turno=${turno}`)
       .then(res => res.text())
       .then(html => {
         abrirModal({
@@ -104,8 +121,8 @@ const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '')
           contexto: { aula_id, fecha, turno }
         });
       })
-      .catch(() => {
-        mostrarMensaje('error', 'No se pudo cargar el formulario');
+      .catch((err) => {
+        mostrarMensaje('error', 'No se pudo cargar el formulario: ' + err.message);
       });
 
     return;
@@ -117,14 +134,15 @@ const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '')
     const aula = e.target.dataset.aula;
     const contenedor = e.target.closest('.grilla-turno-wrapper');
 const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '') || 'Matutino';
+    const state = getState();
 
-    if (!window.datosGlobales || !Array.isArray(window.datosGlobales.asignaciones)) {
+    if (!state.datosGlobales || !Array.isArray(state.datosGlobales.asignaciones)) {
       mostrarMensaje('error', 'Los datos aún no están cargados');
       return;
     }
 
     const fechaFiltro = normalizarFecha(fecha);
-    const asignaciones = window.datosGlobales.asignaciones.filter(a =>
+    const asignaciones = state.datosGlobales.asignaciones.filter(a =>
       normalizarFecha(a.fecha) === fechaFiltro &&
       a.aula_id == aula &&
       a.turno === turno
@@ -150,14 +168,15 @@ const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '')
     const aula = e.target.dataset.aula;
     const contenedor = e.target.closest('.grilla-turno-wrapper');
 const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '') || 'Matutino';
+    const state = getState();
 
-    if (!window.datosGlobales || !Array.isArray(window.datosGlobales.asignaciones)) {
+    if (!state.datosGlobales || !Array.isArray(state.datosGlobales.asignaciones)) {
       mostrarMensaje('error', 'Los datos aún no están cargados');
       return;
     }
 
     const fechaFiltro = normalizarFecha(fecha);
-    const asignaciones = window.datosGlobales.asignaciones.filter(a =>
+    const asignaciones = state.datosGlobales.asignaciones.filter(a =>
       normalizarFecha(a.fecha) === fechaFiltro &&
       a.aula_id == aula &&
       a.turno === turno
@@ -179,11 +198,11 @@ const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '')
 });
 
 export function renderLeyenda() {
-  fetch('acciones/get_entidades.php')
+  fetch('../acciones/get_entidades.php')
     .then(res => res.json())
     .then(data => {
       if (!data.ok || !Array.isArray(data.entidades)) {
-        throw new Error();
+        throw new Error('Respuesta inválida del servidor');
       }
 
       const contenedor = document.getElementById('leyenda-dinamica');
@@ -198,8 +217,8 @@ export function renderLeyenda() {
         contenedor.appendChild(span);
       });
     })
-    .catch(() => {
-      mostrarMensaje('error', 'No se pudo cargar la leyenda de entidades');
+    .catch((err) => {
+      mostrarMensaje('error', 'No se pudo cargar la leyenda de entidades: ' + err.message);
     });
 }
 
@@ -232,9 +251,10 @@ function htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno) {
 export function resetearVistaGeneral() {
   console.log('[EVENTOS] Ejecutando reset de vista general');
 
-  // 🔁 Limpia modo extendido
-  window.modoExtendido = false;
-  window.aulaSeleccionada = null;
+  setState({
+    modoExtendido: false,
+    aulaSeleccionada: null,
+  });
 
   // 🧼 Limpia parámetros de la URL
   const baseURL = window.location.origin + window.location.pathname;

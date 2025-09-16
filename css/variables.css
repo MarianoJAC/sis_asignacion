@@ -1,0 +1,44 @@
+/* css/variables.css */
+
+:root {
+  /* Color Palette */
+  --primary-color: #4285F4; /* Google Blue */
+  --secondary-color: #34A853; /* Google Green */
+  --accent-color: #FBBC05; /* Google Yellow */
+  --danger-color: #EA4335; /* Google Red */
+
+  --text-color-dark: #202124; /* Dark Gray for text */
+  --text-color-light: #5F6368; /* Medium Gray for secondary text */
+  --background-color-light: #F8F9FA; /* Light Gray for backgrounds */
+  --background-color-white: #FFFFFF; /* Pure White */
+  --border-color: #DADCDE; /* Light border color */
+  --shadow-color: rgba(0, 0, 0, 0.1); /* Subtle shadow */
+
+  /* Z-index values */
+  --z-index-sticky-header: 100;
+  --z-index-sticky-column: 2;
+  --z-index-cell: 1;
+  --z-index-modal: 1000; /* Adjusted for common use */
+  --z-index-sweet-alert: 1100; /* Higher than modal */
+
+  /* Font Sizes */
+  --font-size-xsmall: 0.75rem; /* For very small text */
+  --font-size-small: 0.875rem; /* Standard small text */
+  --font-size-normal: 1rem; /* Base font size */
+  --font-size-large: 1.125rem; /* Larger text */
+  --font-size-xlarge: 1.5rem; /* Section titles */
+  --font-size-xxlarge: 2rem; /* Main titles */
+
+  /* Spacing */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Border Radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+}

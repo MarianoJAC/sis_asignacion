@@ -3,11 +3,13 @@ import { cerrarModal, abrirModal } from './grilla.modales.js';
 import { actualizarGrilla, renderGrilla } from './grilla.render.js';
 import { renderLeyenda } from './grilla.eventos.js';
 import { esHorarioValido, haySolapamiento } from './grilla.validaciones.js';
+import { fetchGrillaData } from './grilla.core.js';
 import {
   htmlEliminarAsignacion,
   htmlEliminarEntidad,
   htmlNuevaEntidad
 } from './grilla.modales.js';
+import { getState, setState } from './grilla.state.js';
 
 export const handlersFormulario = {
   'form-agregar-asignacion': procesarAgregarAsignacion,
@@ -79,7 +81,7 @@ function procesarAgregarAsignacion(form, submitBtn) {
     return;
   }
 
-  fetch('acciones/guardar_asignacion.php', {
+  fetch('../acciones/guardar_asignacion.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(datos)
@@ -95,23 +97,16 @@ function procesarAgregarAsignacion(form, submitBtn) {
 
         const turnoActual = datos.turno || 'Matutino';
 
-        fetch('acciones/get_grilla.php')
-          .then(res => res.json())
+        fetchGrillaData()
           .then(grilla => {
-            if (!grilla || !Array.isArray(grilla.asignaciones)) {
-              mostrarMensaje('error', 'La grilla recibida es inválida');
-              return;
-            }
-
-            window.datosGlobales = grilla;
-
             const targetId = `grilla-${turnoActual.toLowerCase()}`;
             const destino = document.getElementById(targetId);
+            const state = getState();
 
-            if (window.modoExtendido && destino) {
-              renderGrilla(turnoActual, grilla, window.aulaSeleccionada, targetId);
-            } else if (!window.modoExtendido) {
-              window.forceRender = true;
+            if (state.modoExtendido && destino) {
+              renderGrilla(turnoActual, grilla, state.aulaSeleccionada, targetId);
+            } else if (!state.modoExtendido) {
+              setState({ forceRender: true });
               actualizarGrilla(turnoActual);
             } else {
               mostrarMensaje('error', 'No se encontró el contenedor de grilla');
@@ -119,8 +114,8 @@ function procesarAgregarAsignacion(form, submitBtn) {
 
             renderLeyenda();
           })
-          .catch(() => {
-            mostrarMensaje('error', 'No se pudo actualizar la grilla');
+          .catch((err) => {
+            mostrarMensaje('error', 'No se pudo actualizar la grilla: ' + err.message);
           });
 
       } else {
@@ -148,7 +143,7 @@ function procesarSeleccionEdicion(form, submitBtn) {
     return;
   }
 
-  fetch(`acciones/form_editar_asignacion.php?id=${id}&aula_id=${aula_id}&fecha=${fecha}&turno=${turno}`)
+  fetch(`../acciones/form_editar_asignacion.php?id=${id}&aula_id=${aula_id}&fecha=${fecha}&turno=${turno}`)
     .then(res => res.text())
     .then(html => {
       abrirModal({
@@ -182,8 +177,8 @@ function procesarSeleccionEdicion(form, submitBtn) {
         }
       }, 50);
     })
-    .catch(() => {
-      mostrarMensaje('error', 'Error inesperado');
+    .catch((err) => {
+      mostrarMensaje('error', 'Error inesperado: ' + err.message);
       if (submitBtn) submitBtn.disabled = false;
     });
 }
@@ -223,7 +218,7 @@ function procesarEdicionAsignacion(form, submitBtn) {
     return;
   }
 
-  fetch('acciones/editar_asignacion.php', {
+  fetch('../acciones/editar_asignacion.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(datos)
@@ -239,23 +234,16 @@ function procesarEdicionAsignacion(form, submitBtn) {
 
           const turnoActual = datos.turno || 'Matutino';
 
-          fetch('acciones/get_grilla.php')
-            .then(res => res.json())
+          fetchGrillaData()
             .then(grilla => {
-              if (!grilla || !Array.isArray(grilla.asignaciones)) {
-                mostrarMensaje('error', 'La grilla recibida es inválida');
-                return;
-              }
-
-              window.datosGlobales = grilla;
-
               const targetId = `grilla-${turnoActual.toLowerCase()}`;
               const destino = document.getElementById(targetId);
+              const state = getState();
 
-              if (window.modoExtendido && destino) {
-                renderGrilla(turnoActual, grilla, window.aulaSeleccionada, targetId);
-              } else if (!window.modoExtendido) {
-                window.forceRender = true;
+              if (state.modoExtendido && destino) {
+                renderGrilla(turnoActual, grilla, state.aulaSeleccionada, targetId);
+              } else if (!state.modoExtendido) {
+                setState({ forceRender: true });
                 actualizarGrilla(turnoActual);
               } else {
                 mostrarMensaje('error', 'No se encontró el contenedor de grilla');
@@ -263,21 +251,21 @@ function procesarEdicionAsignacion(form, submitBtn) {
 
               renderLeyenda();
             })
-            .catch(() => {
-              mostrarMensaje('error', 'No se pudo actualizar la grilla');
+            .catch((err) => {
+              mostrarMensaje('error', 'No se pudo actualizar la grilla: ' + err.message);
             });
 
         } else {
           mostrarMensaje('error', data.error || 'Error al actualizar asignación');
           if (submitBtn) submitBtn.disabled = false;
         }
-      } catch {
-        mostrarMensaje('error', 'Respuesta inválida del servidor');
+      } catch (err) {
+        mostrarMensaje('error', 'Respuesta inválida del servidor: ' + err.message);
         if (submitBtn) submitBtn.disabled = false;
       }
     })
-    .catch(() => {
-      mostrarMensaje('error', 'Error inesperado');
+    .catch((err) => {
+      mostrarMensaje('error', 'Error inesperado: ' + err.message);
       if (submitBtn) submitBtn.disabled = false;
     });
 }
@@ -299,7 +287,7 @@ function procesarAgregarEntidad(form, submitBtn) {
 
   const payload = { nombre, color };
 
-  fetch('acciones/agregar_entidad.php', {
+  fetch('../acciones/agregar_entidad.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
@@ -311,16 +299,14 @@ function procesarAgregarEntidad(form, submitBtn) {
         cerrarModal();
 
         const turnoActual = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
-        fetch('acciones/get_grilla.php')
-          .then(res => res.json())
+        fetchGrillaData()
           .then(grilla => {
-            window.datosGlobales = grilla;
-            window.forceRender = true;
+            setState({ datosGlobales: grilla, forceRender: true });
             actualizarGrilla(turnoActual);
             renderLeyenda();
           })
-          .catch(() => {
-            mostrarMensaje('error', 'No se pudo actualizar la grilla');
+          .catch((err) => {
+            mostrarMensaje('error', 'No se pudo actualizar la grilla: ' + err.message);
           });
 
       } else {
@@ -329,8 +315,8 @@ function procesarAgregarEntidad(form, submitBtn) {
         if (submitBtn) submitBtn.disabled = false;
       }
     })
-    .catch(() => {
-      mostrarMensaje('error', 'Error inesperado');
+    .catch((err) => {
+      mostrarMensaje('error', 'Error inesperado: ' + err.message);
       form.dataset.agregando = 'false';
       if (submitBtn) submitBtn.disabled = false;
     });
@@ -349,7 +335,7 @@ function procesarEliminarEntidad(form, submitBtn) {
     return;
   }
 
-  fetch('acciones/eliminar_entidad.php', {
+  fetch('../acciones/eliminar_entidad.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ entidad_id: parseInt(id) })
@@ -361,16 +347,14 @@ function procesarEliminarEntidad(form, submitBtn) {
         cerrarModal();
 
         const turnoActual = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
-        fetch('acciones/get_grilla.php')
-          .then(res => res.json())
+        fetchGrillaData()
           .then(grilla => {
-            window.datosGlobales = grilla;
-            window.forceRender = true;
+            setState({ datosGlobales: grilla, forceRender: true });
             actualizarGrilla(turnoActual);
             renderLeyenda();
           })
-          .catch(() => {
-            mostrarMensaje('error', 'No se pudo actualizar la grilla');
+          .catch((err) => {
+            mostrarMensaje('error', 'No se pudo actualizar la grilla: ' + err.message);
           });
 
       } else {
@@ -379,8 +363,8 @@ function procesarEliminarEntidad(form, submitBtn) {
         if (submitBtn) submitBtn.disabled = false;
       }
     })
-    .catch(() => {
-      mostrarMensaje('error', 'Error inesperado');
+    .catch((err) => {
+      mostrarMensaje('error', 'Error inesperado: ' + err.message);
       form.dataset.eliminando = 'false';
       if (submitBtn) submitBtn.disabled = false;
     });
@@ -395,7 +379,7 @@ function procesarEliminarAsignacion(form, submitBtn) {
     return;
   }
 
-  fetch('acciones/eliminar_asignacion.php', {
+  fetch('../acciones/eliminar_asignacion.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ id })
@@ -411,23 +395,16 @@ function procesarEliminarAsignacion(form, submitBtn) {
 
           const turnoActual = form.elements['turno']?.value || 'Matutino';
 
-          fetch('acciones/get_grilla.php')
-            .then(res => res.json())
+          fetchGrillaData()
             .then(grilla => {
-              if (!grilla || !Array.isArray(grilla.asignaciones)) {
-                mostrarMensaje('error', 'La grilla recibida es inválida');
-                return;
-              }
-
-              window.datosGlobales = grilla;
-
               const targetId = `grilla-${turnoActual.toLowerCase()}`;
               const destino = document.getElementById(targetId);
+              const state = getState();
 
-              if (window.modoExtendido && destino) {
-                renderGrilla(turnoActual, grilla, window.aulaSeleccionada, targetId);
-              } else if (!window.modoExtendido) {
-                window.forceRender = true;
+              if (state.modoExtendido && destino) {
+                renderGrilla(turnoActual, grilla, state.aulaSeleccionada, targetId);
+              } else if (!state.modoExtendido) {
+                setState({ forceRender: true });
                 actualizarGrilla(turnoActual);
               } else {
                 mostrarMensaje('error', 'No se encontró el contenedor de grilla');
@@ -435,21 +412,21 @@ function procesarEliminarAsignacion(form, submitBtn) {
 
               renderLeyenda();
             })
-            .catch(() => {
-              mostrarMensaje('error', 'No se pudo actualizar la grilla');
+            .catch((err) => {
+              mostrarMensaje('error', 'No se pudo actualizar la grilla: ' + err.message);
             });
 
         } else {
           mostrarMensaje('error', data.error || 'Error al eliminar asignación');
           if (submitBtn) submitBtn.disabled = false;
         }
-      } catch {
-        mostrarMensaje('error', 'Respuesta inválida del servidor');
+      } catch (err) {
+        mostrarMensaje('error', 'Respuesta inválida del servidor: ' + err.message);
         if (submitBtn) submitBtn.disabled = false;
       }
     })
-    .catch(() => {
-      mostrarMensaje('error', 'Error inesperado');
+    .catch((err) => {
+      mostrarMensaje('error', 'Error inesperado: ' + err.message);
       if (submitBtn) submitBtn.disabled = false;
     });
 }

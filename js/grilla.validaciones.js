@@ -7,6 +7,19 @@ const rangoTurno = {
   Nocturno:   [1080, 1380]    // 18:00 - 23:00
 };
 
+let asignacionesPorAulaYFecha = new Map();
+
+export function preprocesarAsignaciones(asignaciones) {
+  asignacionesPorAulaYFecha.clear();
+  for (const asig of asignaciones) {
+    const key = `${asig.aula_id}-${asig.fecha}`;
+    if (!asignacionesPorAulaYFecha.has(key)) {
+      asignacionesPorAulaYFecha.set(key, []);
+    }
+    asignacionesPorAulaYFecha.get(key).push(asig);
+  }
+}
+
 // 🧠 Convierte "HH:mm" a minutos
 function convertirAHora(horaStr) {
   const [h, m] = horaStr.split(':').map(Number);
@@ -29,8 +42,15 @@ function haySolapamiento(turno, horaInicio, horaFin, aula_id, fecha, idActual = 
   const inicioNuevo = convertirAHora(horaInicio);
   const finNuevo = convertirAHora(horaFin);
 
-  return datosGlobales.asignaciones.some(asig => {
-    if (asig.turno !== turno || asig.aula_id !== aula_id || asig.fecha !== fecha) return false;
+  const key = `${aula_id}-${fecha}`;
+  const asignaciones = asignacionesPorAulaYFecha.get(key);
+
+  if (!asignaciones) {
+    return false;
+  }
+
+  return asignaciones.some(asig => {
+    if (asig.turno !== turno) return false;
     if (idActual && asig.Id === idActual) return false;
 
     const inicioExistente = convertirAHora(asig.hora_inicio);

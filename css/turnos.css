@@ -1,24 +1,30 @@
-#turno-tabs {
+.turno-tabs {
   display: flex;
-  gap: 50px;
+  gap: var(--spacing-xl);
   margin-bottom: 0px;
   padding-left: 5%;
-  
+
 }
 
 .tab-btn {
-    font-size: 1rem;
-  padding: 6px 12px;
+    font-size: var(--font-size-large);
+  padding: var(--spacing-xxs) var(--spacing-sm);
   border: none;
-  background: #ddd;
+  background: var(--background-color-light);
   cursor: pointer;
   font-weight: bold;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
+  color: var(--text-color-dark);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.tab-btn:hover {
+  background-color: var(--border-color);
 }
 
 .tab-btn.active {
-  background: #2196f3;
-  color: white;
+  background: var(--primary-color);
+  color: var(--background-color-white);
 }
 
 #almapa{

@@ -1,33 +1,33 @@
 .form-buttons {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 16px;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
 }
 
 .form-buttons button {
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: var(--font-size-small);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
 .form-buttons button.cancelar {
-  background-color: #efefef;
-  color: #222;
+  background-color: var(--background-color-light);
+  color: var(--text-color-dark);
 }
 
 .form-buttons button.cancelar:hover {
-  background-color: #ddd;
+  background-color: var(--border-color);
 }
 
 .form-buttons button.eliminar {
-  background-color: #d32f2f;
-  color: white;
+  background-color: var(--danger-color);
+  color: var(--background-color-white);
 }
 
 .form-buttons button.eliminar:hover {
-  background-color: #b71c1c;
+  background-color: #b71c1c; /* Keep original for now */
 }

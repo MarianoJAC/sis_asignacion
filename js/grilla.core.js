@@ -16,13 +16,11 @@ import './grilla.eventos.js';
 import './grilla.formularios.js';
 import './grilla.modales.js';
 import './grilla.alertas.js';
-import './grilla.validaciones.js';
+import { preprocesarAsignaciones } from './grilla.validaciones.js';
 
 import { mostrarMensaje } from './grilla.alertas.js';
 import { renderLeyenda } from './grilla.eventos.js';
-
-window.yaRenderizado = false;
-window.modoExtendido = false;
+import { getState, setState } from './grilla.state.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('[INIT] DOMContentLoaded');
@@ -35,20 +33,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (aulaId > 0 && origen === 'mapa') {
     console.log('[FLOW] Carga extendida desde mapa');
-    window.aulaSeleccionada = aulaId;
-    window.modoExtendido = true;
-    window.yaRenderizado = true;
+    setState({
+      aulaSeleccionada: aulaId,
+      modoExtendido: true,
+      yaRenderizado: true,
+    });
 
     actualizarVisibilidadFiltros();
     cargarAsignacionesPorAulaTodosLosTurnos(aulaId);
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    history.replaceState(null, '', 'index.html');
+    history.replaceState(null, '', 'grilla.php');
     return;
   }
 
   if (aulaId > 0) {
     console.log('[FLOW] Carga directa por aulaId:', aulaId);
-    window.aulaSeleccionada = aulaId;
+    setState({ aulaSeleccionada: aulaId });
     cargarAsignacionesPorAula(aulaId);
     return;
   }
@@ -62,42 +62,47 @@ document.querySelectorAll('.tab-btn[data-turno]').forEach(btn => {
     btn.classList.add('active');
 
     const turno = btn.dataset.turno;
-    window.forceRender = true; // 🔁 fuerza render aunque sea el mismo turno
+    setState({ forceRender: true }); // 🔁 fuerza render aunque sea el mismo turno
     actualizarGrilla(turno);
   });
 });
 });
 
+export function fetchGrillaData() {
+  return fetch('../acciones/get_grilla.php')
+    .then(res => res.json())
+    .then(data => {
+      if (!data.aulas || data.aulas.length === 0) {
+        throw new Error('No se han cargado aulas globalmente');
+      }
+      setState({ datosGlobales: data });
+      preprocesarAsignaciones(data.asignaciones);
+      return data;
+    });
+}
+
 // ✅ Función blindada para vista institucional
 function cargarVistaInstitucional() {
   console.log('[FLOW] Cargando vista institucional');
 
-  window.modoExtendido = false;
-  window.aulaSeleccionada = null;
-  window.yaRenderizado = false;
+  setState({
+    modoExtendido: false,
+    aulaSeleccionada: null,
+    yaRenderizado: false,
+  });
 
   actualizarVisibilidadFiltros();
 
   const turno = 'Matutino';
 
-  fetch('acciones/get_grilla.php')
-    .then(async res => {
-      const texto = await res.text();
-      try {
-        const data = JSON.parse(texto);
-        if (!data.aulas || data.aulas.length === 0) throw new Error();
-        window.datosGlobales = data;
-        renderGrilla(turno, data);
-        renderLeyenda();
-        activarFiltroPorFecha();
-      } catch (err) {
-        console.error('[ERROR] Falló el render institucional:', err);
-        mostrarMensaje('error', 'Error al procesar la grilla');
-      }
+  fetchGrillaData()
+    .then(data => {
+      renderGrilla(turno, data);
+      renderLeyenda();
+      activarFiltroPorFecha();
     })
     .catch(err => {
-      console.error('[ERROR] Falló el fetch de grilla:', err);
-      mostrarMensaje('error', 'No se pudo cargar la grilla inicial');
+      mostrarMensaje('error', 'Error al procesar la grilla: ' + err.message);
     });
 }
 
@@ -113,12 +118,29 @@ document.getElementById('input-buscador')?.addEventListener('input', e => {
   }, 300);
 });
 
-// ✅ Toggle de fecha
-document.getElementById('toggle-fecha')?.addEventListener('click', () => {
-  const contenedor = document.getElementById('contenedor-fecha');
-  if (contenedor) {
+// ✅ Toggle de filtros unificados
+document.getElementById('toggle-filtros')?.addEventListener('click', () => {
+  const contenedor = document.getElementById('contenedor-filtros');
+  const boton = document.getElementById('toggle-filtros');
+
+  if (contenedor && boton) {
     contenedor.classList.toggle('contenedor-oculto');
     contenedor.classList.toggle('contenedor-visible');
+
+    // 🧠 Reposicionamiento dinámico si se sale del viewport
+ const rectBoton = boton.getBoundingClientRect();
+const espacioIzquierda = rectBoton.left;
+
+if (espacioIzquierda < 320) {
+  contenedor.style.right = 'auto';
+  contenedor.style.left = '0'; // ⏪ lo pega al borde izquierdo si no hay espacio
+} else {
+  contenedor.style.right = 'calc(100% + 20px)';
+  contenedor.style.left = 'auto';
+}
+
+
+    console.log('[EVENT] Toggle filtros activado');
   }
 });
 
@@ -137,4 +159,24 @@ document.getElementById('btn-reset-fecha')?.addEventListener('click', () => {
   const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
   limpiarFiltrosYRestaurar(turno);
 });
+
+// ✅ Menú hamburguesa desplegable
+const btnMenu = document.getElementById('btn-menu');
+const menuDesplegable = document.getElementById('menu-desplegable');
+
+if (btnMenu && menuDesplegable) {
+  btnMenu.addEventListener('click', () => {
+    const visible = menuDesplegable.style.display === 'block';
+    menuDesplegable.style.display = visible ? 'none' : 'block';
+  });
+
+  // 🧠 Cierre automático al hacer clic fuera
+  document.addEventListener('click', (e) => {
+    if (!menuDesplegable.contains(e.target) && !btnMenu.contains(e.target)) {
+      menuDesplegable.style.display = 'none';
+    }
+  });
+  
+}
+
 

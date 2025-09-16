@@ -1,7 +1,16 @@
 <?php
 include '../config/conexion.php';
-
 header('Content-Type: application/json');
+
+// 🧩 Función para registrar auditoría
+function registrarAuditoria($tipo, $objetoId, $usuarioId, $accion, $campo = null, $valorAnterior = null, $valorNuevo = null) {
+  global $conexion;
+  $stmt = $conexion->prepare("INSERT INTO auditoria_acciones 
+    (tipo_objeto, objeto_id, usuario_id, accion, campo_modificado, valor_anterior, valor_nuevo) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)");
+  $stmt->bind_param("sisssss", $tipo, $objetoId, $usuarioId, $accion, $campo, $valorAnterior, $valorNuevo);
+  $stmt->execute();
+}
 
 // 🧠 Capitalización con soporte de acentos
 function capitalizar($texto) {
@@ -20,6 +29,15 @@ function capitalizar($texto) {
 
 // 🧼 Lectura segura del JSON
 $input = json_decode(file_get_contents('php://input'), true);
+
+// 🧑 Obtener usuario actual (ajustar según tu sistema)
+session_start();
+$usuarioId = $_SESSION['usuario_id'] ?? null;
+
+if (!$usuarioId) {
+  echo json_encode(['ok' => false, 'error' => 'Usuario no autenticado']);
+  exit;
+}
 
 // 🧠 Extracción defensiva
 $aula_id    = $input['aula_id']    ?? '';
@@ -72,6 +90,25 @@ $stmt = $conexion->prepare("INSERT INTO asignaciones (
 $stmt->bind_param("sssssssssss", $aula_id, $fecha, $turno, $carrera, $anio, $profesor, $materia, $entidad, $inicio, $fin, $comentarios);
 
 if ($stmt->execute()) {
+  $asignacionId = $stmt->insert_id;
+
+  // 🧾 Registrar auditoría
+  $valorNuevo = json_encode([
+    'aula_id' => $aula_id,
+    'fecha' => $fecha,
+    'turno' => $turno,
+    'carrera' => $carrera,
+    'anio' => $anio,
+    'profesor' => $profesor,
+    'materia' => $materia,
+    'entidad_id' => $entidad,
+    'hora_inicio' => $inicio,
+    'hora_fin' => $fin,
+    'comentarios' => $comentarios
+  ], JSON_UNESCAPED_UNICODE);
+
+  registrarAuditoria('asignacion', $asignacionId, $usuarioId, 'alta', null, null, $valorNuevo);
+
   echo json_encode(['ok' => true, 'mensaje' => 'Asignación guardada']);
 } else {
   echo json_encode(['ok' => false, 'error' => $stmt->error]);

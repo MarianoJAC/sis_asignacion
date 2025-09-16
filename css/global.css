@@ -1,30 +1,167 @@
+/* 🌐 Estilos globales institucionales */
+
 * {
-   font-family: 'Segoe UI', sans-serif; 
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-
+  background-color: var(--background-color-light);
+  color: var(--text-color-dark);
 }
 
-
 h2 {
-  margin-top: 1%;        
-  margin-left: 20px;              
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #263238;
+  margin-top: var(--spacing-md);
+  text-align: center;
+  font-size: var(--font-size-xxlarge);
+  font-weight: 700;
+  color: var(--text-color-dark);
 }
 
 .fas {
-  color: #1976d2;
-  margin-right: 6px;
-  font-size: 1rem;
+  color: var(--primary-color);
+  margin-right: var(--spacing-xxs);
+  font-size: var(--font-size-large);
   vertical-align: middle;
 }
 
 .swal2-container {
-  z-index: 10001 !important; /* 🔝 superior al modal */
+  z-index: var(--z-index-sweet-alert) !important;
+}
+
+/* 🍔 Menú hamburguesa */
+.menu-hamburguesa {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+}
+
+#btn-menu {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+#menu-desplegable {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  padding: 10px;
+  min-width: 160px;
+  display: none;
+  z-index: 9999;
+}
+
+#menu-desplegable a {
+  display: block;
+  padding: 8px;
+  text-decoration: none;
+  color: #333;
+  border-bottom: 1px solid #eee;
+}
+
+#menu-desplegable a:last-child {
+  border-bottom: none;
+}
+
+.menu-usuario {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* 🧩 Layout institucional */
+.zona-controles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+}
+
+.zona-superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.zona-superior h2 {
+  margin: 0;
+  text-align: center;
+  flex: 1;
+}
+
+.zona-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.zona-filtros-turno {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--background-color-white);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.bloque-turnos,
+.bloque-fecha,
+.bloque-buscador {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.bloque-desplegable {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 🎛️ Panel lateral de filtros */
+#contenedor-filtros {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: calc(100% + 20px);
+  background-color: var(--background-color-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  padding: var(--spacing-sm);
+  z-index: 999;
+  min-width: 280px;
+  display: none;
+}
+
+/* 🔓 Control de visibilidad */
+.contenedor-visible {
+  display: block !important;
+}
+
+.contenedor-oculto {
+  display: none !important;
+}
+
+.filtro-fecha,
+.filtro-buscador {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxs);
+  margin-bottom: var(--spacing-sm);
 }

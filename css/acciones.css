@@ -2,28 +2,30 @@
 .acciones-celda {
   display: flex;
   justify-content: center;
-  gap: 6px;
-  margin-top: 6px;
+  gap: var(--spacing-xxs);
+  margin-top: var(--spacing-xxs);
   flex-wrap: wrap;
 }
 
 .acciones-celda button {
-  background: #f5f5f5;
+  background: var(--background-color-light);
   border: none;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: var(--spacing-xxs) var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
-  font-size: 16px;
+  font-size: var(--font-size-normal);
   transition: background 0.2s ease;
 }
 .acciones-celda button:hover {
-  background-color: #e0e0e0;
+  background-color: var(--border-color);
 }
 
-#bloque-entidades:hover #acciones-entidades {
+.zona-leyenda:hover .acciones-entidad {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
 }
+
 
 
 
@@ -34,16 +36,16 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 6px;
+  padding: var(--spacing-xxs);
   border: none;
-  color: white;
+  color: var(--background-color-white);
   cursor: pointer;
   transition: background-color 0.3s ease;
   border-radius: 50% !important;
-  padding: 6px !important;
+  padding: var(--spacing-xxs) !important;
   width: 36px !important;
   height: 36px !important;
-  font-size: 18px !important;
+  font-size: var(--font-size-large) !important;
 
 }
 
@@ -57,34 +59,36 @@
 }
 
 /* 🔹 Contenedor de acciones de entidad */
-#acciones-entidades {
+.acciones-entidad {
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.2s ease;
   display: flex;
-  gap: 8px;
+  gap: var(--spacing-xs);
   justify-content: center;
-  pointer-events: none;
+  visibility: hidden;
 }
 
 
 
+
 /* 🔹 Botones de entidad (estilo visual separado) */
-#acciones-entidades button {
+.acciones-entidad button {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 6px;
-  font-size: 18px;
+  padding: var(--spacing-xxs);
+  font-size: var(--font-size-large);
   border-radius: 50%;
   border: none;
   width: 36px;
   height: 36px;
-  color: white;
+  color: var(--background-color-white);
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 /* 🔹 Hover visual para botones de entidad */
-#acciones-entidades button:hover {
-  background-color: #f5f5f5;;
+.acciones-entidad button:hover {
+  background-color: var(--background-color-light);;
 }
