@@ -11,7 +11,21 @@ if (!isset($conexion) || !$conexion) {
 
 $aula_id = isset($_GET['aula_id']) ? intval($_GET['aula_id']) : 0;
 
-$aulasQuery = mysqli_query($conexion, "SELECT aula_id, nombre, recurso, capacidad FROM aulas ORDER BY aula_id ASC");
+// 🔁 Primero cargamos recursos
+$recursosPorAula = [];
+$recursosQuery = mysqli_query($conexion, "SELECT aula_id, recurso FROM recursos_por_aula");
+if ($recursosQuery) {
+  while ($r = mysqli_fetch_assoc($recursosQuery)) {
+    $id = intval($r['aula_id']);
+    if (!isset($recursosPorAula[$id])) {
+      $recursosPorAula[$id] = [];
+    }
+    $recursosPorAula[$id][] = $r['recurso'];
+  }
+}
+
+// ✅ Ahora sí, cargamos aulas y les inyectamos recursos
+$aulasQuery = mysqli_query($conexion, "SELECT aula_id, nombre, capacidad FROM aulas ORDER BY aula_id ASC");
 if (!$aulasQuery) {
   http_response_code(500);
   echo json_encode(['error' => 'Error en la consulta de aulas']);
@@ -21,13 +35,14 @@ if (!$aulasQuery) {
 $aulas = [];
 while ($fila = mysqli_fetch_assoc($aulasQuery)) {
   if (in_array(trim($fila['nombre']), ['Laboratorio', 'Aula Gabinete'])) {
-    $fila['recurso'] = null;
     $fila['capacidad'] = null;
   }
   if ($aula_id === 0 || $fila['aula_id'] == $aula_id) {
+    $fila['recursos'] = $recursosPorAula[$fila['aula_id']] ?? [];
     $aulas[] = $fila;
   }
 }
+
 
 $query = "
   SELECT 

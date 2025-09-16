@@ -13,12 +13,19 @@ if (!$texto) {
 }
 
 $stmt = $conexion->prepare("
-  SELECT aula_id AS id, nombre, recurso, capacidad
-  FROM aulas
-  WHERE LOWER(nombre) LIKE CONCAT('%', ?, '%')
-     OR LOWER(recurso) LIKE CONCAT('%', ?, '%')
-     OR LOWER(CAST(capacidad AS CHAR)) LIKE CONCAT('%', ?, '%')
+  SELECT 
+    a.aula_id AS id,
+    a.nombre,
+    a.capacidad,
+    GROUP_CONCAT(DISTINCT r.recurso) AS recursos
+  FROM aulas a
+  LEFT JOIN recursos_por_aula r ON a.aula_id = r.aula_id
+  WHERE LOWER(r.recurso) LIKE CONCAT('%', ?, '%')
+     OR LOWER(a.nombre) LIKE CONCAT('%', ?, '%')
+     OR LOWER(CAST(a.capacidad AS CHAR)) LIKE CONCAT('%', ?, '%')
+  GROUP BY a.aula_id
 ");
+
 
 if (!$stmt) {
   echo json_encode(['ok' => false, 'error' => 'Error en la preparación SQL']);
@@ -31,8 +38,10 @@ $resultado = $stmt->get_result();
 
 $aulas = [];
 while ($fila = $resultado->fetch_assoc()) {
+  $fila['recursos'] = isset($fila['recursos']) ? explode(',', $fila['recursos']) : [];
   $aulas[] = $fila;
 }
 
+file_put_contents('log_aulas.txt', json_encode($aulas, JSON_PRETTY_PRINT));
 echo json_encode(['ok' => true, 'aulas' => $aulas]);
 exit;

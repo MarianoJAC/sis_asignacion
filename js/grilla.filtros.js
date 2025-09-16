@@ -7,39 +7,31 @@ export async function ejecutarBusqueda(texto, turno) {
   const fechaSeleccionada = document.getElementById('selector-fecha')?.value || null;
   const state = getState();
 
-  // 🔍 Si no hay texto, solo filtramos por fecha
-  if (!texto) {
-  if (!fechaSeleccionada) {
-    console.log('[BUSCADOR] Texto vacío y sin fecha, restaurando grilla institucional');
-
-    setState({
-      modoExtendido: false,
-      aulaSeleccionada: null,
-    });
-
-    if (state.datosGlobales && state.datosGlobales.aulas) {
-      renderGrilla(turno, state.datosGlobales);
-    } else {
-      fetch('../acciones/get_grilla.php')
-        .then(res => res.json())
-        .then(data => {
-          setState({ datosGlobales: data });
-          renderGrilla(turno, data);
-        })
-        .catch((err) => {
-          mostrarMensaje('error', 'No se pudo restaurar la grilla: ' + err.message);
-        });
-    }
-
+  if (fechaSeleccionada && !/^\d{4}-\d{2}-\d{2}$/.test(fechaSeleccionada)) {
+    mostrarMensaje('info', 'La fecha seleccionada no tiene formato válido');
     return;
   }
 
-  // ✅ Si hay fecha, filtramos por fecha
-  filtrarGrillaPorFecha(turno, fechaSeleccionada);
-  return;
-}
+  if (!texto) {
+    if (!fechaSeleccionada) {
+      setState({ modoExtendido: false, aulaSeleccionada: null, filtroActivo: null });
 
-  // 🔍 Si hay texto, hacemos búsqueda en backend
+      if (state.datosGlobales?.aulas) {
+        renderGrilla(turno, state.datosGlobales);
+      } else {
+        const res = await fetch('../acciones/get_grilla.php');
+        const data = await res.json();
+        setState({ datosGlobales: data });
+        renderGrilla(turno, data);
+      }
+
+      return;
+    }
+
+    filtrarGrillaPorFecha(turno, fechaSeleccionada);
+    return;
+  }
+
   try {
     const res = await fetch('../acciones/buscar_aulas.php', {
       method: 'POST',
@@ -50,31 +42,84 @@ export async function ejecutarBusqueda(texto, turno) {
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || 'Error en búsqueda');
 
-    const idsFiltrados = data.aulas.map(a => a.id);
+    const aulasFiltradas = data.aulas;
+    const idsFiltrados = aulasFiltradas.map(a => Number(a.id));
 
-    let asignacionesFiltradas = state.datosGlobales.asignaciones.filter(a =>
-      idsFiltrados.includes(a.aula_id) && a.turno === turno
-    );
+    // 🧪 Log por aula filtrada
+    console.log('[DEBUG] Aulas filtradas por recurso:');
+    aulasFiltradas.forEach(aula => {
+      const recursos = Array.isArray(aula.recursos) ? aula.recursos.join(', ') : 'Ninguno';
+      console.log(`🧪 Aula ${aula.nombre} (ID: ${aula.id}) → Recursos: ${recursos} | Capacidad: ${aula.capacidad}`);
+    });
 
-    if (fechaSeleccionada) {
-      asignacionesFiltradas = asignacionesFiltradas.filter(a => {
-        const fechaAsignacion = normalizarFecha(a.fecha);
-        const fechaFiltro = normalizarFecha(fechaSeleccionada);
-        return fechaAsignacion === fechaFiltro;
-      });
-    }
+    const todasAsignaciones = await asegurarAsignaciones();
+    const fechaFiltro = fechaSeleccionada ? normalizarFecha(fechaSeleccionada) : null;
+    const turnoNormalizado = turno.trim().toLowerCase();
+
+    const asignacionesFiltradas = todasAsignaciones.filter(a => {
+      const aulaOk = idsFiltrados.includes(Number(a.aula_id));
+      const turnoOk = a.turno?.trim().toLowerCase() === turnoNormalizado;
+      const fechaOk = fechaFiltro ? normalizarFecha(a.fecha) === fechaFiltro : true;
+      return aulaOk && turnoOk && fechaOk;
+    });
+
+    // 🧪 Log por asignación filtrada
+    console.log('[DEBUG] Asignaciones filtradas por recurso + fecha + turno:');
+    asignacionesFiltradas.forEach(asig => {
+      console.log(`📚 ${asig.materia} | Aula ID: ${asig.aula_id} | Fecha: ${asig.fecha} | Turno: ${asig.turno} | Profesor: ${asig.profesor}`);
+    });
+
+    // 🧪 Log por aula y cantidad de asignaciones
+    aulasFiltradas.forEach(aula => {
+      const count = asignacionesFiltradas.filter(a => Number(a.aula_id) === Number(aula.id)).length;
+      console.log(`📊 Aula ${aula.nombre} tiene ${count} asignaciones en ${fechaFiltro || 'todas las fechas'}`);
+    });
+
+    console.log('[DEBUG] Asignaciones disponibles:', todasAsignaciones.length);
+    console.log('[DEBUG] Asignaciones filtradas:', asignacionesFiltradas.length);
 
     const grillaFiltrada = {
-      ...state.datosGlobales,
-      asignaciones: asignacionesFiltradas,
-      aulas: data.aulas
+      ...getState().datosGlobales,
+      aulas: aulasFiltradas,
+      asignaciones: asignacionesFiltradas
     };
+
+    setState({
+      filtroActivo: {
+        texto,
+        fecha: fechaSeleccionada,
+        turno
+      }
+    });
 
     renderGrilla(turno, grillaFiltrada, null, null, fechaSeleccionada);
 
   } catch (err) {
     mostrarMensaje('error', 'No se pudo realizar la búsqueda: ' + err.message);
   }
+}
+
+
+function filtrarAsignacionesPorAulasTurnoFecha(asignaciones, aulaIds, turno, fecha) {
+  const turnoNormalizado = turno.trim().toLowerCase();
+
+  return asignaciones.filter(a => {
+    const aulaOk = aulaIds.includes(Number(a.aula_id));
+    const turnoOk = a.turno?.trim().toLowerCase() === turnoNormalizado;
+    const fechaOk = fecha ? normalizarFecha(a.fecha) === fecha : true;
+    return aulaOk && turnoOk && fechaOk;
+  });
+}
+
+async function asegurarAsignaciones() {
+  const state = getState();
+  if (!state.datosGlobales?.asignaciones) {
+    const res = await fetch('../acciones/get_grilla.php');
+    const data = await res.json();
+    setState({ datosGlobales: data });
+    return data.asignaciones || [];
+  }
+  return state.datosGlobales.asignaciones;
 }
 
 export function activarFiltroPorFecha() {
@@ -93,41 +138,46 @@ export function activarFiltroPorFecha() {
 export function filtrarGrillaPorFecha(turno, fecha) {
   const state = getState();
   const datos = state.datosGlobales;
-  const aulaId = state.modoExtendido ? null : state.aulaSeleccionada;
-
   const fechaFiltro = normalizarFecha(fecha);
 
   const asignacionesFiltradas = datos.asignaciones.filter(a => {
     const fechaAsignacion = normalizarFecha(a.fecha);
-    const coincide = fechaAsignacion === fechaFiltro && a.turno === turno;
-
-    // 🧪 Log por asignación
-    console.log(`[FILTRO FECHA] Asignación: ${a.id} | Fecha: ${fechaAsignacion} | Turno: ${a.turno} | Coincide: ${coincide}`);
-    return coincide;
+    const turnoOk = a.turno?.trim().toLowerCase() === turno.trim().toLowerCase();
+    return fechaAsignacion === fechaFiltro && turnoOk;
   });
 
-  console.log('[FILTRO FECHA] Total asignaciones filtradas:', asignacionesFiltradas.length);
+  if (asignacionesFiltradas.length === 0) {
+    mostrarMensaje('info', 'No hay asignaciones para la fecha seleccionada');
+    return;
+  }
 
   const grillaFiltrada = {
     ...datos,
     asignaciones: asignacionesFiltradas
   };
 
-  renderGrilla(turno, grillaFiltrada, aulaId, null, fecha);
+  setState({
+    filtroActivo: {
+      texto: '',
+      fecha,
+      turno
+    }
+  });
+
+  renderGrilla(turno, grillaFiltrada, null, null, fecha);
 }
 
 export function normalizarFecha(fecha) {
   if (!fecha) return '';
   const partes = fecha.split(/[\/\-]/);
-  if (partes.length !== 3) return fecha;
+  if (partes.length !== 3) return '';
 
   const [a, b, c] = partes;
 
-  // Si ya está en formato ISO (aaaa-mm-dd), devolvemos directo
   if (a.length === 4) return `${a}-${b.padStart(2, '0')}-${c.padStart(2, '0')}`;
+  if (c.length === 4) return `${c}-${b.padStart(2, '0')}-${a.padStart(2, '0')}`;
 
-  // Si viene como dd/mm/aaaa o dd-mm-aaaa
-  return `${c}-${b.padStart(2, '0')}-${a.padStart(2, '0')}`;
+  return '';
 }
 
 export function limpiarFiltrosYRestaurar(turno = 'Matutino') {
@@ -148,7 +198,9 @@ export function limpiarFiltrosYRestaurar(turno = 'Matutino') {
   setState({
     modoExtendido: false,
     aulaSeleccionada: null,
+    filtroActivo: null
   });
+
   actualizarVisibilidadFiltros();
 
   if (sinTexto && sinFecha) {
