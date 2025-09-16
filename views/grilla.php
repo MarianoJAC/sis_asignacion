@@ -47,10 +47,12 @@ $usuario = $_SESSION['username'] ?? 'Usuario';
 
   <div class="zona-leyenda">
   <div class="leyenda-row" id="leyenda-dinamica"></div>
+  <?php if ($esAdmin): ?>
   <div class="acciones-entidad">
     <button class="btn-agregar btn-entidad" id="btn-agregar-entidad">➕</button>
     <button class="btn-eliminar btn-entidad" id="btn-eliminar-entidad">❌</button>
   </div>
+<?php endif; ?>
 </div>
 
 
@@ -92,6 +94,11 @@ $usuario = $_SESSION['username'] ?? 'Usuario';
 
  <!-- 🧠 Scripts modulares (orden blindado) -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  window.esAdmin = <?= json_encode($esAdmin) ?>;
+</script>
+
 
 <!-- Núcleo primero: define datosGlobales -->
 <script type="module" src="../js/grilla.core.js"></script>

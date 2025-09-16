@@ -165,3 +165,7 @@ h2 {
   gap: var(--spacing-xxs);
   margin-bottom: var(--spacing-sm);
 }
+
+body.modo-extendido .tab-btn[data-turno] {
+  display: none !important;
+}

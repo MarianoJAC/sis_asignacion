@@ -202,36 +202,38 @@ function renderGrillaSafe(destino, turnoSeleccionado, datos, aulaIdFiltrada, tar
         td.appendChild(asignacionDiv);
       });
 
-      const accionesCelda = document.createElement('div');
-      accionesCelda.className = 'acciones-celda';
+     const accionesCelda = document.createElement('div');
+accionesCelda.className = 'acciones-celda';
 
-      const btnAgregar = document.createElement('button');
-      btnAgregar.className = 'btn-agregar';
-      btnAgregar.title = 'Agregar asignación';
-      btnAgregar.dataset.fecha = fecha;
-      btnAgregar.dataset.aula = aula.aula_id;
-      btnAgregar.textContent = '➕';
-      accionesCelda.appendChild(btnAgregar);
+if (window.esAdmin) {
+  const btnAgregar = document.createElement('button');
+  btnAgregar.className = 'btn-agregar';
+  btnAgregar.title = 'Agregar asignación';
+  btnAgregar.dataset.fecha = fecha;
+  btnAgregar.dataset.aula = aula.aula_id;
+  btnAgregar.textContent = '➕';
+  accionesCelda.appendChild(btnAgregar);
 
-      if (asignacionesFecha.length > 0) {
-        const btnEditar = document.createElement('button');
-        btnEditar.className = 'btn-editar-asignacion';
-        btnEditar.dataset.id = asignacionesFecha[0].Id;
-        btnEditar.dataset.fecha = fecha;
-        btnEditar.dataset.aula = aula.aula_id;
-        btnEditar.title = 'Editar esta asignación';
-        btnEditar.textContent = '✏️';
-        accionesCelda.appendChild(btnEditar);
+  if (asignacionesFecha.length > 0) {
+    const btnEditar = document.createElement('button');
+    btnEditar.className = 'btn-editar-asignacion';
+    btnEditar.dataset.id = asignacionesFecha[0].Id;
+    btnEditar.dataset.fecha = fecha;
+    btnEditar.dataset.aula = aula.aula_id;
+    btnEditar.title = 'Editar esta asignación';
+    btnEditar.textContent = '✏️';
+    accionesCelda.appendChild(btnEditar);
 
-        const btnEliminar = document.createElement('button');
-        btnEliminar.className = 'btn-eliminar-asignacion';
-        btnEliminar.dataset.id = asignacionesFecha[0].Id;
-        btnEliminar.dataset.fecha = fecha;
-        btnEliminar.dataset.aula = aula.aula_id;
-        btnEliminar.title = 'Eliminar esta asignación';
-        btnEliminar.textContent = '❌';
-        accionesCelda.appendChild(btnEliminar);
-      }
+    const btnEliminar = document.createElement('button');
+    btnEliminar.className = 'btn-eliminar-asignacion';
+    btnEliminar.dataset.id = asignacionesFecha[0].Id;
+    btnEliminar.dataset.fecha = fecha;
+    btnEliminar.dataset.aula = aula.aula_id;
+    btnEliminar.title = 'Eliminar esta asignación';
+    btnEliminar.textContent = '❌';
+    accionesCelda.appendChild(btnEliminar);
+  }
+}
 
       td.appendChild(accionesCelda);
       tr.appendChild(td);
@@ -323,6 +325,7 @@ export function renderGrillaTodosLosTurnos(datos, aulaIdFiltrada = null) {
     document.querySelector('h2').textContent = `Asignaciones CRUI (todos los turnos)`;
   }
 
+  document.body.classList.add('modo-extendido');
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
   turnos.forEach(turno => {
@@ -400,6 +403,8 @@ export function renderVistaGeneral() {
   actualizarGrilla(turno);
   actualizarVisibilidadFiltros();
 
+  document.querySelector('.bloque-turnos')?.style.setProperty('display', 'flex', 'important');
+
 }
 
 export function renderVistaExtendida(aulaId) {
@@ -409,6 +414,7 @@ export function renderVistaExtendida(aulaId) {
     modoExtendido: true,
     aulaSeleccionada: aulaId,
   });
+  document.querySelector('.bloque-turnos')?.style.setProperty('display', 'none', 'important');
 
   // 🧼 Limpieza visual previa
   const selectorFecha = document.getElementById('selector-fecha');

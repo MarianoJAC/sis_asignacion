@@ -27,10 +27,12 @@ if (
 }
 
   // 🟢 Botón "Todas las Aulas"
-  const btnTodas = e.target.closest('#btn-ver-todas');
+ const btnTodas = e.target.closest('#btn-ver-todas');
 if (btnTodas) {
   e.preventDefault();
   console.log('[EVENTOS] Click en "Ver todas las aulas"');
+
+  document.body.classList.remove('modo-extendido'); // ✅ Clave para mostrar los botones
 
   setState({
     modoExtendido: false,
@@ -47,12 +49,23 @@ if (btnTodas) {
   return;
 }
 
+
   // 🟡 Tabs de turno
-  if (e.target.classList.contains('tab-btn')) {
-    const turno = e.target.dataset.turno;
-    actualizarGrilla(turno);
-    return;
-  }
+if (e.target.classList.contains('tab-btn') && e.target.dataset.turno) {
+  const turno = e.target.dataset.turno;
+
+  // 🔄 Actualizar grilla
+  actualizarGrilla(turno);
+
+  // ✅ Actualizar botón activo
+  document.querySelectorAll('.tab-btn[data-turno]').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  e.target.classList.add('active');
+
+  return;
+}
+
 
   // Botón de agregar entidad
   if (id === 'btn-agregar-entidad') {

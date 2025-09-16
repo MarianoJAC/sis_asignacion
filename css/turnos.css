@@ -31,3 +31,7 @@
   margin-left: auto;
 
 }
+
+body.modo-extendido .bloque-turnos button[data-turno] {
+  display: none !important;
+}
