@@ -1,25 +1,21 @@
 <?php
 include '../config/conexion.php';
 
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    die('<div class="modal-contenido"><p class="mensaje-error">Acceso denegado</p></div>');
-}
-
 $aula_id = $_GET['aula_id'] ?? '';
 $fecha = $_GET['fecha'] ?? '';
 $turno = $_GET['turno'] ?? '';
 
+// 🧪 Trazas para auditoría
 error_log("🧪 Crear asignación | Aula: $aula_id | Fecha: $fecha | Turno: $turno");
 
 function options($tabla, $id_col, $name_col) {
-    global $pdo;
-    $stmt = $pdo->query("SELECT $id_col, $name_col FROM $tabla ORDER BY $name_col");
-    $opts = '';
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $opts .= "<option value='{$row[$id_col]}'>{$row[$name_col]}</option>";
-    }
-    return $opts;
+  global $conexion;
+  $result = mysqli_query($conexion, "SELECT $id_col, $name_col FROM $tabla ORDER BY $name_col");
+  $opts = '';
+  while ($row = mysqli_fetch_assoc($result)) {
+    $opts .= "<option value='{$row[$id_col]}'>{$row[$name_col]}</option>";
+  }
+  return $opts;
 }
 ?>
 

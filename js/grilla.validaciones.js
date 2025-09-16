@@ -48,7 +48,8 @@ function minutosAHora(minutos) {
 
 function getFechasSemanaCompleta() {
   const hoy = new Date();
-  const diaActual = hoy.getDay();
+  const diaActual = hoy.getDay(); // 0 = domingo, 1 = lunes, ..., 6 = sábado
+
   const lunes = new Date(hoy);
   lunes.setDate(hoy.getDate() - diaActual + 1);
   lunes.setHours(0, 0, 0, 0);

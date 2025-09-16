@@ -1,33 +1,41 @@
 <?php
+header('Content-Type: application/json; charset=utf-8');
 include '../config/conexion.php';
 
-header('Content-Type: application/json');
+$data = json_decode(file_get_contents("php://input"), true);
+
+// Sanitización
+$nombre = trim(preg_replace('/\s+/', ' ', $data['nombre'] ?? ''));
+$color = trim($data['color'] ?? '');
+
+if (!$nombre || !$color) {
+  echo json_encode(['ok' => false, 'error' => 'Datos incompletos']);
+  exit;
+}
+
+if (!preg_match('/^#[0-9A-F]{6}$/i', $color)) {
+  echo json_encode(['ok' => false, 'error' => 'Color inválido']);
+  exit;
+}
+
+// Chequeo de duplicado (opcional si tenés UNIQUE en la DB)
+$check = $conexion->prepare("SELECT 1 FROM entidades WHERE UPPER(nombre) = ?");
+$check->bind_param("s", $nombre);
+$check->execute();
+$check->store_result();
+
+if ($check->num_rows > 0) {
+  echo json_encode(['ok' => false, 'error' => 'La entidad ya existe']);
+  exit;
+}
 
 try {
-    if (!isset($pdo) || !$pdo) {
-        http_response_code(500);
-        echo json_encode(['error' => 'Conexión no establecida']);
-        exit;
-    }
+  $stmt = $conexion->prepare("INSERT INTO entidades (nombre, color) VALUES (?, ?)");
+  $stmt->bind_param("ss", $nombre, $color);
+  $stmt->execute();
 
-    $data = json_decode(file_get_contents('php://input'), true);
-
-    if (!$data || !isset($data['nombre']) || !isset($data['color'])) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Datos incompletos']);
-        exit;
-    }
-
-    $stmt = $pdo->prepare("INSERT INTO entidades (nombre, color) VALUES (:nombre, :color)");
-    $stmt->execute([
-        ':nombre' => $data['nombre'],
-        ':color' => $data['color']
-    ]);
-
-    echo json_encode(['ok' => true, 'mensaje' => 'Entidad agregada correctamente']);
-} catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Error al agregar entidad: ' . $e->getMessage()]);
-    exit;
+  echo json_encode(['ok' => true]);
+} catch (mysqli_sql_exception $e) {
+  echo json_encode(['ok' => false, 'error' => 'La entidad ya existe']);
 }
-?>
+exit;

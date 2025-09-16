@@ -1,32 +1,38 @@
 <?php
 include '../config/conexion.php';
 header('Content-Type: application/json');
-
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['ok' => false, 'error' => 'Debe iniciar sesión']);
-    exit;
-}
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 $input = json_decode(file_get_contents('php://input'), true);
 $texto = strtolower(trim($input['texto'] ?? ''));
 
 if (!$texto) {
-    echo json_encode(['ok' => false, 'error' => 'Texto vacío']);
-    exit;
+  echo json_encode(['ok' => false, 'error' => 'Texto vacío']);
+  exit;
 }
 
-$stmt = $pdo->prepare("
-    SELECT aula_id AS id, nombre, recurso, capacidad
-    FROM aulas
-    WHERE LOWER(nombre) LIKE :texto
-       OR LOWER(recurso) LIKE :texto
-       OR LOWER(CAST(capacidad AS CHAR)) LIKE :texto
+$stmt = $conexion->prepare("
+  SELECT aula_id AS id, nombre, recurso, capacidad
+  FROM aulas
+  WHERE LOWER(nombre) LIKE CONCAT('%', ?, '%')
+     OR LOWER(recurso) LIKE CONCAT('%', ?, '%')
+     OR LOWER(CAST(capacidad AS CHAR)) LIKE CONCAT('%', ?, '%')
 ");
-$texto = "%$texto%";
-$stmt->execute(['texto' => $texto]);
-$aulas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if (!$stmt) {
+  echo json_encode(['ok' => false, 'error' => 'Error en la preparación SQL']);
+  exit;
+}
+
+$stmt->bind_param("sss", $texto, $texto, $texto);
+$stmt->execute();
+$resultado = $stmt->get_result();
+
+$aulas = [];
+while ($fila = $resultado->fetch_assoc()) {
+  $aulas[] = $fila;
+}
 
 echo json_encode(['ok' => true, 'aulas' => $aulas]);
 exit;
-?>

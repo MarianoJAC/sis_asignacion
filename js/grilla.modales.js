@@ -1,3 +1,4 @@
+
 import { handlersFormulario } from './grilla.formularios.js';
 
 function abrirModal({ html, envolver = true, idEsperado = null, focoSelector = null, contexto = null }) {
@@ -21,6 +22,7 @@ function abrirModal({ html, envolver = true, idEsperado = null, focoSelector = n
 
     const formId = form.id.trim();
     const handler = handlersFormulario?.[formId];
+    
 
     // 🛡️ Registro quirúrgico: solo si no está ya asignado
     if (typeof handler === 'function') {
@@ -52,15 +54,16 @@ function htmlNuevaEntidad() {
       <form id="form-agregar-entidad" class="modal-formulario">
         <div class="campo-formulario">
           <label for="nombre">Nombre de la entidad</label>
-          <input type="text" id="nombre" name="nombre" placeholder="Ej: Instituto XYZ" required>
+          <input type="text" name="nombre" id="nombre" autocomplete="off" required />
         </div>
         <div class="campo-formulario">
-          <label for="color">Color asociado</label>
-          <input type="color" id="color" name="color" value="#000000" required>
+          <label for="color">Color</label>
+          <input type="color" name="color" id="color" value="#2196f3" />
         </div>
-        <div class="form-buttons">
-          <button type="button" id="btn-cancelar">Cancelar</button>
-          <button type="submit">Guardar</button>
+        <div id="aviso-duplicado" class="aviso-error fila-completa" style="display:none;"></div>
+        <div class="form-buttons fila-completa">
+          <button type="button" id="btn-cancelar-agregar">Cancelar</button>
+          <button type="submit">✅ Guardar</button>
         </div>
       </form>
     </div>
@@ -69,10 +72,9 @@ function htmlNuevaEntidad() {
 
 // ❌ HTML para eliminar entidad
 function htmlEliminarEntidad(entidades) {
-  let html = `
-    <div class="modal-entidad">
-      <h3 class="modal-titulo">❌ Eliminar Entidad</h3>
-      <form id="form-eliminar-entidad" class="modal-eliminar-form">`;
+  let html = `<div class="modal-contenido">
+    <h3>❌ Eliminar entidad</h3>
+    <form id="form-eliminar-entidad" class="modal-eliminar-form">`;
 
   entidades.forEach(ent => {
     html += `

@@ -6,11 +6,9 @@ $base_datos = 'cruvei_asignaciones';
 
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$base_datos;charset=utf8mb4", $usuario, $contrasena);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-} catch (PDOException $e) {
-    die("Error de conexión: " . $e->getMessage());
+$conexion = mysqli_connect($host, $usuario, $contrasena, $base_datos);
+
+if (!$conexion) {
+    die("Error de conexión: " . mysqli_connect_error());
 }
 ?>
