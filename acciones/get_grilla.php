@@ -67,12 +67,26 @@ $query = "
 ";
 
 if ($aula_id > 0) {
-  $query .= " WHERE a.aula_id = $aula_id";
+  $query .= " WHERE a.aula_id = ?";
 }
 
 $query .= " ORDER BY a.fecha ASC, a.hora_inicio ASC";
 
-$asignacionesQuery = mysqli_query($conexion, $query);
+$stmt = mysqli_prepare($conexion, $query);
+
+if (!$stmt) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Error al preparar la consulta: ' . mysqli_error($conexion)]);
+    exit;
+}
+
+if ($aula_id > 0) {
+    mysqli_stmt_bind_param($stmt, "i", $aula_id);
+}
+
+mysqli_stmt_execute($stmt);
+$asignacionesQuery = mysqli_stmt_get_result($stmt);
+
 if (!$asignacionesQuery) {
   http_response_code(500);
   echo json_encode(['error' => 'Error en la consulta de asignaciones']);

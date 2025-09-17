@@ -248,6 +248,7 @@ if (window.esAdmin) {
     btnEditar.dataset.id = asignacionesFecha[0].Id;
     btnEditar.dataset.fecha = fecha;
     btnEditar.dataset.aula = aula.aula_id;
+    btnEditar.dataset.turno = turnoSeleccionado; // 🐞 FIX
     btnEditar.title = 'Editar esta asignación';
     btnEditar.textContent = '✏️';
     accionesCelda.appendChild(btnEditar);
@@ -257,6 +258,7 @@ if (window.esAdmin) {
     btnEliminar.dataset.id = asignacionesFecha[0].Id;
     btnEliminar.dataset.fecha = fecha;
     btnEliminar.dataset.aula = aula.aula_id;
+    btnEliminar.dataset.turno = turnoSeleccionado; // 🐞 FIX
     btnEliminar.title = 'Eliminar esta asignación';
     btnEliminar.textContent = '❌';
     accionesCelda.appendChild(btnEliminar);

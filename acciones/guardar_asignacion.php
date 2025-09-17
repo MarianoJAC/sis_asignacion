@@ -59,11 +59,15 @@ if (!$aula_id || !$fecha || !$turno || !$carrera || !$anio || !$materia || !$pro
 }
 
 // 🔍 Validación de existencia de entidad
-$check = mysqli_query($conexion, "SELECT 1 FROM entidades WHERE entidad_id = '$entidad'");
-if (mysqli_num_rows($check) === 0) {
+$check = $conexion->prepare("SELECT 1 FROM entidades WHERE entidad_id = ?");
+$check->bind_param("i", $entidad);
+$check->execute();
+$check->store_result();
+if ($check->num_rows === 0) {
   echo json_encode(['ok' => false, 'error' => 'La entidad no existe']);
   exit;
 }
+$check->close();
 
 // 🔍 Verificación de duplicado funcional
 $verificar = $conexion->prepare("SELECT COUNT(*) FROM asignaciones WHERE 

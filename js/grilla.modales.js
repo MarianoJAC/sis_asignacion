@@ -23,17 +23,6 @@ function abrirModal({ html, envolver = true, idEsperado = null, focoSelector = n
     const formId = form.id.trim();
     const handler = handlersFormulario?.[formId];
     
-
-    // 🛡️ Registro quirúrgico: solo si no está ya asignado
-    if (typeof handler === 'function') {
-      form.addEventListener('submit', e => {
-        e.preventDefault();
-        const submitBtn = form.querySelector('button[type="submit"]');
-        if (submitBtn) submitBtn.disabled = true;
-        handler(form, submitBtn);
-      }, { once: true }); // ✅ Solo una ejecución
-    }
-    
   });
 }
 

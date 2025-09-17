@@ -10,6 +10,9 @@ import { normalizarFecha } from './grilla.filtros.js';
 import { getState, setState } from './grilla.state.js';
 
 document.addEventListener('click', e => {
+  if (e.target.closest('#modal-formulario')) {
+    return;
+  }
   const id = e.target.id;
 
   // 🔒 Cierre automático del panel de filtros si se hace clic fuera
@@ -145,8 +148,7 @@ const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '')
   if (e.target.classList.contains('btn-editar-asignacion')) {
     const fecha = e.target.dataset.fecha;
     const aula = e.target.dataset.aula;
-    const contenedor = e.target.closest('.grilla-turno-wrapper');
-const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '') || 'Matutino';
+    const turno = e.target.dataset.turno; // 🐞 FIX
     const state = getState();
 
     if (!state.datosGlobales || !Array.isArray(state.datosGlobales.asignaciones)) {
@@ -179,8 +181,7 @@ const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '')
   if (e.target.classList.contains('btn-eliminar-asignacion') && id !== 'btn-eliminar-entidad') {
     const fecha = e.target.dataset.fecha;
     const aula = e.target.dataset.aula;
-    const contenedor = e.target.closest('.grilla-turno-wrapper');
-const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '') || 'Matutino';
+    const turno = e.target.dataset.turno; // 🐞 FIX
     const state = getState();
 
     if (!state.datosGlobales || !Array.isArray(state.datosGlobales.asignaciones)) {

@@ -2,12 +2,18 @@
 session_start();
 include 'config/conexion.php';
 
+// Redirigir si ya hay una sesión activa
+if (isset($_SESSION['usuario_id'])) {
+    header("Location: views/grilla.php");
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $username = trim($_POST['username'] ?? '');
   $password = $_POST['password'] ?? '';
 
   if (!$username || !$password) {
-    $error = 'Credenciales incompletas';
+    $error = 'Por favor, complete todos los campos.';
   } else {
     $stmt = $conexion->prepare("SELECT id, password, role FROM usuarios WHERE username = ?");
     $stmt->bind_param("s", $username);
@@ -26,10 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: views/grilla.php");
         exit;
       } else {
-        $error = 'Contraseña incorrecta';
+        $error = 'Usuario o contraseña incorrectos.';
       }
     } else {
-      $error = 'Usuario no encontrado';
+      $error = 'Usuario o contraseña incorrectos.';
     }
   }
 }
@@ -39,24 +45,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Login institucional</title>
-  <link rel="stylesheet" href="css/login.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Sistema de Asignaciones</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/login.css?v=1.1">
 </head>
 <body>
-  <div class="login-container">
-    <h2>🔐 Acceso al sistema</h2>
-    <?php if (isset($error)): ?>
-      <div class="error"><?= htmlspecialchars($error) ?></div>
-    <?php endif; ?>
-    <form method="POST">
-      <label>Usuario:
-        <input type="text" name="username" required>
-      </label>
-      <label>Contraseña:
-        <input type="password" name="password" required>
-      </label>
-      <button type="submit">Ingresar</button>
-    </form>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <div class="card login-card shadow-lg">
+          <div class="card-body">
+            <h3 class="card-title text-center mb-4">🔐 Acceso al Sistema</h3>
+            <?php if (isset($error)): ?>
+              <div class="alert alert-danger" role="alert">
+                <?= htmlspecialchars($error) ?>
+              </div>
+            <?php endif; ?>
+            <form method="POST" novalidate>
+              <div class="mb-3">
+                <label for="username" class="form-label">Nombre de Usuario</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 </html>

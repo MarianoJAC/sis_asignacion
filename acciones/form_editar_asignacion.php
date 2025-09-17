@@ -18,9 +18,11 @@ if (!is_numeric($id) || intval($id) <= 0) {
 }
 
 // 🔍 Buscar asignación
-$query = "SELECT * FROM asignaciones WHERE Id = '$id'";
-$result = mysqli_query($conexion, $query);
-$asignacion = mysqli_fetch_assoc($result);
+$stmt = $conexion->prepare("SELECT * FROM asignaciones WHERE Id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$asignacion = $result->fetch_assoc();
 
 if (!$asignacion) {
   error_log("❌ Asignación no encontrada para ID: " . $id);

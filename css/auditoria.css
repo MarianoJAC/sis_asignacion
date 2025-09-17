@@ -1,128 +1,79 @@
-/* 📋 Auditoría institucional */
+/* 📋 Estilos personalizados para Auditoría con Bootstrap */
 
 .titulo-modulo {
-  font-size: var(--font-size-xxlarge);
+  font-size: 1.75rem; /* Un poco más grande que el h2 de Bootstrap */
   font-weight: 700;
   color: var(--primary-color);
-  margin-bottom: var(--spacing-sm);
-  text-align: left;
 }
 
-/* 🔙 Botón volver */
-.btn-volver {
-  background-color: var(--primary-color);
-  color: var(--background-color-white);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border: none;
-  border-radius: var(--border-radius-sm);
-  text-decoration: none;
-  font-weight: bold;
-  box-shadow: 0 2px 4px var(--shadow-color);
-  transition: background-color 0.2s ease;
+/*
+  La mayoría de los estilos de filtros y botones ahora son manejados por Bootstrap.
+  Mantenemos solo las personalizaciones de color y tipografía.
+*/
+
+/*
+  La tabla principal es estilizada por Bootstrap (.table, .table-hover, etc).
+  Solo mantenemos los indicadores de borde.
+*/
+
+#tabla-auditoria tbody tr {
+  border-left: 5px solid var(--border-color);
 }
 
-.btn-volver:hover {
-  background-color: var(--primary-color-dark);
+/* Indicadores de color para las filas */
+.fila-alta {
+  border-left-color: #198754; /* Verde de Bootstrap (success) */
 }
 
-/* 🔍 Filtros técnicos */
-.bloque-filtros {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
-  background-color: var(--background-color-white);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  box-shadow: 0 2px 4px var(--shadow-color);
-  margin-bottom: var(--spacing-md);
-  border-bottom: 2px solid var(--border-color);
+.fila-baja {
+  border-left-color: #dc3545; /* Rojo de Bootstrap (danger) */
 }
 
-.bloque-filtros label {
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  font-size: var(--font-size-small);
-  color: var(--text-color-dark);
-  gap: var(--spacing-xxs);
-  min-width: 160px;
+.fila-modificacion {
+  border-left-color: #ffc107; /* Amarillo de Bootstrap (warning) */
 }
 
-.bloque-filtros button[type="submit"] {
-  background-color: var(--primary-color);
-  color: var(--background-color-white);
-  padding: var(--spacing-xs) var(--spacing-md);
-  border: none;
-  border-radius: var(--border-radius-sm);
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 2px 4px var(--shadow-color);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.bloque-filtros button[type="submit"]:hover {
-  background-color: var(--primary-color-dark);
-  transform: scale(1.05);
-}
-
-/* 📊 Tabla de auditoría */
-#tabla-auditoria {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: var(--font-size-small);
-  box-shadow: 0 2px 6px var(--shadow-color);
-  border-radius: var(--border-radius-sm);
-  overflow: hidden;
-  margin-top: var(--spacing-lg);
-}
-
-#tabla-auditoria th {
-  background-color: var(--background-color-white);
-  color: var(--text-color-dark);
-  font-weight: bold;
-  padding: var(--spacing-sm);
-  border-bottom: 1px solid var(--border-color);
-}
-
-#tabla-auditoria td {
-  padding: var(--spacing-sm);
-  border-bottom: 1px solid var(--border-color);
-  white-space: pre-wrap;
+/* Estilo para la lista de valores (Antes/Después) */
+.valor-lista {
+  list-style: none;
+  padding: 0.5rem;
+  margin: 0;
   font-family: monospace;
-  font-size: var(--font-size-xsmall);
+  font-size: 0.8rem;
   background-color: var(--background-color-light);
-  max-width: 400px;
-  overflow-x: auto;
-}
-
-#tabla-auditoria tr:nth-child(even) td {
-  background-color: var(--background-color-white);
-}
-
-#tabla-auditoria tr:hover td {
-  background-color: var(--background-color-hover);
-}
-
-.fila-alta td {
-  background-color: #e8f0fe; /* azul claro */
-}
-
-.fila-baja td {
-  background-color: #fce8e6; /* rojo claro */
-}
-
-.fila-modificacion td {
-  background-color: #fff8e1; /* amarillo claro */
-}
-
-#tabla-auditoria td pre {
-  background-color: var(--background-color-white);
-  border: 1px solid var(--border-color);
   border-radius: var(--border-radius-sm);
-  padding: var(--spacing-xs);
-  font-family: monospace;
-  font-size: var(--font-size-xsmall);
   max-height: 200px;
   overflow-y: auto;
+  border: 1px solid var(--border-color);
+}
+
+.valor-lista li {
+  padding: 2px 0;
+}
+
+/* Estilos de Impresión */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #zona-imprimible, #zona-imprimible * {
+    visibility: visible;
+  }
+
+  #zona-imprimible {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  .table {
+    font-size: 10px; /* Reducir tamaño para que quepa mejor */
+  }
+
+  .valor-lista {
+    max-height: none; /* Mostrar lista completa */
+    overflow-y: visible;
+  }
 }

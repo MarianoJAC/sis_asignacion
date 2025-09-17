@@ -3,7 +3,7 @@
 // 🧩 Rango institucional por turno (en minutos desde medianoche)
 const rangoTurno = {
   Matutino:   [360, 840],     // 06:00 - 14:00
-  Vespertino: [780, 1080],    // 13:00 - 18:00
+  Vespertino: [840, 1080],    // 14:00 - 18:00
   Nocturno:   [1080, 1380]    // 18:00 - 23:00
 };
 
