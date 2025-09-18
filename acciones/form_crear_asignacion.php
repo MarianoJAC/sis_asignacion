@@ -76,6 +76,20 @@ function options($tabla, $id_col, $name_col) {
     </div>
 
     <div class="campo-formulario fila-completa">
+      <label>Repetir asignación:</label>
+      <div class="opciones-repeticion">
+        <input type="radio" id="repetir_dia" name="repeticion" value="dia" checked>
+        <label for="repetir_dia">Solo este día</label>
+
+        <input type="radio" id="repetir_mes" name="repeticion" value="mes">
+        <label for="repetir_mes">Todo el mes</label>
+
+        <input type="radio" id="repetir_anio" name="repeticion" value="anio">
+        <label for="repetir_anio">Todo el año</label>
+      </div>
+    </div>
+
+    <div class="campo-formulario fila-completa">
       <label for="comentarios">Comentarios:</label>
       <textarea name="comentarios" id="comentarios" rows="3" placeholder="Opcional..."></textarea>
     </div>

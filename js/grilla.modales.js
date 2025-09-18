@@ -102,6 +102,20 @@ function htmlEliminarAsignacion(asignaciones, aula, fecha, turno) {
   });
 
   html += `
+      <div class="campo-formulario fila-completa">
+        <label>Eliminar asignación:</label>
+        <div class="opciones-repeticion">
+          <input type="radio" id="repetir_dia" name="repeticion" value="dia" checked>
+          <label for="repetir_dia">Solo este día</label>
+
+          <input type="radio" id="repetir_mes" name="repeticion" value="mes">
+          <label for="repetir_mes">Todo el mes</label>
+
+          <input type="radio" id="repetir_anio" name="repeticion" value="anio">
+          <label for="repetir_anio">Todo el año</label>
+        </div>
+      </div>
+
       <input type="hidden" name="aula_id" value="${aula}">
       <input type="hidden" name="fecha" value="${fecha}">
       <input type="hidden" name="turno" value="${turno}">

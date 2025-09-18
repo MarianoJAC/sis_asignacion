@@ -5,7 +5,6 @@ import { renderLeyenda } from './grilla.eventos.js';
 import { esHorarioValido, haySolapamiento } from './grilla.validaciones.js';
 import { fetchGrillaData } from './grilla.core.js';
 import {
-  htmlEliminarAsignacion,
   htmlEliminarEntidad,
   htmlNuevaEntidad
 } from './grilla.modales.js';
@@ -57,7 +56,8 @@ function procesarAgregarAsignacion(form, submitBtn) {
     comentarios: form.elements['comentarios']?.value.trim(),
     aula_id: form.elements['aula_id']?.value,
     fecha: form.elements['fecha']?.value,
-    turno: form.elements['turno']?.value
+    turno: form.elements['turno']?.value,
+    repeticion: form.querySelector('input[name="repeticion"]:checked')?.value
   };
 
   if (!datos.entidad_id || !datos.materia || !datos.profesor || !datos.hora_inicio || !datos.hora_fin || !datos.aula_id || !datos.fecha || !datos.turno) {
@@ -379,10 +379,14 @@ function procesarEliminarAsignacion(form, submitBtn) {
     return;
   }
 
+  const repeticion = form.querySelector('input[name="repeticion"]:checked')?.value || 'dia';
+
+  const datos = { id, repeticion };
+
   fetch('../acciones/eliminar_asignacion.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id })
+    body: JSON.stringify(datos)
   })
     .then(res => res.text())
     .then(texto => {
@@ -452,6 +456,5 @@ export {
   procesarEliminarAsignacion,
   interceptarFormulario,
   htmlNuevaEntidad,
-  htmlEliminarEntidad,
-  htmlEliminarAsignacion
+  htmlEliminarEntidad
 };

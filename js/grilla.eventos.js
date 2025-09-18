@@ -2,17 +2,14 @@ import { abrirModal, cerrarModal } from './grilla.modales.js';
 import { mostrarMensaje } from './grilla.alertas.js';
 import {
   htmlNuevaEntidad,
-  htmlEliminarEntidad,
-  htmlEliminarAsignacion
+  htmlEliminarEntidad
 } from './grilla.formularios.js';
+import { htmlEliminarAsignacion } from './grilla.modales.js';
 import { actualizarGrilla, renderVistaGeneral } from './grilla.render.js';
 import { normalizarFecha } from './grilla.filtros.js';
 import { getState, setState } from './grilla.state.js';
 
 document.addEventListener('click', e => {
-  if (e.target.closest('#modal-formulario')) {
-    return;
-  }
   const id = e.target.id;
 
   // 🔒 Cierre automático del panel de filtros si se hace clic fuera

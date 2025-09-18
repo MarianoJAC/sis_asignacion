@@ -15,8 +15,9 @@ function registrarAuditoria($tipo, $objetoId, $usuarioId, $accion, $campo = null
 // 🧠 Leer JSON desde el body
 $input = json_decode(file_get_contents('php://input'), true);
 $id = $input['id'] ?? null;
+$repeticion = $input['repeticion'] ?? 'dia';
 
-// 🧑 Obtener usuario actual (ajustar según tu sistema)
+// 🧑 Obtener usuario actual
 session_start();
 $usuarioId = $_SESSION['usuario_id'] ?? null;
 
@@ -30,30 +31,109 @@ if (!$id || !is_numeric($id)) {
   exit;
 }
 
-// 🔍 Obtener estado anterior
-$prevQuery = $conexion->prepare("SELECT aula_id, fecha, turno, carrera, anio, profesor, materia, entidad_id, hora_inicio, hora_fin, comentarios FROM asignaciones WHERE Id = ?");
-$prevQuery->bind_param("i", $id);
-$prevQuery->execute();
-$prevResult = $prevQuery->get_result();
+// Iniciar transacción
+$conexion->begin_transaction();
 
-if ($prevResult->num_rows === 0) {
-  echo json_encode(['ok' => false, 'error' => 'Asignación no encontrada']);
-  exit;
+try {
+    // 🔍 Obtener la asignación original para usarla como plantilla
+    $queryOriginal = $conexion->prepare("SELECT * FROM asignaciones WHERE Id = ?");
+    $queryOriginal->bind_param("i", $id);
+    $queryOriginal->execute();
+    $resultOriginal = $queryOriginal->get_result();
+
+    if ($resultOriginal->num_rows === 0) {
+        throw new Exception('Asignación no encontrada');
+    }
+    $original = $resultOriginal->fetch_assoc();
+    $queryOriginal->close();
+
+    $deleteCount = 0;
+
+    if ($repeticion === 'dia') {
+        // --- Eliminación simple ---
+        $valorAnterior = json_encode($original, JSON_UNESCAPED_UNICODE);
+        
+        $delete = $conexion->prepare("DELETE FROM asignaciones WHERE Id = ?");
+        $delete->bind_param("i", $id);
+        $delete->execute();
+        $deleteCount = $delete->affected_rows;
+        $delete->close();
+
+        if ($deleteCount > 0) {
+            registrarAuditoria('asignacion', $id, $usuarioId, 'baja', null, $valorAnterior, null);
+        }
+
+    } else {
+        // --- Eliminación masiva (mes o año) ---
+        $fecha_dt = new DateTime($original['fecha']);
+        $dia_semana_original = $fecha_dt->format('N'); // 1 (Lunes) a 7 (Domingo)
+
+        $fecha_inicio_loop = clone $fecha_dt;
+        $fecha_fin_loop = clone $fecha_dt;
+
+        if ($repeticion === 'mes') {
+            $fecha_inicio_loop->modify('first day of this month');
+            $fecha_fin_loop->modify('last day of this month');
+        } else { // anio
+            $fecha_inicio_loop->modify('first day of january this year');
+            $fecha_fin_loop->modify('last day of december this year');
+        }
+
+        $fecha_inicio_str = $fecha_inicio_loop->format('Y-m-d');
+        $fecha_fin_str = $fecha_fin_loop->format('Y-m-d');
+
+        // Construir la consulta de eliminación masiva
+        $deleteQuery = "DELETE FROM asignaciones WHERE 
+            aula_id = ? AND 
+            turno = ? AND 
+            materia = ? AND 
+            profesor = ? AND 
+            hora_inicio = ? AND 
+            hora_fin = ? AND 
+            DAYOFWEEK(fecha) = ? AND 
+            fecha BETWEEN ? AND ?";
+        
+        // DAYOFWEEK en MySQL: 1=Domingo, 2=Lunes... 7=Sábado
+        // PHP 'N': 1=Lunes... 7=Domingo
+        $dia_semana_mysql = ($dia_semana_original % 7) + 1;
+
+        $stmt = $conexion->prepare($deleteQuery);
+        $stmt->bind_param('isssssiss', 
+            $original['aula_id'], 
+            $original['turno'], 
+            $original['materia'], 
+            $original['profesor'], 
+            $original['hora_inicio'], 
+            $original['hora_fin'], 
+            $dia_semana_mysql, 
+            $fecha_inicio_str, 
+            $fecha_fin_str
+        );
+
+        $stmt->execute();
+        $deleteCount = $stmt->affected_rows;
+        $stmt->close();
+
+        if ($deleteCount > 0) {
+            $detalleAuditoria = json_encode([
+                'repeticion' => $repeticion,
+                'plantilla' => $original,
+                'eliminadas' => $deleteCount
+            ], JSON_UNESCAPED_UNICODE);
+            registrarAuditoria('asignacion', $id, $usuarioId, 'baja_masiva', null, $detalleAuditoria, null);
+        }
+    }
+
+    if ($deleteCount > 0) {
+        $conexion->commit();
+        echo json_encode(['ok' => true, 'mensaje' => "✅ $deleteCount asignacion(es) eliminada(s)."]);
+    } else {
+        throw new Exception('No se encontró ninguna asignación para eliminar con los criterios seleccionados.');
+    }
+
+} catch (Exception $e) {
+    $conexion->rollback();
+    echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
 }
 
-$prev = $prevResult->fetch_assoc();
-$valorAnterior = json_encode($prev, JSON_UNESCAPED_UNICODE);
-
-// 🧨 Eliminación segura
-$delete = $conexion->prepare("DELETE FROM asignaciones WHERE Id = ?");
-$delete->bind_param("i", $id);
-$delete->execute();
-
-if ($delete->affected_rows > 0) {
-  // 🧾 Registrar auditoría
-  registrarAuditoria('asignacion', $id, $usuarioId, 'baja', null, $valorAnterior, null);
-
-  echo json_encode(['ok' => true, 'mensaje' => '✅ Asignación eliminada']);
-} else {
-  echo json_encode(['ok' => false, 'error' => 'No se pudo eliminar la asignación']);
-}
+exit;
