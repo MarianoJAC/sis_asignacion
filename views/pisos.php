@@ -43,6 +43,10 @@ $classrooms_second_floor = [
     <img src="../imagenes/piso1.jpg" alt="Mapa del primer piso">
     <a href="#segPiso" id="priPiso" class="marca-agua">Planta Baja</a>
 
+<a href="../index.php"  class="volver">VOLVER</a>
+
+    
+
     <?php foreach ($classrooms_first_floor as $classroom): ?>
         <a href="grilla.php?aula_id=<?php echo $classroom['id']; ?>&origen=mapa"
            class="aula <?php echo $classroom['class']; ?>">

@@ -4,6 +4,7 @@ body {
     background-color: var(--black);
     color: var(--background-color-white);
     min-height: 100vh;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 
 
 }
@@ -11,10 +12,18 @@ body {
 .volver{
     position: absolute;
     text-decoration: none;
-    top: 20%;
+    top: 10%;
     left: 3%;
     color: var(--primary-color);
     z-index: var(--z-index-sticky-column);
+    font-size: var(--font-size-large);
+    padding: var(--spacing-xxs) var(--spacing-sm);
+    border: none;
+    background: 'red';
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .flechabajo{
