@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 10.123.0.78:3306
--- Tiempo de generación: 19-09-2025 a las 18:24:08
+-- Tiempo de generación: 19-09-2025 a las 20:16:43
 -- Versión del servidor: 8.0.16
 -- Versión de PHP: 8.2.29
 
@@ -200,6 +200,27 @@ INSERT INTO `recursos_por_aula` (`id`, `aula_id`, `recurso`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `reservas`
+--
+
+CREATE TABLE `reservas` (
+  `id` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `entidad_id` int(11) NOT NULL,
+  `carrera` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `anio` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `materia` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `profesor` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `hora_inicio` time NOT NULL,
+  `hora_fin` time NOT NULL,
+  `telefono_contacto` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `comentarios` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuarios`
 --
 
@@ -207,7 +228,7 @@ CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `role` enum('admin','viewer') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `role` enum('admin','viewer','invitado') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `reset_token` varchar(64) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `reset_expires` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci TABLESPACE `cruvei_asignaciones`;
@@ -217,8 +238,9 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `username`, `password`, `role`, `reset_token`, `reset_expires`) VALUES
-(5, 'admin', '$2y$10$JDO8Pd7M38hMmwtjjWdKmuOLBftkwWOqyTo7WJhLXz63wKgPJ4AyG', 'admin', NULL, NULL),
-(6, 'usuario', '$2y$10$HXkw/aNvsq0pGD00Copep.EqGVCvsxPTjkuB1pgRayFiFZqTWFTZ2', 'viewer', NULL, NULL);
+(5, 'admin', '$2y$10$lerCMSRSXIXvgcniOyebxuUQH6rBvABtNnOZ8kyTq6e.lWXwOrXwW', 'admin', NULL, NULL),
+(6, 'usuario', '$2y$10$MiR5h464mw/n1n0GJN5HquDp577KqZRslCNkAIJKyQLBZv3Doh1HK', 'viewer', NULL, NULL),
+(7, 'invitado', '$2y$10$ifz.f6f6Yc5i/R53A33y0uHqGkbp4LbvcHnBw2vjVdJdGg/j2dGf.', 'invitado', NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -258,6 +280,13 @@ ALTER TABLE `entidades`
 ALTER TABLE `recursos_por_aula`
   ADD PRIMARY KEY (`id`),
   ADD KEY `aula_id` (`aula_id`);
+
+--
+-- Indices de la tabla `reservas`
+--
+ALTER TABLE `reservas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `entidad_id` (`entidad_id`);
 
 --
 -- Indices de la tabla `usuarios`
@@ -301,10 +330,16 @@ ALTER TABLE `recursos_por_aula`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
+-- AUTO_INCREMENT de la tabla `reservas`
+--
+ALTER TABLE `reservas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
@@ -328,6 +363,12 @@ ALTER TABLE `auditoria_acciones`
 --
 ALTER TABLE `recursos_por_aula`
   ADD CONSTRAINT `recursos_por_aula_ibfk_1` FOREIGN KEY (`aula_id`) REFERENCES `aulas` (`aula_id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `reservas`
+--
+ALTER TABLE `reservas`
+  ADD CONSTRAINT `reservas_ibfk_entidad` FOREIGN KEY (`entidad_id`) REFERENCES `entidades` (`entidad_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

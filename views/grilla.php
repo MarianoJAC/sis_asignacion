@@ -39,6 +39,7 @@ $usuario = $_SESSION['username'] ?? 'Usuario';
         <div class="menu-usuario">👤 <?= htmlspecialchars($usuario) ?></div>
         <?php if ($esAdmin): ?>
           <a href="auditoria_panel.php">🛡️ Auditoría</a>
+          <a href="reservas.php">📋 Ver Reservas</a>
         <?php endif; ?>
         <a href="../acciones/logout.php">🔓 Cerrar sesión</a>
       </div>

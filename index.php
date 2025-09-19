@@ -3,8 +3,12 @@ session_start();
 include 'config/conexion.php';
 
 // Redirigir si ya hay una sesión activa
-if (isset($_SESSION['usuario_id'])) {
-    header("Location: views/grilla.php");
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+    if ($_SESSION['role'] === 'invitado') {
+        header("Location: views/form_reserva.php");
+    } else {
+        header("Location: views/grilla.php");
+    }
     exit;
 }
 
@@ -28,8 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['usuario_id'] = $id;
         $_SESSION['username'] = $username;
         $_SESSION['role'] = $role;
+        $_SESSION['loggedin'] = true; // Añadir para consistencia
 
-        header("Location: views/grilla.php");
+        // Redirigir según el rol
+        if ($role === 'invitado') {
+            header("Location: views/form_reserva.php");
+        } else {
+            header("Location: views/grilla.php");
+        }
         exit;
       } else {
         $error = 'Usuario o contraseña incorrectos.';
