@@ -25,6 +25,8 @@ if ($result_entidades = $conexion->query($sql_entidades)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitud de Reserva de Aula</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/variables.css?v=1.1">
+    <link rel="stylesheet" href="../css/global.css?v=1.1">
     <link rel="stylesheet" href="../css/login.css?v=1.1">
 </head>
 <body>
@@ -67,7 +69,17 @@ if ($result_entidades = $conexion->query($sql_entidades)) {
 
                             <div class="col-md-6">
                                 <label for="anio" class="form-label">Año de Carrera:</label>
-                                <input type="text" class="form-control" id="anio" name="anio" required>
+                                <select class="form-select" id="anio" name="anio" required>
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="1">1</option>
+                                    <option value="1A">1A</option>
+                                    <option value="1B">1B</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
                             </div>
 
                             <div class="col-md-6">

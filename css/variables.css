@@ -22,8 +22,8 @@
   --z-index-sweet-alert: 1100; /* Higher than modal */
 
   /* Font Families */
-  --font-family-headings: 'Montserrat', sans-serif;
-  --font-family-body: 'Roboto', sans-serif;
+  --font-family-headings: Verdana, Geneva, Tahoma, sans-serif;
+  --font-family-body: Verdana, Geneva, Tahoma, sans-serif;
 
   /* Font Sizes */
   --font-size-xsmall: 0.75rem; /* For very small text */
