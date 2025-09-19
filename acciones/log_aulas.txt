@@ -216,3 +216,115 @@
 [2025-09-19 14:49:37] DEBUG: Inserción exitosa para 2025-09-19. ID: 3. Total creadas: 1
 [2025-09-19 14:49:38] DEBUG: Transacción completada (commit). Total final: 1
 [2025-09-19 14:49:38] DEBUG: ---FIN DE GUARDAR ASIGNACION---
+[2025-09-19 15:18:51] DEBUG: ---INICIO DE GUARDAR ASIGNACION---
+[2025-09-19 15:18:51] DEBUG: Array
+(
+    [input] => Array
+        (
+            [entidad_id] => 3
+            [carrera] => software
+            [anio] => 2
+            [materia] => Programacion
+            [profesor] => Ines del Castillo
+            [hora_inicio] => 19:00
+            [hora_fin] => 22:00
+            [comentarios] => 
+            [aula_id] => 10
+            [fecha] => 2025-09-17
+            [turno] => Nocturno
+            [repeticion] => anio
+        )
+
+)
+
+[2025-09-19 15:18:51] DEBUG: Array
+(
+    [Fechas calculadas] => Array
+        (
+            [0] => 2025-09-17
+            [1] => 2025-09-24
+            [2] => 2025-10-01
+            [3] => 2025-10-08
+            [4] => 2025-10-15
+            [5] => 2025-10-22
+            [6] => 2025-10-29
+            [7] => 2025-11-05
+            [8] => 2025-11-12
+            [9] => 2025-11-19
+            [10] => 2025-11-26
+            [11] => 2025-12-03
+            [12] => 2025-12-10
+            [13] => 2025-12-17
+            [14] => 2025-12-24
+            [15] => 2025-12-31
+        )
+
+)
+
+[2025-09-19 15:18:52] DEBUG: Transacción iniciada.
+[2025-09-19 15:18:52] DEBUG: Procesando fecha: 2025-09-17
+[2025-09-19 15:18:52] DEBUG: Verificación de duplicados para 2025-09-17: 0 encontrados.
+[2025-09-19 15:18:52] DEBUG: Ejecutando inserción para 2025-09-17...
+[2025-09-19 15:18:52] DEBUG: Inserción exitosa para 2025-09-17. ID: 4. Total creadas: 1
+[2025-09-19 15:18:53] DEBUG: Procesando fecha: 2025-09-24
+[2025-09-19 15:18:53] DEBUG: Verificación de duplicados para 2025-09-24: 0 encontrados.
+[2025-09-19 15:18:53] DEBUG: Ejecutando inserción para 2025-09-24...
+[2025-09-19 15:18:53] DEBUG: Inserción exitosa para 2025-09-24. ID: 5. Total creadas: 2
+[2025-09-19 15:18:53] DEBUG: Procesando fecha: 2025-10-01
+[2025-09-19 15:18:54] DEBUG: Verificación de duplicados para 2025-10-01: 0 encontrados.
+[2025-09-19 15:18:54] DEBUG: Ejecutando inserción para 2025-10-01...
+[2025-09-19 15:18:54] DEBUG: Inserción exitosa para 2025-10-01. ID: 6. Total creadas: 3
+[2025-09-19 15:18:54] DEBUG: Procesando fecha: 2025-10-08
+[2025-09-19 15:18:54] DEBUG: Verificación de duplicados para 2025-10-08: 0 encontrados.
+[2025-09-19 15:18:54] DEBUG: Ejecutando inserción para 2025-10-08...
+[2025-09-19 15:18:55] DEBUG: Inserción exitosa para 2025-10-08. ID: 7. Total creadas: 4
+[2025-09-19 15:18:55] DEBUG: Procesando fecha: 2025-10-15
+[2025-09-19 15:18:55] DEBUG: Verificación de duplicados para 2025-10-15: 0 encontrados.
+[2025-09-19 15:18:55] DEBUG: Ejecutando inserción para 2025-10-15...
+[2025-09-19 15:18:55] DEBUG: Inserción exitosa para 2025-10-15. ID: 8. Total creadas: 5
+[2025-09-19 15:18:56] DEBUG: Procesando fecha: 2025-10-22
+[2025-09-19 15:18:56] DEBUG: Verificación de duplicados para 2025-10-22: 0 encontrados.
+[2025-09-19 15:18:56] DEBUG: Ejecutando inserción para 2025-10-22...
+[2025-09-19 15:18:56] DEBUG: Inserción exitosa para 2025-10-22. ID: 9. Total creadas: 6
+[2025-09-19 15:18:57] DEBUG: Procesando fecha: 2025-10-29
+[2025-09-19 15:18:57] DEBUG: Verificación de duplicados para 2025-10-29: 0 encontrados.
+[2025-09-19 15:18:57] DEBUG: Ejecutando inserción para 2025-10-29...
+[2025-09-19 15:18:57] DEBUG: Inserción exitosa para 2025-10-29. ID: 10. Total creadas: 7
+[2025-09-19 15:18:57] DEBUG: Procesando fecha: 2025-11-05
+[2025-09-19 15:18:58] DEBUG: Verificación de duplicados para 2025-11-05: 0 encontrados.
+[2025-09-19 15:18:58] DEBUG: Ejecutando inserción para 2025-11-05...
+[2025-09-19 15:18:58] DEBUG: Inserción exitosa para 2025-11-05. ID: 11. Total creadas: 8
+[2025-09-19 15:18:58] DEBUG: Procesando fecha: 2025-11-12
+[2025-09-19 15:18:59] DEBUG: Verificación de duplicados para 2025-11-12: 0 encontrados.
+[2025-09-19 15:18:59] DEBUG: Ejecutando inserción para 2025-11-12...
+[2025-09-19 15:18:59] DEBUG: Inserción exitosa para 2025-11-12. ID: 12. Total creadas: 9
+[2025-09-19 15:18:59] DEBUG: Procesando fecha: 2025-11-19
+[2025-09-19 15:18:59] DEBUG: Verificación de duplicados para 2025-11-19: 0 encontrados.
+[2025-09-19 15:18:59] DEBUG: Ejecutando inserción para 2025-11-19...
+[2025-09-19 15:19:00] DEBUG: Inserción exitosa para 2025-11-19. ID: 13. Total creadas: 10
+[2025-09-19 15:19:00] DEBUG: Procesando fecha: 2025-11-26
+[2025-09-19 15:19:00] DEBUG: Verificación de duplicados para 2025-11-26: 0 encontrados.
+[2025-09-19 15:19:00] DEBUG: Ejecutando inserción para 2025-11-26...
+[2025-09-19 15:19:00] DEBUG: Inserción exitosa para 2025-11-26. ID: 14. Total creadas: 11
+[2025-09-19 15:19:01] DEBUG: Procesando fecha: 2025-12-03
+[2025-09-19 15:19:01] DEBUG: Verificación de duplicados para 2025-12-03: 0 encontrados.
+[2025-09-19 15:19:01] DEBUG: Ejecutando inserción para 2025-12-03...
+[2025-09-19 15:19:01] DEBUG: Inserción exitosa para 2025-12-03. ID: 15. Total creadas: 12
+[2025-09-19 15:19:01] DEBUG: Procesando fecha: 2025-12-10
+[2025-09-19 15:19:02] DEBUG: Verificación de duplicados para 2025-12-10: 0 encontrados.
+[2025-09-19 15:19:02] DEBUG: Ejecutando inserción para 2025-12-10...
+[2025-09-19 15:19:02] DEBUG: Inserción exitosa para 2025-12-10. ID: 16. Total creadas: 13
+[2025-09-19 15:19:02] DEBUG: Procesando fecha: 2025-12-17
+[2025-09-19 15:19:03] DEBUG: Verificación de duplicados para 2025-12-17: 0 encontrados.
+[2025-09-19 15:19:03] DEBUG: Ejecutando inserción para 2025-12-17...
+[2025-09-19 15:19:03] DEBUG: Inserción exitosa para 2025-12-17. ID: 17. Total creadas: 14
+[2025-09-19 15:19:03] DEBUG: Procesando fecha: 2025-12-24
+[2025-09-19 15:19:03] DEBUG: Verificación de duplicados para 2025-12-24: 0 encontrados.
+[2025-09-19 15:19:03] DEBUG: Ejecutando inserción para 2025-12-24...
+[2025-09-19 15:19:04] DEBUG: Inserción exitosa para 2025-12-24. ID: 18. Total creadas: 15
+[2025-09-19 15:19:04] DEBUG: Procesando fecha: 2025-12-31
+[2025-09-19 15:19:04] DEBUG: Verificación de duplicados para 2025-12-31: 0 encontrados.
+[2025-09-19 15:19:04] DEBUG: Ejecutando inserción para 2025-12-31...
+[2025-09-19 15:19:04] DEBUG: Inserción exitosa para 2025-12-31. ID: 19. Total creadas: 16
+[2025-09-19 15:19:05] DEBUG: Transacción completada (commit). Total final: 16
+[2025-09-19 15:19:05] DEBUG: ---FIN DE GUARDAR ASIGNACION---

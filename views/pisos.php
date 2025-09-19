@@ -33,6 +33,8 @@ $classrooms_second_floor = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa de Aulas</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/mapa_pisos.css">
     <link rel="stylesheet" href="../css/turnos.css">
     <link rel="icon" href="../iconos/calendario.ico" type="image/x-icon">
@@ -43,7 +45,7 @@ $classrooms_second_floor = [
     <img src="../imagenes/piso1.jpg" alt="Mapa del primer piso">
     <a href="#segPiso" id="priPiso" class="marca-agua">Planta Baja</a>
 
-<a href="../index.php"  class="volver">VOLVER</a>
+<a href="../index.php"  class="volver tab-btn">VOLVER</a>
 
     
 
