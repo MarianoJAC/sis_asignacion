@@ -22,7 +22,7 @@ function esHorarioValido(horaInicio, horaFin, turno) {
 
   const rangoTurno = {
     'Matutino':   [360, 840],
-    'Vespertino': [780, 1260],
+    'Vespertino': [840, 1080],    // 14:00 - 18:00
     'Nocturno':   [1080, 1380]
   };
 
@@ -35,7 +35,7 @@ document.addEventListener('submit', async e => {
   const form = e.target;
 
   // 🔹 Formulario de creación o edición de asignación
-  if (form.id === 'form-asignacion' || form.id === 'form-editar-asignacion') {
+  if (form.id === 'form-agregar-asignacion' || form.id === 'form-editar-asignacion') {
     e.preventDefault();
 
     const turno = form.querySelector('input[name="turno"]')?.value || 'Matutino';
@@ -56,20 +56,26 @@ document.addEventListener('submit', async e => {
     }
 
     const formData = new FormData(form);
-    fetch(form.action, { method: 'POST', body: formData })
-      .then(res => res.text())
+    const data = Object.fromEntries(formData.entries());
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
       .then(resp => {
-        if (resp.includes('✅')) {
+        if (resp.ok) {
           const mensaje = idActual ? 'Asignación actualizada con éxito' : 'Asignación registrada con éxito';
-          mostrarMensaje('success', mensaje);
+          mostrarMensaje('success', resp.mensaje || mensaje);
           cerrarModal();
           actualizarGrilla(turno);
         } else {
-          mostrarMensaje('error', resp);
+          mostrarMensaje('error', resp.error || 'Error desconocido');
         }
       })
       .catch(err => {
-        console.error('Error al guardar/actualizar:', err);
+
         mostrarMensaje('error', '❌ Error inesperado');
       });
 
@@ -98,7 +104,7 @@ document.addEventListener('submit', async e => {
         }
       })
       .catch(err => {
-        console.error('Error al eliminar:', err);
+
         mostrarMensaje('error', '❌ Error inesperado');
       });
 

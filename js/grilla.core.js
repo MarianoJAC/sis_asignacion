@@ -23,16 +23,16 @@ import { renderLeyenda } from './grilla.eventos.js';
 import { getState, setState } from './grilla.state.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('[INIT] DOMContentLoaded');
+
 
   const params = new URLSearchParams(window.location.search);
   const aulaId = parseInt(params.get('aula_id') || '0');
   const origen = params.get('origen') || '';
 
-  console.log('[PARAMS] aulaId:', aulaId, 'origen:', origen);
+
 
   if (aulaId > 0 && origen === 'mapa') {
-    console.log('[FLOW] Carga extendida desde mapa');
+
     setState({
       aulaSeleccionada: aulaId,
       modoExtendido: true,
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (aulaId > 0) {
-    console.log('[FLOW] Carga directa por aulaId:', aulaId);
+
     setState({ aulaSeleccionada: aulaId });
     cargarAsignacionesPorAula(aulaId);
     return;
@@ -83,7 +83,7 @@ export function fetchGrillaData() {
 
 // ✅ Función blindada para vista institucional
 function cargarVistaInstitucional() {
-  console.log('[FLOW] Cargando vista institucional');
+
 
   setState({
     modoExtendido: false,
@@ -140,7 +140,7 @@ if (espacioIzquierda < 320) {
 }
 
 
-    console.log('[EVENT] Toggle filtros activado');
+
   }
 });
 

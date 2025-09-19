@@ -3,7 +3,7 @@
 // 🧩 Rango institucional por turno (en minutos desde medianoche)
 const rangoTurno = {
   Matutino:   [360, 840],     // 06:00 - 14:00
-  Vespertino: [840, 1080],    // 14:00 - 18:00
+  Vespertino: [780, 1080],    // 13:00 - 18:00
   Nocturno:   [1080, 1380]    // 18:00 - 23:00
 };
 
@@ -51,7 +51,7 @@ function haySolapamiento(turno, horaInicio, horaFin, aula_id, fecha, idActual = 
 
   return asignaciones.some(asig => {
     if (asig.turno !== turno) return false;
-    if (idActual && asig.Id === idActual) return false;
+    if (idActual && asig.Id == idActual) return false;
 
     const inicioExistente = convertirAHora(asig.hora_inicio);
     const finExistente = convertirAHora(asig.hora_fin);

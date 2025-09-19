@@ -43,10 +43,7 @@ export function renderGrilla(turnoSeleccionado, datos, aulaIdFiltrada = null, ta
     return aulaOk && turnoOk && fechaOk;
   });
 
-  console.log('[RENDER] Asignaciones que entran al grid:', filtradas.length);
-  filtradas.forEach(a => {
-    console.log(`📚 ${a.materia} | Aula ID: ${a.aula_id} | Fecha: ${a.fecha} | Turno: ${a.turno}`);
-  });
+
 
   const grid = {};
   filtradas.forEach(a => {
@@ -63,7 +60,7 @@ export function renderGrilla(turnoSeleccionado, datos, aulaIdFiltrada = null, ta
   aulasFiltradas.forEach(aula => {
     const id = Number(aula.aula_id || aula.id);
     const count = filtradas.filter(a => Number(a.aula_id) === id).length;
-    console.log(`🧪 Aula ${aula.nombre} tiene ${count} asignaciones en total`);
+
   });
 
   if (!targetId) {
@@ -99,24 +96,22 @@ export function renderGrilla(turnoSeleccionado, datos, aulaIdFiltrada = null, ta
 
 
 function renderGrillaSafe(destino, turnoSeleccionado, datos, aulaIdFiltrada, targetId, fechaFiltrada, ocultarColumnaAula, fechasUnicas, grid, aulasFiltradas) {
+  const container = document.getElementById('grilla-container');
+
+  // Toggle centered class based on view
+  if (fechasUnicas.length === 1) {
+    container.classList.add('grilla-container-centered');
+  } else {
+    container.classList.remove('grilla-container-centered');
+  }
+
   destino.textContent = '';
 
   const table = document.createElement('table');
   table.className = 'grid-table';
-
-  const colgroup = document.createElement('colgroup');
-  if (!ocultarColumnaAula) {
-    const col = document.createElement('col');
-    col.style.width = '16%';
-    colgroup.appendChild(col);
+  if (fechasUnicas.length === 1) {
+    table.classList.add('grid-table-single-date');
   }
-  const anchoDia = (100 - 16) / fechasUnicas.length;
-  for (let i = 0; i < fechasUnicas.length; i++) {
-    const col = document.createElement('col');
-    col.style.width = `${anchoDia}%`;
-    colgroup.appendChild(col);
-  }
-  table.appendChild(colgroup);
 
   const thead = document.createElement('thead');
   const trHead = document.createElement('tr');
@@ -125,12 +120,16 @@ function renderGrillaSafe(destino, turnoSeleccionado, datos, aulaIdFiltrada, tar
   if (!ocultarColumnaAula) {
     const th = document.createElement('th');
     th.textContent = 'Aula';
+    th.style.width = '200px'; // Set fixed width on the header cell
     trHead.appendChild(th);
   }
 
   fechasUnicas.forEach(fecha => {
     const th = document.createElement('th');
     th.textContent = formatearFecha(fecha);
+    if (fechasUnicas.length === 1) {
+      th.style.minWidth = '500px'; // Set a min-width for the single date column
+    }
     trHead.appendChild(th);
   });
 
@@ -143,7 +142,7 @@ function renderGrillaSafe(destino, turnoSeleccionado, datos, aulaIdFiltrada, tar
 
   aulasFiltradas.forEach(aula => {
      const asignacionesAula = datos.asignaciones.filter(a => Number(a.aula_id) === Number(aula.aula_id || aula.id));
-  console.log(`🧪 Aula ${aula.nombre} tiene ${asignacionesAula.length} asignaciones en total`);
+
 
     const tr = document.createElement('tr');
 
@@ -239,6 +238,7 @@ if (window.esAdmin) {
   btnAgregar.title = 'Agregar asignación';
   btnAgregar.dataset.fecha = fecha;
   btnAgregar.dataset.aula = aula.aula_id;
+  btnAgregar.dataset.turno = turnoSeleccionado;
   btnAgregar.textContent = '➕';
   accionesCelda.appendChild(btnAgregar);
 
@@ -282,11 +282,7 @@ export function cargarAsignacionesPorAula(aulaId) {
   fetch('../acciones/get_grilla.php')
     .then(res => res.json())
     .then(data => {
-  console.log('[DEBUG] Aula seleccionada:', aulaId);
-console.log('[DEBUG] Asignaciones recibidas:', data.asignaciones?.length);
-data.asignaciones?.forEach(a => {
-  console.log(`📚 ${a.materia} | Aula ID: ${a.aula_id} | Fecha: ${a.fecha} | Turno: ${a.turno}`);
-});
+
 
       try {
         if (!data.aulas || data.aulas.length === 0) {
@@ -404,11 +400,12 @@ export function cargarAsignacionesPorAulaTodosLosTurnos(aulaId) {
 }
 
 export function renderVistaGeneral() {
-  console.log('[FLOW] Renderizando vista general institucional');
+
 
   setState({
     modoExtendido: false,
     aulaSeleccionada: null,
+    filtroActivo: null
   });
 
   // 🧼 Limpieza visual
@@ -440,7 +437,7 @@ export function renderVistaGeneral() {
 }
 
 export function renderVistaExtendida(aulaId) {
-  console.log(`[FLOW] Renderizando vista extendida para aula ${aulaId}`);
+
 
   setState({
     modoExtendido: true,
@@ -479,7 +476,7 @@ export function actualizarVisibilidadFiltros() {
   if (bloqueFecha) bloqueFecha.style.display = mostrar ? 'block' : 'none';
   if (bloqueBuscador) bloqueBuscador.style.display = mostrar ? 'block' : 'none';
 
-  console.log(`[UI] Bloques de filtros ${mostrar ? 'visibles' : 'ocultos'} según modo ${state.modoExtendido ? 'extendido' : 'institucional'}`);
+
 }
 
 export function actualizarLayoutPorModo() {
@@ -494,5 +491,5 @@ export function actualizarLayoutPorModo() {
   if (buscador) buscador.style.display = mostrar ? 'inline-block' : 'none';
   if (btnResetFecha) btnResetFecha.style.display = mostrar ? 'inline-block' : 'none';
 
-  console.log(`[UI] Layout actualizado: filtros ${mostrar ? 'visibles' : 'ocultos'} según modo ${state.modoExtendido ? 'extendido' : 'institucional'}`);
+
 }

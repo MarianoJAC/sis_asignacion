@@ -45,12 +45,7 @@ export async function ejecutarBusqueda(texto, turno) {
     const aulasFiltradas = data.aulas;
     const idsFiltrados = aulasFiltradas.map(a => Number(a.id));
 
-    // 🧪 Log por aula filtrada
-    console.log('[DEBUG] Aulas filtradas por recurso:');
-    aulasFiltradas.forEach(aula => {
-      const recursos = Array.isArray(aula.recursos) ? aula.recursos.join(', ') : 'Ninguno';
-      console.log(`🧪 Aula ${aula.nombre} (ID: ${aula.id}) → Recursos: ${recursos} | Capacidad: ${aula.capacidad}`);
-    });
+
 
     const todasAsignaciones = await asegurarAsignaciones();
     const fechaFiltro = fechaSeleccionada ? normalizarFecha(fechaSeleccionada) : null;
@@ -63,20 +58,11 @@ export async function ejecutarBusqueda(texto, turno) {
       return aulaOk && turnoOk && fechaOk;
     });
 
-    // 🧪 Log por asignación filtrada
-    console.log('[DEBUG] Asignaciones filtradas por recurso + fecha + turno:');
-    asignacionesFiltradas.forEach(asig => {
-      console.log(`📚 ${asig.materia} | Aula ID: ${asig.aula_id} | Fecha: ${asig.fecha} | Turno: ${asig.turno} | Profesor: ${asig.profesor}`);
-    });
 
-    // 🧪 Log por aula y cantidad de asignaciones
-    aulasFiltradas.forEach(aula => {
-      const count = asignacionesFiltradas.filter(a => Number(a.aula_id) === Number(aula.id)).length;
-      console.log(`📊 Aula ${aula.nombre} tiene ${count} asignaciones en ${fechaFiltro || 'todas las fechas'}`);
-    });
 
-    console.log('[DEBUG] Asignaciones disponibles:', todasAsignaciones.length);
-    console.log('[DEBUG] Asignaciones filtradas:', asignacionesFiltradas.length);
+
+
+
 
     const grillaFiltrada = {
       ...getState().datosGlobales,
@@ -146,10 +132,7 @@ export function filtrarGrillaPorFecha(turno, fecha) {
     return fechaAsignacion === fechaFiltro && turnoOk;
   });
 
-  if (asignacionesFiltradas.length === 0) {
-    mostrarMensaje('info', 'No hay asignaciones para la fecha seleccionada');
-    return;
-  }
+
 
   const grillaFiltrada = {
     ...datos,
@@ -169,7 +152,8 @@ export function filtrarGrillaPorFecha(turno, fecha) {
 
 export function normalizarFecha(fecha) {
   if (!fecha) return '';
-  const partes = fecha.split(/[\/\-]/);
+  const fechaSinHora = fecha.split(' ')[0];
+  const partes = fechaSinHora.split(/[\/\-]/);
   if (partes.length !== 3) return '';
 
   const [a, b, c] = partes;

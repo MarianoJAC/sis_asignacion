@@ -1,7 +1,7 @@
 /* 🌐 Estilos globales institucionales */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
 
 * {
-  font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
 }
 
@@ -11,14 +11,38 @@ body {
   overflow-y: auto; /* FIX: Permitir scroll vertical */
   background-color: var(--background-color-light);
   color: var(--text-color-dark);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-normal);
+  line-height: 1.6;
 }
 
-h2 {
+h1, h2, h3, h4, h5, h6 {
   margin-top: var(--spacing-md);
-  text-align: center;
-  font-size: var(--font-size-xxlarge);
+  margin-bottom: var(--spacing-sm);
+  font-family: var(--font-family-headings);
   font-weight: 700;
   color: var(--text-color-dark);
+  line-height: 1.2;
+}
+
+h1 { font-size: var(--font-size-xxlarge); }
+h2 { font-size: var(--font-size-xlarge); }
+h3 { font-size: var(--font-size-large); }
+h4 { font-size: var(--font-size-normal); }
+h5 { font-size: var(--font-size-small); }
+h6 { font-size: var(--font-size-xsmall); }
+
+p {
+  margin-bottom: var(--spacing-md);
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 .fas {

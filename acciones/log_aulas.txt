@@ -1,0 +1,107 @@
+[
+    {
+        "id": 1,
+        "nombre": "Auditorio",
+        "capacidad": 70,
+        "recursos": [
+            "TV"
+        ]
+    },
+    {
+        "id": 12,
+        "nombre": "Aula 5",
+        "capacidad": 35,
+        "recursos": [
+            "TV"
+        ]
+    },
+    {
+        "id": 13,
+        "nombre": "Aula 6",
+        "capacidad": 35,
+        "recursos": [
+            "TV"
+        ]
+    },
+    {
+        "id": 14,
+        "nombre": "Aula 5 y 6",
+        "capacidad": 70,
+        "recursos": [
+            "TV"
+        ]
+    }
+][2025-09-19 14:31:56] DEBUG: ---INICIO DE GUARDAR ASIGNACION---
+[2025-09-19 14:31:56] DEBUG: Array
+(
+    [input] => Array
+        (
+            [entidad_id] => 6
+            [carrera] => sdfgsd
+            [anio] => 1
+            [materia] => sdfgsd
+            [profesor] => sdfgs
+            [hora_inicio] => 13:00
+            [hora_fin] => 18:00
+            [comentarios] => 
+            [aula_id] => 1
+            [fecha] => 2025-09-16
+            [turno] => Vespertino
+            [repeticion] => dia
+        )
+
+)
+
+[2025-09-19 14:31:56] DEBUG: Array
+(
+    [Fechas calculadas] => Array
+        (
+            [0] => 2025-09-16
+        )
+
+)
+
+[2025-09-19 14:31:56] DEBUG: Transacción iniciada.
+[2025-09-19 14:31:56] DEBUG: Procesando fecha: 2025-09-16
+[2025-09-19 14:31:56] DEBUG: Verificación de duplicados para 2025-09-16: 0 encontrados.
+[2025-09-19 14:31:56] DEBUG: Ejecutando inserción para 2025-09-16...
+[2025-09-19 14:31:57] DEBUG: Inserción exitosa para 2025-09-16. ID: 21. Total creadas: 1
+[2025-09-19 14:31:57] DEBUG: Transacción completada (commit). Total final: 1
+[2025-09-19 14:31:57] DEBUG: ---FIN DE GUARDAR ASIGNACION---
+[2025-09-19 14:34:40] DEBUG: ---INICIO DE GUARDAR ASIGNACION---
+[2025-09-19 14:34:40] DEBUG: Array
+(
+    [input] => Array
+        (
+            [entidad_id] => 6
+            [carrera] => sds
+            [anio] => 1B
+            [materia] => sdfgsd
+            [profesor] => sdfgsd
+            [hora_inicio] => 10:00
+            [hora_fin] => 12:00
+            [comentarios] => 
+            [aula_id] => 1
+            [fecha] => 2025-09-16
+            [turno] => Matutino
+            [repeticion] => dia
+        )
+
+)
+
+[2025-09-19 14:34:40] DEBUG: Array
+(
+    [Fechas calculadas] => Array
+        (
+            [0] => 2025-09-16
+        )
+
+)
+
+[2025-09-19 14:34:40] DEBUG: Transacción iniciada.
+[2025-09-19 14:34:40] DEBUG: Procesando fecha: 2025-09-16
+[2025-09-19 14:34:40] DEBUG: Verificación de duplicados para 2025-09-16: 0 encontrados.
+[2025-09-19 14:34:40] DEBUG: Ejecutando inserción para 2025-09-16...
+[2025-09-19 14:34:40] DEBUG: Inserción exitosa para 2025-09-16. ID: 22. Total creadas: 1
+[2025-09-19 14:34:41] DEBUG: Transacción completada (commit). Total final: 1
+[2025-09-19 14:34:41] DEBUG: ---FIN DE GUARDAR ASIGNACION---

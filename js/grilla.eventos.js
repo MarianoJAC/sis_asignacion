@@ -23,14 +23,14 @@ if (
 ) {
   contenedorFiltros.classList.remove('contenedor-visible');
   contenedorFiltros.classList.add('contenedor-oculto');
-  console.log('[EVENTOS] Filtros ocultados por clic externo');
+
 }
 
   // 🟢 Botón "Todas las Aulas"
  const btnTodas = e.target.closest('#btn-ver-todas');
 if (btnTodas) {
   e.preventDefault();
-  console.log('[EVENTOS] Click en "Ver todas las aulas"');
+
 
   document.body.classList.remove('modo-extendido'); // ✅ Clave para mostrar los botones
 
@@ -121,8 +121,8 @@ if (e.target.classList.contains('tab-btn') && e.target.dataset.turno) {
   if (e.target.classList.contains('btn-agregar') && id !== 'btn-agregar-entidad') {
     const aula_id = e.target.dataset.aula;
     const fecha = e.target.dataset.fecha;
-    const contenedor = e.target.closest('.grilla-turno-wrapper');
-const turno = contenedor?.querySelector('h3')?.textContent.replace('Turno ', '') || 'Matutino';
+    const turno = e.target.dataset.turno || 'Matutino';
+
 
     fetch(`../acciones/form_crear_asignacion.php?aula_id=${aula_id}&fecha=${fecha}&turno=${turno}`)
       .then(res => res.text())
@@ -260,7 +260,7 @@ function htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno) {
 }
 
 export function resetearVistaGeneral() {
-  console.log('[EVENTOS] Ejecutando reset de vista general');
+
 
   setState({
     modoExtendido: false,

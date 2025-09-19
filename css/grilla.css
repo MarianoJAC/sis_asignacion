@@ -12,6 +12,12 @@
   margin-top: var(--spacing-sm);
 }
 
+.grilla-container-centered {
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* 🌐 Scrollbar WebKit */
 #grilla-container::-webkit-scrollbar {
   width: 6px;
@@ -30,6 +36,10 @@
   width: 100%;
   table-layout: auto;
   background-color: var(--background-color-white);
+}
+
+.grid-table.grid-table-single-date {
+  display: inline-block;
 }
 
 /* 📌 Encabezado horizontal sticky */
@@ -92,6 +102,8 @@
   opacity: 1;
   pointer-events: auto;
 }
+
+
 
 
 /* 📑 Celdas disponibles */
@@ -176,14 +188,14 @@
 .btn-reset-fecha {
   margin-right: var(--spacing-xs);
   padding: 6px 10px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   border: 1px solid #ccc;
   border-radius: var(--border-radius-sm);
 }
 
 .input-buscador {
   padding: 6px 10px;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   border: 1px solid #ccc;
   border-radius: var(--border-radius-sm);
   margin-left: var(--spacing-xs);
@@ -195,11 +207,15 @@
   border-radius: var(--border-radius-sm);
   padding: var(--spacing-xs);
   margin-bottom: var(--spacing-xs);
+  margin-left: auto; /* Center the element */
+  margin-right: auto; /* Center the element */
   box-shadow: 0 2px 4px var(--shadow-color);
   transition: transform 0.2s ease;
   color: var(--text-color-dark);
-  font-size: 15px;
+  font-size: var(--font-size-normal);
   line-height: 1.5;
+  max-width: 250px;
+  justify-content: center;
 }
 
 .asignacion:hover {

@@ -1,7 +1,7 @@
 /* 📋 Estilos personalizados para Auditoría con Bootstrap */
 
 .titulo-modulo {
-  font-size: 1.75rem; /* Un poco más grande que el h2 de Bootstrap */
+  font-size: var(--font-size-xlarge); /* Un poco más grande que el h2 de Bootstrap */
   font-weight: 700;
   color: var(--primary-color);
 }
@@ -39,7 +39,7 @@
   padding: 0.5rem;
   margin: 0;
   font-family: monospace;
-  font-size: 0.8rem;
+  font-size: var(--font-size-small);
   background-color: var(--background-color-light);
   border-radius: var(--border-radius-sm);
   max-height: 200px;
