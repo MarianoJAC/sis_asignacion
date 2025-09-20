@@ -4,10 +4,6 @@ import { actualizarGrilla, renderGrilla } from './grilla.render.js';
 import { renderLeyenda } from './grilla.eventos.js';
 import { esHorarioValido, haySolapamiento } from './grilla.validaciones.js';
 import { fetchGrillaData } from './grilla.core.js';
-import {
-  htmlEliminarEntidad,
-  htmlNuevaEntidad
-} from './grilla.modales.js';
 import { getState, setState } from './grilla.state.js';
 
 export const handlersFormulario = {
@@ -454,7 +450,5 @@ export {
   procesarAgregarEntidad,
   procesarEliminarEntidad,
   procesarEliminarAsignacion,
-  interceptarFormulario,
-  htmlNuevaEntidad,
-  htmlEliminarEntidad
+  interceptarFormulario
 };

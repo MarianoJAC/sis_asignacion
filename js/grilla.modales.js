@@ -1,130 +1,156 @@
-
 import { handlersFormulario } from './grilla.formularios.js';
 
-function abrirModal({ html, envolver = true, idEsperado = null, focoSelector = null, contexto = null }) {
-  const contenedor = document.getElementById('modal-formulario');
-  if (!contenedor) return;
+// Instancia del modal de Bootstrap
+const modalElement = document.getElementById('main-modal');
+const bootstrapModal = new bootstrap.Modal(modalElement);
 
-  // 🧼 Limpieza previa
-  contenedor.innerHTML = '';
-  contenedor.insertAdjacentHTML('afterbegin',
-    envolver ? `<div class="modal-contenido">${html}</div>` : html
-  );
-  contenedor.style.display = 'flex';
+/**
+ * Abre el modal de Bootstrap con el contenido y título especificados.
+ * @param {{titulo: string, html: string, focoSelector?: string}} options
+ */
+function abrirModal({ titulo, html, focoSelector = null }) {
+  const modalTitle = modalElement.querySelector('.modal-title');
+  const modalBody = modalElement.querySelector('.modal-body');
 
-  requestAnimationFrame(() => {
-    const form = contenedor.querySelector('form');
-    if (!form || (idEsperado && form.id !== idEsperado)) return;
+  modalTitle.textContent = titulo;
+  modalBody.innerHTML = html;
 
+  bootstrapModal.show();
+
+  // Enfocar el primer campo del formulario después de que el modal sea visible
+  modalElement.addEventListener('shown.bs.modal', () => {
     if (focoSelector) {
-      form.querySelector(focoSelector)?.focus();
+      modalBody.querySelector(focoSelector)?.focus();
     }
-
-    const formId = form.id.trim();
-    const handler = handlersFormulario?.[formId];
-    
-  });
+  }, { once: true });
 }
 
-// 🧼 Cierre de modal
+/**
+ * Cierra el modal de Bootstrap.
+ */
 function cerrarModal() {
-  const contenedor = document.getElementById('modal-formulario');
-  if (contenedor) {
-    contenedor.innerHTML = '';
-    contenedor.style.display = 'none';
-  }
+  bootstrapModal.hide();
 }
 
 // ➕ HTML para crear nueva entidad
 function htmlNuevaEntidad() {
-  return `
-    <div class="modal-entidad">
-      <h2 class="modal-titulo">➕ Nueva Entidad</h2>
-      <form id="form-agregar-entidad" class="modal-formulario">
-        <div class="campo-formulario">
-          <label for="nombre">Nombre de la entidad</label>
-          <input type="text" name="nombre" id="nombre" autocomplete="off" required />
-        </div>
-        <div class="campo-formulario">
-          <label for="color">Color</label>
-          <input type="color" name="color" id="color" value="#2196f3" />
-        </div>
-        <div id="aviso-duplicado" class="aviso-error fila-completa" style="display:none;"></div>
-        <div class="form-buttons fila-completa">
-          <button type="button" id="btn-cancelar-agregar">Cancelar</button>
-          <button type="submit">✅ Guardar</button>
-        </div>
-      </form>
-    </div>
+  const formHtml = `
+    <form id="form-agregar-entidad">
+      <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre de la entidad</label>
+        <input type="text" name="nombre" id="nombre" class="form-control" autocomplete="off" required />
+      </div>
+      <div class="mb-3">
+        <label for="color" class="form-label">Color</label>
+        <input type="color" name="color" id="color" class="form-control form-control-color" value="#2196f3" />
+      </div>
+      <div id="aviso-duplicado" class="alert alert-danger" style="display:none;"></div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">✅ Guardar</button>
+      </div>
+    </form>
   `;
+  return formHtml;
 }
 
 // ❌ HTML para eliminar entidad
 function htmlEliminarEntidad(entidades) {
-  let html = `<div class="modal-contenido">
-    <h3>❌ Eliminar entidad</h3>
-    <form id="form-eliminar-entidad" class="modal-eliminar-form">`;
-
+  let optionsHtml = '<ul class="list-group">';
   entidades.forEach(ent => {
-    html += `
-      <div class="campo-formulario fila-completa">
-        <label class="opcion-eliminar">
-          <input type="radio" name="entidad_id" value="${ent.id}">
-          <span style="background:${ent.color}; color:#fff; padding:4px 8px; border-radius:4px;">${ent.nombre}</span>
+    optionsHtml += `
+      <li class="list-group-item">
+        <input class="form-check-input me-1" type="radio" name="entidad_id" id="entidad-${ent.id}" value="${ent.id}">
+        <label class="form-check-label" for="entidad-${ent.id}">
+          <span class="badge" style="background-color:${ent.color};">${ent.nombre}</span>
         </label>
-      </div>`;
+      </li>
+    `;
   });
+  optionsHtml += '</ul>';
 
-  html += `
-    <div class="form-buttons fila-completa">
-      <button type="button" id="btn-cancelar-eliminar">Cancelar</button>
-      <button type="submit">❌ Eliminar</button>
-    </div>
-  </form></div>`;
-
-  return html;
+  const formHtml = `
+    <form id="form-eliminar-entidad">
+      <p>Seleccione la entidad que desea eliminar:</p>
+      <div class="mb-3">${optionsHtml}</div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-danger">❌ Eliminar</button>
+      </div>
+    </form>
+  `;
+  return formHtml;
 }
 
 // ❌ HTML para eliminar asignación
 function htmlEliminarAsignacion(asignaciones, aula, fecha, turno) {
-  let html = `
-    <div class="modal-entidad">
-      <h3 class="modal-titulo">❌ Eliminar asignación</h3>
-      <form id="form-eliminar-asignacion" class="modal-eliminar-form">`;
-
+  let optionsHtml = '<ul class="list-group mb-3">';
   asignaciones.forEach(asig => {
     const detalle = `${asig.materia} – ${asig.hora_inicio.slice(0,5)}-${asig.hora_fin.slice(0,5)} – ${asig.profesor}`;
-    html += `
-      <label class="opcion-eliminar">
-        <input type="radio" name="asignacion_id" value="${asig.Id}">
-        <span>${detalle}</span>
-      </label>`;
+    optionsHtml += `
+      <li class="list-group-item">
+        <input class="form-check-input me-1" type="radio" name="asignacion_id" id="asig-${asig.Id}" value="${asig.Id}">
+        <label class="form-check-label" for="asig-${asig.Id}">${detalle}</label>
+      </li>
+    `;
   });
+  optionsHtml += '</ul>';
 
-  html += `
-      <div class="campo-formulario fila-completa">
-        <label>Eliminar asignación:</label>
-        <div class="opciones-repeticion">
-          <input type="radio" id="repetir_dia" name="repeticion" value="dia" checked>
-          <label for="repetir_dia">Solo este día</label>
-
-          <input type="radio" id="repetir_mes" name="repeticion" value="mes">
-          <label for="repetir_mes">Todo el mes</label>
-
-          <input type="radio" id="repetir_anio" name="repeticion" value="anio">
-          <label for="repetir_anio">Todo el año</label>
+  const formHtml = `
+    <form id="form-eliminar-asignacion">
+      <div class="mb-3">
+        <p class="fw-bold">Seleccione la asignación a eliminar:</p>
+        ${optionsHtml}
+      </div>
+      <div class="mb-3">
+        <p class="fw-bold">Opciones de eliminación:</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" id="repetir_dia" name="repeticion" value="dia" checked>
+          <label class="form-check-label" for="repetir_dia">Solo este día</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" id="repetir_mes" name="repeticion" value="mes">
+          <label class="form-check-label" for="repetir_mes">Todo el mes</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" id="repetir_anio" name="repeticion" value="anio">
+          <label class="form-check-label" for="repetir_anio">Todo el año</label>
         </div>
       </div>
-
       <input type="hidden" name="aula_id" value="${aula}">
       <input type="hidden" name="fecha" value="${fecha}">
       <input type="hidden" name="turno" value="${turno}">
-      <div class="form-buttons fila-completa">
-        <button type="button" id="btn-cancelar-eliminar">Cancelar</button>
-        <button type="submit">❌ Eliminar</button>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-danger">❌ Eliminar</button>
       </div>
     </form>
-  </div>`;
+  `;
+  return formHtml;
+}
+
+function htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno) {
+  let html = `<div class="modal-contenido">
+    <h3>Seleccioná una asignación para editar</h3>
+    <form id="form-seleccionar-edicion" class="modal-formulario">`;
+
+  asignaciones.forEach(asig => {
+    const detalle = `${asig.materia} – ${asig.hora_inicio.slice(0,5)}-${asig.hora_fin.slice(0,5)} – ${asig.profesor}`;
+    html += `<label class="opcion-eliminar">
+      <input type="radio" name="asignacion_id" value="${asig.Id}"> ${detalle}
+    </label>`;
+  });
+
+  html += `
+    <input type="hidden" name="aula_id" value="${aula}">
+    <input type="hidden" name="fecha" value="${fecha}">
+    <input type="hidden" name="turno" value="${turno}">
+
+    <div class="form-buttons">
+      <button type="button" id="btn-cancelar-edicion">Cancelar</button>
+      <button type="submit">✏️ Editar</button>
+    </div>
+  </form></div>`;
 
   return html;
 }
@@ -134,5 +160,6 @@ export {
   cerrarModal,
   htmlNuevaEntidad,
   htmlEliminarEntidad,
-  htmlEliminarAsignacion 
+  htmlEliminarAsignacion,
+  htmlSeleccionarAsignacion
 };

@@ -1,10 +1,5 @@
-import { abrirModal, cerrarModal } from './grilla.modales.js';
+import { abrirModal, cerrarModal, htmlNuevaEntidad, htmlEliminarEntidad, htmlEliminarAsignacion, htmlSeleccionarAsignacion } from './grilla.modales.js';
 import { mostrarMensaje } from './grilla.alertas.js';
-import {
-  htmlNuevaEntidad,
-  htmlEliminarEntidad
-} from './grilla.formularios.js';
-import { htmlEliminarAsignacion } from './grilla.modales.js';
 import { actualizarGrilla, renderVistaGeneral } from './grilla.render.js';
 import { normalizarFecha } from './grilla.filtros.js';
 import { getState, setState } from './grilla.state.js';
@@ -13,68 +8,50 @@ document.addEventListener('click', e => {
   const id = e.target.id;
 
   // 🔒 Cierre automático del panel de filtros si se hace clic fuera
-const contenedorFiltros = document.getElementById('contenedor-filtros');
-const toggleFiltros = document.getElementById('toggle-filtros');
+  const contenedorFiltros = document.getElementById('contenedor-filtros');
+  const toggleFiltros = document.getElementById('toggle-filtros');
 
-if (
-  contenedorFiltros?.classList.contains('contenedor-visible') &&
-  !contenedorFiltros.contains(e.target) &&
-  !toggleFiltros.contains(e.target)
-) {
-  contenedorFiltros.classList.remove('contenedor-visible');
-  contenedorFiltros.classList.add('contenedor-oculto');
-
-}
+  if (
+    contenedorFiltros?.classList.contains('contenedor-visible') &&
+    !contenedorFiltros.contains(e.target) &&
+    !toggleFiltros.contains(e.target)
+  ) {
+    contenedorFiltros.classList.remove('contenedor-visible');
+    contenedorFiltros.classList.add('contenedor-oculto');
+  }
 
   // 🟢 Botón "Todas las Aulas"
- const btnTodas = e.target.closest('#btn-ver-todas');
-if (btnTodas) {
-  e.preventDefault();
-
-
-  document.body.classList.remove('modo-extendido'); // ✅ Clave para mostrar los botones
-
-  setState({
-    modoExtendido: false,
-    aulaSeleccionada: null,
-    yaRenderizado: false,
-  });
-
-  import('./grilla.render.js').then(mod => {
-    mod.actualizarVisibilidadFiltros();
-    mod.renderVistaGeneral();
-    renderLeyenda();
-  });
-
-  return;
-}
-
+  const btnTodas = e.target.closest('#btn-ver-todas');
+  if (btnTodas) {
+    e.preventDefault();
+    document.body.classList.remove('modo-extendido');
+    setState({ modoExtendido: false, aulaSeleccionada: null, yaRenderizado: false });
+    import('./grilla.render.js').then(mod => {
+      mod.actualizarVisibilidadFiltros();
+      mod.renderVistaGeneral();
+      renderLeyenda();
+    });
+    return;
+  }
 
   // 🟡 Tabs de turno
-if (e.target.classList.contains('tab-btn') && e.target.dataset.turno) {
-  const turno = e.target.dataset.turno;
-
-  // 🔄 Actualizar grilla
-  actualizarGrilla(turno);
-
-  // ✅ Actualizar botón activo
-  document.querySelectorAll('.tab-btn[data-turno]').forEach(btn => {
-    btn.classList.remove('active');
-  });
-  e.target.classList.add('active');
-
-  return;
-}
-
+  if (e.target.classList.contains('tab-btn') && e.target.dataset.turno) {
+    const turno = e.target.dataset.turno;
+    actualizarGrilla(turno);
+    document.querySelectorAll('.tab-btn[data-turno]').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    e.target.classList.add('active');
+    return;
+  }
 
   // Botón de agregar entidad
   if (id === 'btn-agregar-entidad') {
     e.stopPropagation();
     abrirModal({
+      titulo: '➕ Nueva Entidad',
       html: htmlNuevaEntidad(),
-      idEsperado: 'form-agregar-entidad',
-      focoSelector: 'input#nombre',
-      contexto: 'Agregar nueva entidad'
+      focoSelector: 'input#nombre'
     });
     return;
   }
@@ -86,17 +63,14 @@ if (e.target.classList.contains('tab-btn') && e.target.dataset.turno) {
       .then(res => res.json())
       .then(data => {
         const entidades = data.entidades;
-
         if (!Array.isArray(entidades) || entidades.length === 0) {
           mostrarMensaje('info', 'No hay entidades para eliminar');
           return;
         }
-
         abrirModal({
+          titulo: '❌ Eliminar Entidad',
           html: htmlEliminarEntidad(entidades),
-          idEsperado: 'form-eliminar-entidad',
-          focoSelector: 'button[type="submit"]',
-          contexto: { entidades }
+          focoSelector: '[name=entidad_id]'
         });
       })
       .catch((err) => {
@@ -106,13 +80,7 @@ if (e.target.classList.contains('tab-btn') && e.target.dataset.turno) {
   }
 
   // Botón cancelar (delegado)
-  if (
-    id === 'btn-cancelar-agregar' ||
-    id === 'btn-cancelar-eliminar' ||
-    id === 'btn-cancelar-creacion' ||
-    id === 'btn-cancelar-edicion' ||
-    id === 'btn-cancelar-eliminacion'
-  ) {
+  if (e.target.closest('[data-bs-dismiss="modal"]')) {
     cerrarModal();
     return;
   }
@@ -123,29 +91,30 @@ if (e.target.classList.contains('tab-btn') && e.target.dataset.turno) {
     const fecha = e.target.dataset.fecha;
     const turno = e.target.dataset.turno || 'Matutino';
 
+    const state = getState();
+    const aula = state.datosGlobales.aulas.find(a => a.aula_id == aula_id);
+    const nombreAula = aula ? aula.nombre : `Aula ${aula_id}`;
 
     fetch(`../acciones/form_crear_asignacion.php?aula_id=${aula_id}&fecha=${fecha}&turno=${turno}`)
       .then(res => res.text())
       .then(html => {
         abrirModal({
-          html,
-          idEsperado: 'form-agregar-asignacion',
-          focoSelector: 'button[type="submit"]',
-          contexto: { aula_id, fecha, turno }
+          titulo: `➕ Agregar Asignación en ${nombreAula}`,
+          html: html,
+          focoSelector: '#entidad_id'
         });
       })
       .catch((err) => {
         mostrarMensaje('error', 'No se pudo cargar el formulario: ' + err.message);
       });
-
     return;
   }
 
   // Botón de editar asignación
   if (e.target.classList.contains('btn-editar-asignacion')) {
     const fecha = e.target.dataset.fecha;
-    const aula = e.target.dataset.aula;
-    const turno = e.target.dataset.turno; // 🐞 FIX
+    const aula_id = e.target.dataset.aula;
+    const turno = e.target.dataset.turno;
     const state = getState();
 
     if (!state.datosGlobales || !Array.isArray(state.datosGlobales.asignaciones)) {
@@ -155,9 +124,7 @@ if (e.target.classList.contains('tab-btn') && e.target.dataset.turno) {
 
     const fechaFiltro = normalizarFecha(fecha);
     const asignaciones = state.datosGlobales.asignaciones.filter(a =>
-      normalizarFecha(a.fecha) === fechaFiltro &&
-      a.aula_id == aula &&
-      a.turno === turno
+      normalizarFecha(a.fecha) === fechaFiltro && a.aula_id == aula_id && a.turno === turno
     );
 
     if (asignaciones.length === 0) {
@@ -165,11 +132,13 @@ if (e.target.classList.contains('tab-btn') && e.target.dataset.turno) {
       return;
     }
 
+    const aula = state.datosGlobales.aulas.find(a => a.aula_id == aula_id);
+    const nombreAula = aula ? aula.nombre : `Aula ${aula_id}`;
+
     abrirModal({
-      html: htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno),
-      idEsperado: 'form-seleccionar-edicion',
-      focoSelector: 'button[type="submit"]',
-      contexto: { aula, fecha, turno }
+      titulo: `✏️ Editar Asignación en ${nombreAula}`,
+      html: htmlSeleccionarAsignacion(asignaciones, aula_id, fecha, turno),
+      focoSelector: '[name=asignacion_id]'
     });
     return;
   }
@@ -177,8 +146,8 @@ if (e.target.classList.contains('tab-btn') && e.target.dataset.turno) {
   // Botón de eliminar asignación
   if (e.target.classList.contains('btn-eliminar-asignacion') && id !== 'btn-eliminar-entidad') {
     const fecha = e.target.dataset.fecha;
-    const aula = e.target.dataset.aula;
-    const turno = e.target.dataset.turno; // 🐞 FIX
+    const aula_id = e.target.dataset.aula;
+    const turno = e.target.dataset.turno;
     const state = getState();
 
     if (!state.datosGlobales || !Array.isArray(state.datosGlobales.asignaciones)) {
@@ -188,9 +157,7 @@ if (e.target.classList.contains('tab-btn') && e.target.dataset.turno) {
 
     const fechaFiltro = normalizarFecha(fecha);
     const asignaciones = state.datosGlobales.asignaciones.filter(a =>
-      normalizarFecha(a.fecha) === fechaFiltro &&
-      a.aula_id == aula &&
-      a.turno === turno
+      normalizarFecha(a.fecha) === fechaFiltro && a.aula_id == aula_id && a.turno === turno
     );
 
     if (asignaciones.length === 0) {
@@ -198,11 +165,13 @@ if (e.target.classList.contains('tab-btn') && e.target.dataset.turno) {
       return;
     }
 
+    const aula = state.datosGlobales.aulas.find(a => a.aula_id == aula_id);
+    const nombreAula = aula ? aula.nombre : `Aula ${aula_id}`;
+
     abrirModal({
-      html: htmlEliminarAsignacion(asignaciones, aula, fecha, turno),
-      idEsperado: 'form-eliminar-asignacion',
-      focoSelector: 'button[type="submit"]',
-      contexto: { aula, fecha, turno }
+      titulo: `❌ Eliminar Asignación en ${nombreAula}`,
+      html: htmlEliminarAsignacion(asignaciones, aula_id, fecha, turno),
+      focoSelector: '[name=asignacion_id]'
     });
     return;
   }
@@ -215,10 +184,8 @@ export function renderLeyenda() {
       if (!data.ok || !Array.isArray(data.entidades)) {
         throw new Error('Respuesta inválida del servidor');
       }
-
       const contenedor = document.getElementById('leyenda-dinamica');
       contenedor.innerHTML = '';
-
       data.entidades.forEach(ent => {
         const span = document.createElement('span');
         span.className = 'leyenda-bloque';
@@ -233,43 +200,8 @@ export function renderLeyenda() {
     });
 }
 
-function htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno) {
-  let html = `<div class="modal-contenido">
-    <h3>Seleccioná una asignación para editar</h3>
-    <form id="form-seleccionar-edicion" class="modal-formulario">`;
-
-  asignaciones.forEach(asig => {
-    const detalle = `${asig.materia} – ${asig.hora_inicio.slice(0,5)}-${asig.hora_fin.slice(0,5)} – ${asig.profesor}`;
-    html += `<label class="opcion-eliminar">
-      <input type="radio" name="asignacion_id" value="${asig.Id}"> ${detalle}
-    </label>`;
-  });
-
-  html += `
-    <input type="hidden" name="aula_id" value="${aula}">
-    <input type="hidden" name="fecha" value="${fecha}">
-    <input type="hidden" name="turno" value="${turno}">
-
-    <div class="form-buttons">
-      <button type="button" id="btn-cancelar-edicion">Cancelar</button>
-      <button type="submit">✏️ Editar</button>
-    </div>
-  </form></div>`;
-
-  return html;
-}
-
 export function resetearVistaGeneral() {
-
-
-  setState({
-    modoExtendido: false,
-    aulaSeleccionada: null,
-  });
-
-  // 🧼 Limpia parámetros de la URL
+  setState({ modoExtendido: false, aulaSeleccionada: null });
   const baseURL = window.location.origin + window.location.pathname;
-
-  // 🔄 Fuerza redirección sin parámetros
   window.location.href = baseURL;
 }

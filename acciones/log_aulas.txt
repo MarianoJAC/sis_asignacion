@@ -31,4 +31,45 @@
             "TV"
         ]
     }
-]
+][2025-09-19 20:58:31] DEBUG: ---INICIO DE GUARDAR ASIGNACION---
+[2025-09-19 20:58:31] DEBUG: Array
+(
+    [input] => Array
+        (
+            [entidad_id] => 6
+            [carrera] => sdfsdf
+            [anio] => 1A
+            [materia] => dsfsdf
+            [profesor] => sdfsdf
+            [hora_inicio] => 20:00
+            [hora_fin] => 22:00
+            [comentarios] => 
+            [aula_id] => 1
+            [fecha] => 2025-09-17
+            [turno] => Nocturno
+            [repeticion] => mes
+        )
+
+)
+
+[2025-09-19 20:58:31] DEBUG: Array
+(
+    [Fechas calculadas] => Array
+        (
+            [0] => 2025-09-17
+            [1] => 2025-09-24
+        )
+
+)
+
+[2025-09-19 20:58:31] DEBUG: Transacción iniciada.
+[2025-09-19 20:58:31] DEBUG: Procesando fecha: 2025-09-17
+[2025-09-19 20:58:32] DEBUG: Verificación de duplicados para 2025-09-17: 0 encontrados.
+[2025-09-19 20:58:32] DEBUG: Ejecutando inserción para 2025-09-17...
+[2025-09-19 20:58:32] DEBUG: Inserción exitosa para 2025-09-17. ID: 34. Total creadas: 1
+[2025-09-19 20:58:32] DEBUG: Procesando fecha: 2025-09-24
+[2025-09-19 20:58:33] DEBUG: Verificación de duplicados para 2025-09-24: 0 encontrados.
+[2025-09-19 20:58:33] DEBUG: Ejecutando inserción para 2025-09-24...
+[2025-09-19 20:58:33] DEBUG: Inserción exitosa para 2025-09-24. ID: 35. Total creadas: 2
+[2025-09-19 20:58:33] DEBUG: Transacción completada (commit). Total final: 2
+[2025-09-19 20:58:33] DEBUG: ---FIN DE GUARDAR ASIGNACION---
