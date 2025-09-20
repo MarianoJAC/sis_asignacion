@@ -5,6 +5,7 @@
   <title>Grilla de Asignaciones</title>
 
   <!-- 🧼 Estilos institucionales -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/variables.css">
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/grilla.css">
@@ -12,7 +13,6 @@
   <link rel="stylesheet" href="../css/acciones.css">
   <link rel="stylesheet" href="../css/leyenda.css">
   <link rel="stylesheet" href="../css/turnos.css">
-  <link rel="stylesheet" href="../css/modal.css">
   <link rel="stylesheet" href="../css/formulario.css">
   <link rel="stylesheet" href="../css/comentarios.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -91,10 +91,25 @@ $usuario = $_SESSION['username'] ?? 'Usuario';
 
   <!-- 🟢 Contenedor principal -->
   <div id="grilla-container">Cargando grilla...</div>
-  <div id="modal-formulario"></div>
+
+  <!-- Bootstrap Modal -->
+  <div class="modal fade" id="main-modal" tabindex="-1" aria-labelledby="main-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="main-modal-label"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="main-modal-body">
+          <!-- Contenido del formulario se inyectará aquí -->
+        </div>
+      </div>
+    </div>
+  </div>
 
  <!-- 🧠 Scripts modulares (orden blindado) -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
   window.esAdmin = <?= json_encode($esAdmin) ?>;
