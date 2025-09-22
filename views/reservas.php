@@ -1,95 +1,75 @@
 <?php
 session_start();
-
-// Proteger la página para que solo el rol 'admin' pueda acceder.
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] !== 'admin') {
-    header("location: ../index.php");
-    exit;
+if (!isset($_SESSION['usuario_id']) || $_SESSION['role'] !== 'admin') {
+  header('Location: ../index.php?error=acceso_denegado');
+  exit;
 }
-
-require_once '../config/conexion.php';
-
-// Consulta para obtener todas las reservas junto con el nombre de la entidad
-$reservas = [];
-$sql = "SELECT r.*, e.nombre as entidad_nombre 
-        FROM reservas r 
-        JOIN entidades e ON r.entidad_id = e.entidad_id 
-        ORDER BY r.fecha DESC, r.hora_inicio DESC";
-
-if ($result = $conexion->query($sql)) {
-    while ($row = $result->fetch_assoc()) {
-        $reservas[] = $row;
-    }
-}
-
-$conexion->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Reservas</title>
-    <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/auditoria.css"> <!-- Reutilizamos estilos de auditoría para la tabla -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Reservas</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Estilos personalizados -->
+  <link rel="stylesheet" href="../css/variables.css?v=1.1">
+  <link rel="stylesheet" href="../css/global.css?v=1.3">
+  <link rel="stylesheet" href="../css/reservas.css?v=1.0">
 </head>
 <body>
-    <header class="header">
-        <div class="header-container">
-            <h1>Panel de Solicitudes de Reserva</h1>
-            <div>
-                <a href="grilla.php" class="btn-logout">Volver a la Grilla</a>
-                <a href="../acciones/logout.php" class="btn-logout">Cerrar Sesión</a>
-            </div>
-        </div>
-    </header>
 
-    <main class="auditoria-container">
-        <div class="table-container">
-            <table class="auditoria-table">
-                <thead>
-                    <tr>
-                        <th>Fecha Reserva</th>
-                        <th>Hora Inicio</th>
-                        <th>Hora Fin</th>
-                        <th>Entidad</th>
-                        <th>Carrera</th>
-                        <th>Año</th>
-                        <th>Materia</th>
-                        <th>Profesor</th>
-                        <th>Teléfono Contacto</th>
-                        <th>Comentarios</th>
-                        <th>Fecha Solicitud</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($reservas)): ?>
-                        <?php foreach ($reservas as $reserva): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars(date("d/m/Y", strtotime($reserva['fecha']))); ?></td>
-                                <td><?php echo htmlspecialchars(date("H:i", strtotime($reserva['hora_inicio']))); ?></td>
-                                <td><?php echo htmlspecialchars(date("H:i", strtotime($reserva['hora_fin']))); ?></td>
-                                <td><?php echo htmlspecialchars($reserva['entidad_nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($reserva['carrera']); ?></td>
-                                <td><?php echo htmlspecialchars($reserva['anio']); ?></td>
-                                <td><?php echo htmlspecialchars($reserva['materia']); ?></td>
-                                <td><?php echo htmlspecialchars($reserva['profesor']); ?></td>
-                                <td><?php echo htmlspecialchars($reserva['telefono_contacto']); ?></td>
-                                <td class="comentarios-cell"><?php echo htmlspecialchars($reserva['comentarios']); ?></td>
-                                <td><?php echo htmlspecialchars(date("d/m/Y H:i", strtotime($reserva['timestamp']))); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="11">No hay solicitudes de reserva.</td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </main>
+<div class="container-fluid mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="titulo-modulo">Panel de Solicitudes de Reserva</h2>
+    <a href="grilla.php" class="btn btn-primary">Volver a la grilla</a>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span>Reservas</span>
+      <div>
+        <button id="btn-imprimir" class="btn btn-secondary">Imprimir</button>
+        <button id="btn-pdf" class="btn btn-danger">Generar PDF</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive" id="zona-imprimible">
+        <table id="tabla-reservas" class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th data-sort="fecha">Fecha Reserva <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
+              <th data-sort="hora_inicio">Hora Inicio <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
+              <th data-sort="hora_fin">Hora Fin <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
+              <th data-sort="entidad_nombre">Entidad <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
+              <th data-sort="carrera">Carrera <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
+              <th data-sort="profesor">Profesor <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
+              <th data-sort="telefono_contacto">Teléfono <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
+              <th data-sort="timestamp">Fecha Solicitud <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Contenido generado por JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Librería html2pdf.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<!-- SweetAlert2 para alertas -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Lógica del panel -->
+<script src="../js/reservas.panel.js"></script>
 </body>
 </html>

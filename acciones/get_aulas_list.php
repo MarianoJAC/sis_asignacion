@@ -1,22 +1,23 @@
 <?php
-include '../config/conexion.php';
-header('Content-Type: application/json');
+require_once __DIR__ . '/api_utils.php';
 
-// 🧑 Validación de sesión (opcional, pero recomendado si es data sensible)
-session_start();
-if (!isset($_SESSION['usuario_id'])) {
-  echo json_encode(['ok' => false, 'error' => 'Acceso no autenticado']);
-  exit;
+// Asumimos que cualquier usuario autenticado puede ver la lista de aulas
+validar_autenticado();
+
+$stmt = $conexion->prepare("SELECT aula_id, nombre FROM aulas ORDER BY nombre ASC");
+if (!$stmt) {
+    responder_error("Error al preparar la consulta de aulas.", 500);
 }
 
-$aulasQuery = mysqli_query($conexion, "SELECT aula_id, nombre FROM aulas ORDER BY nombre ASC");
-
-if (!$aulasQuery) {
-  http_response_code(500);
-  echo json_encode(['ok' => false, 'error' => 'Error en la consulta de aulas']);
-  exit;
+if (!$stmt->execute()) {
+    responder_error("Error al ejecutar la consulta de aulas.", 500);
 }
 
-$aulas = mysqli_fetch_all($aulasQuery, MYSQLI_ASSOC);
+$resultado = $stmt->get_result();
+$aulas = $resultado->fetch_all(MYSQLI_ASSOC);
+
+$stmt->close();
+$conexion->close();
 
 echo json_encode(['ok' => true, 'aulas' => $aulas]);
+?>

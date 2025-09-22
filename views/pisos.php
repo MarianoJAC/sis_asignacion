@@ -36,7 +36,7 @@ $classrooms_second_floor = [
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/mapa_pisos.css">
-    <link rel="stylesheet" href="../css/turnos.css">
+    <link rel="stylesheet" href="../css/main.css?v=1.0">
     <link rel="icon" href="../iconos/calendario.ico" type="image/x-icon">
 </head>
 <body>

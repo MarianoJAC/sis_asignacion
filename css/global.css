@@ -107,8 +107,8 @@ a:hover {
 .zona-controles {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
+  gap: 0; /* Reducido de --spacing-xs */
+  padding: 0 var(--spacing-md) var(--spacing-xs) var(--spacing-md); /* Reducido padding vertical */
 }
 
 .zona-superior {
@@ -121,6 +121,7 @@ a:hover {
   margin: 0;
   text-align: center;
   flex: 1;
+  font-size: 1.35rem; /* 10% menos que 1.5rem */
 }
 
 .zona-leyenda {
@@ -137,7 +138,7 @@ a:hover {
   justify-content: space-between;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-xxs) var(--spacing-md); /* Reducido de xs a xxs */
   background-color: var(--background-color-white);
   border-bottom: 1px solid var(--border-color);
 }

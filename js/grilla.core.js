@@ -12,60 +12,52 @@ import {
   limpiarFiltrosYRestaurar
 } from './grilla.filtros.js';
 
+import {
+  inputBuscador, selectorFecha, btnResetFecha, toggleFiltrosBtn, contenedorFiltros, tabButtons, btnMenu, menuDesplegable
+} from './grilla.dom.js';
+
 import './grilla.eventos.js';
 import './grilla.formularios.js';
 import './grilla.modales.js';
 import './grilla.alertas.js';
 import { preprocesarAsignaciones } from './grilla.validaciones.js';
-
 import { mostrarMensaje } from './grilla.alertas.js';
 import { renderLeyenda } from './grilla.eventos.js';
 import { getState, setState } from './grilla.state.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-
-
   const params = new URLSearchParams(window.location.search);
   const aulaId = parseInt(params.get('aula_id') || '0');
   const origen = params.get('origen') || '';
 
-
-
   if (aulaId > 0 && origen === 'mapa') {
-
-    setState({
-      aulaSeleccionada: aulaId,
-      modoExtendido: true,
-      yaRenderizado: true,
-    });
-
+    setState({ aulaSeleccionada: aulaId, modoExtendido: true, yaRenderizado: true });
     actualizarVisibilidadFiltros();
     cargarAsignacionesPorAulaTodosLosTurnos(aulaId);
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    tabButtons.forEach(btn => btn.classList.remove('active'));
     history.replaceState(null, '', 'grilla.php');
     return;
   }
 
   if (aulaId > 0) {
-
     setState({ aulaSeleccionada: aulaId });
     cargarAsignacionesPorAula(aulaId);
     return;
   }
 
   cargarVistaInstitucional();
-  // ✅ Activación dinámica de pestañas de turno
-document.querySelectorAll('.tab-btn[data-turno]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    // 🔄 Reset de clase activa
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
 
-    const turno = btn.dataset.turno;
-    setState({ forceRender: true }); // 🔁 fuerza render aunque sea el mismo turno
-    actualizarGrilla(turno);
+  tabButtons.forEach(btn => {
+    if(btn.dataset.turno) { // Only apply to turn buttons
+      btn.addEventListener('click', () => {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const turno = btn.dataset.turno;
+        setState({ forceRender: true });
+        actualizarGrilla(turno);
+      });
+    }
   });
-});
 });
 
 export function fetchGrillaData() {
@@ -81,18 +73,9 @@ export function fetchGrillaData() {
     });
 }
 
-// ✅ Función blindada para vista institucional
 function cargarVistaInstitucional() {
-
-
-  setState({
-    modoExtendido: false,
-    aulaSeleccionada: null,
-    yaRenderizado: false,
-  });
-
+  setState({ modoExtendido: false, aulaSeleccionada: null, yaRenderizado: false });
   actualizarVisibilidadFiltros();
-
   const turno = 'Matutino';
 
   fetchGrillaData()
@@ -106,9 +89,8 @@ function cargarVistaInstitucional() {
     });
 }
 
-// ✅ Buscador de aulas
 let buscadorTimeout;
-document.getElementById('input-buscador')?.addEventListener('input', e => {
+inputBuscador?.addEventListener('input', e => {
   clearTimeout(buscadorTimeout);
   buscadorTimeout = setTimeout(() => {
     const textoOriginal = e.target.value.trim();
@@ -118,51 +100,28 @@ document.getElementById('input-buscador')?.addEventListener('input', e => {
   }, 300);
 });
 
-// ✅ Toggle de filtros unificados
-document.getElementById('toggle-filtros')?.addEventListener('click', () => {
-  const contenedor = document.getElementById('contenedor-filtros');
-  const boton = document.getElementById('toggle-filtros');
-
-  if (contenedor && boton) {
-    contenedor.classList.toggle('contenedor-oculto');
-    contenedor.classList.toggle('contenedor-visible');
-
-    // 🧠 Reposicionamiento dinámico si se sale del viewport
- const rectBoton = boton.getBoundingClientRect();
-const espacioIzquierda = rectBoton.left;
-
-if (espacioIzquierda < 320) {
-  contenedor.style.right = 'auto';
-  contenedor.style.left = '0'; // ⏪ lo pega al borde izquierdo si no hay espacio
-} else {
-  contenedor.style.right = 'calc(100% + 20px)';
-  contenedor.style.left = 'auto';
-}
-
-
-
+toggleFiltrosBtn?.addEventListener('click', () => {
+  if (contenedorFiltros) {
+    contenedorFiltros.classList.toggle('contenedor-oculto');
+    contenedorFiltros.classList.toggle('contenedor-visible');
+    const rectBoton = toggleFiltrosBtn.getBoundingClientRect();
+    const espacioIzquierda = rectBoton.left;
+    if (espacioIzquierda < 320) {
+      contenedorFiltros.style.right = 'auto';
+      contenedorFiltros.style.left = '0';
+    } else {
+      contenedorFiltros.style.right = 'calc(100% + 20px)';
+      contenedorFiltros.style.left = 'auto';
+    }
   }
 });
 
-// ✅ Reset de filtro de fecha
-document.getElementById('btn-reset-fecha')?.addEventListener('click', () => {
-  const selector = document.getElementById('selector-fecha');
-  const buscador = document.getElementById('input-buscador');
-
-  // 🧹 Limpiar fecha
-  if (selector) selector.value = '';
-
-  // 🧹 Limpiar buscador
-  if (buscador) buscador.value = '';
-
-  // 🔄 Disparar restauración completa
+btnResetFecha?.addEventListener('click', () => {
+  if (selectorFecha) selectorFecha.value = '';
+  if (inputBuscador) inputBuscador.value = '';
   const turno = document.querySelector('.tab-btn.active')?.dataset.turno || 'Matutino';
   limpiarFiltrosYRestaurar(turno);
 });
-
-// ✅ Menú hamburguesa desplegable
-const btnMenu = document.getElementById('btn-menu');
-const menuDesplegable = document.getElementById('menu-desplegable');
 
 if (btnMenu && menuDesplegable) {
   btnMenu.addEventListener('click', () => {
@@ -170,13 +129,9 @@ if (btnMenu && menuDesplegable) {
     menuDesplegable.style.display = visible ? 'none' : 'block';
   });
 
-  // 🧠 Cierre automático al hacer clic fuera
   document.addEventListener('click', (e) => {
     if (!menuDesplegable.contains(e.target) && !btnMenu.contains(e.target)) {
       menuDesplegable.style.display = 'none';
     }
   });
-  
 }
-
-

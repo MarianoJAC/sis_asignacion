@@ -6,15 +6,9 @@
 
   <!-- 🧼 Estilos institucionales -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../css/variables.css">
-  <link rel="stylesheet" href="../css/global.css">
-  <link rel="stylesheet" href="../css/grilla.css">
-  
-  <link rel="stylesheet" href="../css/acciones.css">
-  <link rel="stylesheet" href="../css/leyenda.css">
-  <link rel="stylesheet" href="../css/turnos.css">
-  <link rel="stylesheet" href="../css/formulario.css">
-  <link rel="stylesheet" href="../css/comentarios.css">
+  <link rel="stylesheet" href="../css/variables.css?v=1.3">
+  <link rel="stylesheet" href="../css/global.css?v=1.3">
+  <link rel="stylesheet" href="../css/main.css?v=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">

@@ -1,33 +1,23 @@
 <?php
-include '../config/conexion.php';
+require_once __DIR__ . '/api_utils.php';
 
-// 🛡️ Encabezado para respuesta JSON
-header('Content-Type: application/json; charset=utf-8');
+// Asumimos que cualquier usuario autenticado puede ver la lista de entidades
+validar_autenticado();
 
-// 🧪 Validación de conexión y consulta
-$res = mysqli_query($conexion, "SELECT entidad_id, nombre, color FROM entidades ORDER BY nombre ASC");
-
-if (!$res) {
-  http_response_code(500);
-  echo json_encode([
-    'ok' => false,
-    'error' => 'Error al consultar entidades'
-  ]);
-  exit;
+$stmt = $conexion->prepare("SELECT entidad_id as id, nombre, color FROM entidades ORDER BY nombre ASC");
+if (!$stmt) {
+    responder_error("Error al preparar la consulta de entidades.", 500);
 }
 
-// 📦 Armado del array
-$entidades = [];
-while ($row = mysqli_fetch_assoc($res)) {
-  $entidades[] = [
-    'id' => $row['entidad_id'],
-    'nombre' => $row['nombre'],
-    'color' => $row['color']
-  ];
+if (!$stmt->execute()) {
+    responder_error("Error al ejecutar la consulta de entidades.", 500);
 }
 
-// ✅ Respuesta estructurada
-echo json_encode([
-  'ok' => true,
-  'entidades' => $entidades
-]);
+$resultado = $stmt->get_result();
+$entidades = $resultado->fetch_all(MYSQLI_ASSOC);
+
+$stmt->close();
+$conexion->close();
+
+echo json_encode(['ok' => true, 'entidades' => $entidades]);
+?>

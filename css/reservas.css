@@ -1,0 +1,36 @@
+/* Estilos para el panel de reservas */
+
+.sort-icons {
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 5px;
+  vertical-align: middle;
+  position: absolute; /* Posicionamiento absoluto */
+  right: 5px; /* Ajustar a la derecha del th */
+  top: 50%; /* Centrar verticalmente */
+  transform: translateY(-50%); /* Ajuste fino para centrado */
+}
+
+.sort-icon {
+  font-size: 1.44em; /* 20% más grande que 1.2em */
+  line-height: 0.5em; /* Ajustar el espacio entre ellos */
+  color: #ccc; /* Color por defecto, menos prominente */
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.sort-icon.active {
+  color: var(--secondary-color); /* Color activo, más prominente */
+}
+
+/* Ajuste para que el texto del encabezado y los iconos estén alineados */
+th[data-sort] {
+  position: relative; /* Necesario para el posicionamiento absoluto de los iconos */
+  padding-right: 25px; /* Espacio para los iconos a la derecha */
+  text-align: left; /* Alinear el texto a la izquierda */
+}
+
+/* Eliminar reglas que causaban el apilamiento */
+th[data-sort] .sort-icons {
+  /* margin-left: auto; */ /* Ya no es necesario con position absolute */
+}
