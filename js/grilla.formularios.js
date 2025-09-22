@@ -149,29 +149,18 @@ function procesarSeleccionEdicion(form, submitBtn) {
         contexto: { id, aula_id, fecha, turno }
       });
 
-      setTimeout(() => {
-        const formEdit = document.getElementById('form-editar-asignacion');
-        if (!formEdit) return;
+      const formEdit = document.getElementById('form-editar-asignacion');
+      if (!formEdit) return;
 
-        const formClonado = formEdit.cloneNode(true);
-        formEdit.replaceWith(formClonado);
+      const formClonado = formEdit.cloneNode(true);
+      formEdit.replaceWith(formClonado);
 
-        formClonado.addEventListener('submit', e => {
-          e.preventDefault();
-          const submitBtn = formClonado.querySelector('button[type="submit"]');
-          if (submitBtn) submitBtn.disabled = true;
-          procesarEdicionAsignacion(formClonado, submitBtn);
-        }, { once: true });
-
-        const btnCancelar = formClonado.querySelector('button[id^="btn-cancelar"]');
-        if (btnCancelar) {
-          btnCancelar.addEventListener('click', e => {
-            e.preventDefault();
-            e.stopPropagation();
-            cerrarModal();
-          }, { once: true });
-        }
-      }, 50);
+      formClonado.addEventListener('submit', e => {
+        e.preventDefault();
+        const submitBtn = formClonado.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.disabled = true;
+        procesarEdicionAsignacion(formClonado, submitBtn);
+      }, { once: true });
     })
     .catch((err) => {
       mostrarMensaje('error', 'Error inesperado: ' + err.message);

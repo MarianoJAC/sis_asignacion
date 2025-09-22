@@ -147,7 +147,7 @@ function htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno) {
     <input type="hidden" name="turno" value="${turno}">
 
     <div class="form-buttons">
-      <button type="button" id="btn-cancelar-edicion">Cancelar</button>
+      <button type="button" id="btn-cancelar-edicion" data-bs-dismiss="modal">Cancelar</button>
       <button type="submit">✏️ Editar</button>
     </div>
   </form></div>`;

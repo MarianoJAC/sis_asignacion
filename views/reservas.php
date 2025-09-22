@@ -43,12 +43,12 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['role'] !== 'admin') {
           <thead class="table-light">
             <tr>
               <th data-sort="fecha">Fecha Reserva <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
-              <th data-sort="hora_inicio">Hora Inicio <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
-              <th data-sort="hora_fin">Hora Fin <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
-              <th data-sort="entidad_nombre">Entidad <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
-              <th data-sort="carrera">Carrera <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
-              <th data-sort="profesor">Profesor <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
-              <th data-sort="telefono_contacto">Teléfono <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
+              <th data-sort="hora_inicio">Hora Inicio </th>
+              <th data-sort="hora_fin">Hora Fin </th>
+              <th data-sort="entidad_nombre">Entidad </th>
+              <th data-sort="carrera">Carrera </th>
+              <th data-sort="profesor">Profesor </th>
+              <th data-sort="telefono_contacto">Teléfono </th>
               <th data-sort="timestamp">Fecha Solicitud <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
               <th>Acciones</th>
             </tr>
