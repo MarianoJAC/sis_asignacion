@@ -53,7 +53,7 @@ function procesarAgregarAsignacion(form, submitBtn) {
     aula_id: form.elements['aula_id']?.value,
     fecha: form.elements['fecha']?.value,
     turno: form.elements['turno']?.value,
-    repeticion: form.querySelector('input[name="repeticion"]:checked')?.value
+    repeticion: form.elements['repeticion']?.value
   };
 
   if (!datos.entidad_id || !datos.materia || !datos.profesor || !datos.hora_inicio || !datos.hora_fin || !datos.aula_id || !datos.fecha || !datos.turno) {
@@ -364,7 +364,7 @@ function procesarEliminarAsignacion(form, submitBtn) {
     return;
   }
 
-  const repeticion = form.querySelector('input[name="repeticion"]:checked')?.value || 'dia';
+  const repeticion = form.elements['repeticion']?.value || 'dia';
 
   const datos = { id, repeticion };
 

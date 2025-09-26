@@ -62,7 +62,7 @@ $entidad     = isset($input['entidad_id']) ? (int)$input['entidad_id'] : 0;
 $inicio      = $input['hora_inicio'] ?? '';
 $fin         = $input['hora_fin']    ?? '';
 $comentarios = isset($input['comentarios']) ? trim($input['comentarios']) : '';
-$repeticion  = $input['repeticion']  ?? 'dia'; // dia, mes, anio
+$repeticion  = trim($input['repeticion']  ?? 'dia'); // dia, mensual, cuatrimestral, anual
 
 // 🛡️ Validación básica
 if (!$aula_id || !$fecha_inicial || !$turno || !$carrera || !$anio || !$materia || !$profesor || !$entidad || !$inicio || !$fin) {
@@ -75,26 +75,39 @@ if (!$aula_id || !$fecha_inicial || !$turno || !$carrera || !$anio || !$materia 
 $fechas_a_insertar = [];
 $fecha_dt = new DateTime($fecha_inicial);
 
-if ($repeticion === 'dia') {
-    $fechas_a_insertar[] = $fecha_dt->format('Y-m-d');
-} else {
+if ($repeticion !== 'dia') {
     $dia_semana_original = $fecha_dt->format('N'); // 1 (lunes) a 7 (domingo)
     $fecha_fin_loop = clone $fecha_dt;
+    $period_defined = false;
 
-    if ($repeticion === 'mes') {
+    if ($repeticion === 'mensual') {
         $fecha_fin_loop->modify('last day of this month');
-    } elseif ($repeticion === 'anio') {
+        $period_defined = true;
+    } elseif ($repeticion === 'cuatrimestral') {
+        $fecha_fin_loop->modify('+4 months');
+        $period_defined = true;
+    } elseif ($repeticion === 'anual') {
         $fecha_fin_loop->modify('last day of december this year');
+        $period_defined = true;
     }
 
-    $intervalo = new DateInterval('P1D');
-    $periodo = new DatePeriod($fecha_dt, $intervalo, $fecha_fin_loop->modify('+1 day'));
+    if ($period_defined) {
+        $intervalo = new DateInterval('P1D');
+        // The end date for DatePeriod is exclusive, so add one day to include it.
+        $fecha_fin_loop->modify('+1 day');
+        $periodo = new DatePeriod($fecha_dt, $intervalo, $fecha_fin_loop);
 
-    foreach ($periodo as $dia) {
-        if ($dia->format('N') === $dia_semana_original) {
-            $fechas_a_insertar[] = $dia->format('Y-m-d');
+        foreach ($periodo as $dia) {
+            if ($dia->format('N') === $dia_semana_original) {
+                $fechas_a_insertar[] = $dia->format('Y-m-d');
+            }
         }
     }
+}
+
+// If no dates were generated for repetition, or if it's a single day, add the base date.
+if (empty($fechas_a_insertar)) {
+    $fechas_a_insertar[] = $fecha_dt->format('Y-m-d');
 }
 debug_log(['Fechas calculadas' => $fechas_a_insertar]);
 

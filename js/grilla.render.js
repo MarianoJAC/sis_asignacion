@@ -7,6 +7,7 @@ import { getState, setState } from './grilla.state.js';
 const iconoRecurso = {
   'Proyector': '<i class="fas fa-video"></i>',
   'TV': '<i class="fas fa-tv"></i>',
+  'Pantalla interactiva': '<i class="fas fa-chalkboard-teacher"></i>',
   'Ninguno': '<i class="fas fa-ban"></i>'
 };
 
@@ -154,10 +155,23 @@ function renderGrillaSafe(destino, turnoSeleccionado, datos, aulaIdFiltrada, tar
         tdAula.appendChild(strong);
         tdAula.appendChild(document.createElement('br'));
         const small = document.createElement('small');
-        const recursos = Array.isArray(aula.recursos) ? aula.recursos : ['Ninguno'];
-const recursosHTML = recursos.map(r => `${iconoRecurso[r] || '❓'} ${r}`).join(' / ');
-small.innerHTML = `${recursosHTML} – Capacidad: ${aula.capacidad}`;
-        tdAula.appendChild(small);
+        let infoParts = [];
+
+        const recursos = Array.isArray(aula.recursos) && aula.recursos.length > 0 ? aula.recursos : [];
+        if (recursos.length > 0) {
+            const recursosHTML = recursos.map(r => `${iconoRecurso[r] || '❓'} ${r}`).join(' / ');
+            infoParts.push(recursosHTML);
+        }
+
+        if (aula.capacidad) {
+            infoParts.push(`Capacidad: ${aula.capacidad}`);
+        }
+
+        if (infoParts.length > 0) {
+            const wrappedParts = infoParts.map(part => `<span style="white-space: nowrap;">${part}</span>`);
+            small.innerHTML = wrappedParts.join(' – ');
+            tdAula.appendChild(small);
+        }
       }
       tr.appendChild(tdAula);
     }

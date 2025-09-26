@@ -103,19 +103,13 @@ function htmlEliminarAsignacion(asignaciones, aula, fecha, turno) {
         ${optionsHtml}
       </div>
       <div class="mb-3">
-        <p class="fw-bold">Opciones de eliminación:</p>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" id="repetir_dia" name="repeticion" value="dia" checked>
-          <label class="form-check-label" for="repetir_dia">Solo este día</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" id="repetir_mes" name="repeticion" value="mes">
-          <label class="form-check-label" for="repetir_mes">Todo el mes</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" id="repetir_anio" name="repeticion" value="anio">
-          <label class="form-check-label" for="repetir_anio">Todo el año</label>
-        </div>
+        <label for="repeticion" class="form-label fw-bold">Opciones de eliminación:</label>
+        <select class="form-select" id="repeticion" name="repeticion">
+          <option value="dia" selected>Solo este día</option>
+          <option value="mensual">Todo el mes</option>
+          <option value="cuatrimestral">Todo el cuatrimestre</option>
+          <option value="anual">Todo el año</option>
+        </select>
       </div>
       <input type="hidden" name="aula_id" value="${aula}">
       <input type="hidden" name="fecha" value="${fecha}">

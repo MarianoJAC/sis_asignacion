@@ -1,48 +1,46 @@
 <?php
 session_start();
 include '../config/conexion.php';
+header('Content-Type: application/json');
 
-// 1. Verificación de seguridad: solo los administradores pueden ejecutar este script.
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    die('Acceso denegado. Esta acción requiere privilegios de administrador.');
+    http_response_code(403);
+    echo json_encode(['ok' => false, 'error' => 'Acceso denegado']);
+    exit;
 }
 
-$response = ['success' => false, 'message' => ''];
+$input = json_decode(file_get_contents('php://input'), true);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? '');
-    $new_password = $_POST['new_password'] ?? '';
+$id = $input['id'] ?? null;
+$new_password = $input['new_password'] ?? '';
 
-    // 2. Validación de entradas
-    if (empty($username) || empty($new_password)) {
-        $response['message'] = 'El nombre de usuario y la nueva contraseña no pueden estar vacíos.';
-    } else {
-        // 3. Hashear la nueva contraseña como en el login
-        $nuevo_hash = password_hash($new_password, PASSWORD_DEFAULT);
+if (empty($id) || empty($new_password)) {
+    echo json_encode(['ok' => false, 'error' => 'ID de usuario y nueva contraseña son obligatorios.']);
+    exit;
+}
 
-        // 4. Preparar y ejecutar la actualización en la base de datos
-        $stmt = $conexion->prepare("UPDATE usuarios SET password = ? WHERE username = ?");
-        $stmt->bind_param("ss", $nuevo_hash, $username);
+try {
+    $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 
-        if ($stmt->execute()) {
-            if ($stmt->affected_rows > 0) {
-                $response['success'] = true;
-                $response['message'] = 'La contraseña para el usuario ' . htmlspecialchars($username) . ' ha sido actualizada correctamente.';
-            } else {
-                $response['message'] = 'No se encontró un usuario con el nombre ' . htmlspecialchars($username) . '. No se realizaron cambios.';
-            }
+    $stmt = $conexion->prepare("UPDATE usuarios SET password = ? WHERE id = ?");
+    $stmt->bind_param("si", $hashed_password, $id);
+
+    if ($stmt->execute()) {
+        if ($stmt->affected_rows > 0) {
+            echo json_encode(['ok' => true, 'mensaje' => 'Contraseña actualizada correctamente.']);
         } else {
-            $response['message'] = 'Error al ejecutar la actualización: ' . $stmt->error;
+            echo json_encode(['ok' => false, 'error' => 'No se encontró el usuario para actualizar.']);
         }
-        $stmt->close();
+    } else {
+        throw new Exception('Error al actualizar la contraseña: ' . $stmt->error);
     }
-} else {
-    $response['message'] = 'Método de solicitud no válido.';
+    $stmt->close();
+
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
 }
 
 $conexion->close();
-
-// Redirigir de vuelta al formulario con un mensaje
-$_SESSION['flash_message'] = $response['message'];
-header('Location: ../views/form_cambiar_pass.php');
 exit;
+?>

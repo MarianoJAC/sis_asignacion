@@ -1,0 +1,8 @@
+/* Estilos para la tabla de usuarios */
+#tabla-usuarios .btn-group .btn {
+  margin-right: 5px;
+}
+
+.titulo-modulo {
+  color: var(--primary-color);
+}

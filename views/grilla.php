@@ -34,7 +34,9 @@ $usuario = $_SESSION['username'] ?? 'Usuario';
         <?php if ($esAdmin): ?>
           <a href="auditoria_panel.php">🛡️ Auditoría</a>
           <a href="reservas.php">📋 Ver Reservas</a>
+          <a href="configuracion.php">⚙️ Configuración</a>
         <?php endif; ?>
+        <a href="asignacionesTurnoActual.php">🕒 Turno Actual</a>
         <a href="../acciones/logout.php">🔓 Cerrar sesión</a>
       </div>
     </div>

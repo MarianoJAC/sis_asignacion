@@ -21,23 +21,15 @@ function options($tabla, $id_col, $name_col) {
     <input type="hidden" name="turno" value="<?= htmlspecialchars($turno) ?>">
 
     <div class="row g-3">
-        <div class="col-12">
-            <label class="form-label">Repetir asignación:</label>
-            <div class="d-flex justify-content-start">
-                <div class="form-check form-check-inline me-3">
-                    <input class="form-check-input" type="radio" id="repetir_dia" name="repeticion" value="dia" checked>
-                    <label class="form-check-label" for="repetir_dia">Solo este día</label>
-                </div>
-                <div class="form-check form-check-inline me-3">
-                    <input class="form-check-input" type="radio" id="repetir_mes" name="repeticion" value="mes">
-                    <label class="form-check-label" for="repetir_mes">Todo el mes</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="repetir_anio" name="repeticion" value="anio">
-                    <label class="form-check-label" for="repetir_anio">Todo el año</label>
-                </div>
-            </div>
-        </div>
+<div class="mb-3">
+  <label for="repeticion" class="form-label">Repetir asignación:</label>
+  <select class="form-select" id="repeticion" name="repeticion">
+    <option value="dia" selected>Solo este día</option>
+    <option value="mensual">Repetir semanalmente en el mes seleccionado</option>
+    <option value="cuatrimestral">Repetir semanalmente por 4 meses</option>
+    <option value="anual">Repetir semanalmente por todo el año</option>
+  </select>
+</div>
 
         <div class="col-md-6">
             <label for="fecha" class="form-label">Fecha exacta:</label>
