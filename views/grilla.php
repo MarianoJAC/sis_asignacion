@@ -8,8 +8,10 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/variables.css?v=1.3">
   <link rel="stylesheet" href="../css/global.css?v=1.3">
-  <link rel="stylesheet" href="../css/main.css?v=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="../css/main.css?v=1.0">
+    <link rel="stylesheet" href="../css/leyenda.css?v=1.0">
+  <link rel="stylesheet" href="../css/mapa.css?v=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -23,6 +25,19 @@ session_start();
 $esAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 $usuario = $_SESSION['username'] ?? 'Usuario';
 ?>
+
+  <div id="leyenda-lateral">
+    <div id="leyenda-lateral-toggle">ENTIDADES</div>
+    <div id="leyenda-lateral-contenido">
+      <!-- El contenido de la leyenda se generará aquí -->
+    </div>
+</div>
+<div id="mapa-lateral">
+    <div id="mapa-lateral-toggle">MAPA</div>
+    <div id="mapa-lateral-contenido">
+        <iframe src="pisos_content.php" frameborder="0"></iframe>
+    </div>
+</div>
 
 <div id="zona-controles" class="zona-controles">
   <div class="zona-superior">
@@ -42,7 +57,7 @@ $usuario = $_SESSION['username'] ?? 'Usuario';
     </div>
   </div>
 
-  <div class="zona-leyenda">
+  <div class="zona-leyenda" style="display: none;">
   <div class="leyenda-row" id="leyenda-dinamica"></div>
   <?php if ($esAdmin): ?>
   <div class="acciones-entidad">
@@ -59,14 +74,11 @@ $usuario = $_SESSION['username'] ?? 'Usuario';
     <button class="tab-btn" data-turno="Matutino">Matutino</button>
     <button class="tab-btn" data-turno="Vespertino">Vespertino</button>
     <button class="tab-btn" data-turno="Nocturno">Nocturno</button>
-    <a href="pisos.php"><button class="tab-btn" id="almapa">Al Mapa</button></a>
+
     <button class="tab-btn" id="btn-ver-todas">Todas las Aulas</button>
   </div>
 
-  <div id="bloque-filtro-fecha" class="bloque-desplegable">
-  <button id="toggle-filtros" class="btn-desplegable">📅 Filtrar</button>
-
-  <div id="contenedor-filtros" class="contenedor-oculto">
+  <div id="contenedor-filtros">
     <!-- 🔍 Buscador de aula -->
     <div class="filtro-buscador">
       <label for="input-buscador"><strong>Buscar:</strong></label>
@@ -76,10 +88,9 @@ $usuario = $_SESSION['username'] ?? 'Usuario';
     <div class="filtro-fecha">
       <label for="selector-fecha"><strong>Fecha:</strong></label>
       <input type="date" id="selector-fecha" class="selector-fecha" />
-      <button id="btn-reset-fecha" class="btn-reset-fecha">🧹 Limpiar</button>
+      <button id="btn-reset-fecha" class="btn-reset-fecha">🧹</button>
     </div>
   </div>
-</div>
 </div>
 
   <!-- 🟡 Comentario flotante -->

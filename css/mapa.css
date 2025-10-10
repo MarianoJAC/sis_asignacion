@@ -1,0 +1,67 @@
+/* css/mapa.css */
+
+#mapa-lateral {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  transition: all 0.3s ease-in-out;
+  width: 40px;
+  overflow: hidden;
+  height: 90vh; /* Increased height */
+  max-height: 90vh; /* Increased height */
+  display: flex;
+  flex-direction: column;
+}
+
+#mapa-lateral:hover {
+  width: 80vw; /* Make it wider to show the maps */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+#mapa-lateral-toggle {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 5px;
+  background-color: #e9ecef;
+  border-radius: 10px 0 0 10px;
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  transform: translate(100%, -50%);
+  transition: all 0.3s ease;
+}
+
+#mapa-lateral:hover #mapa-lateral-toggle {
+    opacity: 0;
+}
+
+#mapa-lateral-contenido {
+  padding: 0; /* Remove padding */
+  opacity: 0;
+  transition: opacity 0.3s ease 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%; /* Make it take the full height */
+  align-items: center; /* Center the iframe horizontally */
+  justify-content: center; /* Center the iframe vertically */
+}
+
+#mapa-lateral:hover #mapa-lateral-contenido {
+  opacity: 1;
+}
+
+#mapa-lateral-contenido iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}

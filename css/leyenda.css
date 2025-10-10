@@ -1,0 +1,101 @@
+/* css/leyenda.css */
+
+#leyenda-lateral {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  transition: all 0.3s ease-in-out;
+  width: 40px;
+  overflow: hidden;
+  height: auto;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#leyenda-lateral:hover {
+  width: 250px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+#leyenda-lateral-toggle {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 5px;
+  background-color: #e9ecef;
+  border-radius: 0 10px 10px 0;
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translate(-100%, -50%);
+  transition: all 0.3s ease;
+}
+
+#leyenda-lateral:hover #leyenda-lateral-toggle {
+    opacity: 0;
+}
+
+
+#leyenda-lateral-contenido {
+  padding: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.2s;
+  overflow-y: auto; /* Add scroll if content overflows */
+  flex-grow: 1; /* Allow this to take up available space */
+}
+
+#leyenda-lateral:hover #leyenda-lateral-contenido {
+  opacity: 1;
+}
+
+.leyenda-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  white-space: nowrap;
+}
+
+.leyenda-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.leyenda-nombre {
+  font-size: 14px;
+}
+
+.add-item a,
+.delete-item a {
+    display: block;
+    text-decoration: none;
+    color: #212529;
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+.add-item a:hover,
+.delete-item a:hover {
+    color: #007bff;
+}
+
+.icon-add,
+.icon-delete {
+    margin-right: 5px;
+}
+
+.icon-delete {
+  font-size: 14px; /* Smaller font size for the 'x' */
+}

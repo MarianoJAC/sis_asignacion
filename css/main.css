@@ -318,27 +318,6 @@
 }
 
 /* --- Contenido de leyenda.css --- */
-#leyenda-colores {
-  margin-bottom: var(--spacing-md);
-  font-size: var(--font-size-large);
-  padding-left: var(--spacing-lg);
-}
-
-.leyenda-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-xs);
-  margin-top: 0;
-}
-
-.leyenda-bloque {
-  display: inline-block;
-  margin: var(--spacing-xxs);
-  padding: 2px 8px;
-  border-radius: var(--border-radius-sm);
-  font-weight: bold;
-  font-size: 0.7875rem;
-}
 
 /* --- Contenido de turnos.css --- */
 .turno-tabs {

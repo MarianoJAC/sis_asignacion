@@ -46,7 +46,8 @@ document.addEventListener('click', e => {
   }
 
   // Botón de agregar entidad
-  if (id === 'btn-agregar-entidad') {
+  if (id === 'btn-agregar-entidad' || id === 'btn-agregar-entidad-lateral') {
+    e.preventDefault(); // Prevent default link behavior
     e.stopPropagation();
     abrirModal({
       titulo: '➕ Nueva Entidad',
@@ -57,7 +58,8 @@ document.addEventListener('click', e => {
   }
 
   // Botón de eliminar entidad
-  if (id === 'btn-eliminar-entidad') {
+  if (id === 'btn-eliminar-entidad' || id === 'btn-eliminar-entidad-lateral') {
+    e.preventDefault(); // Prevent default link behavior
     e.stopPropagation();
     fetch('../acciones/get_entidades.php')
       .then(res => res.json())
@@ -184,15 +186,49 @@ export function renderLeyenda() {
       if (!data.ok || !Array.isArray(data.entidades)) {
         throw new Error('Respuesta inválida del servidor');
       }
-      const contenedor = document.getElementById('leyenda-dinamica');
+      const contenedor = document.getElementById('leyenda-lateral-contenido');
+      if (!contenedor) return;
       contenedor.innerHTML = '';
+
+      // Add button for adding new entity
+      if (window.esAdmin) {
+          const addItem = document.createElement('div');
+          addItem.className = 'leyenda-item add-item';
+          const addLink = document.createElement('a');
+          addLink.href = '#';
+          addLink.id = 'btn-agregar-entidad-lateral';
+          addLink.className = 'btn-agregar-entidad';
+          addLink.innerHTML = '<span class="icon-add">➕</span> Agregar';
+          addItem.appendChild(addLink);
+          contenedor.appendChild(addItem);
+
+          const deleteItem = document.createElement('div');
+          deleteItem.className = 'leyenda-item delete-item';
+          const deleteLink = document.createElement('a');
+          deleteLink.href = '#';
+          deleteLink.id = 'btn-eliminar-entidad-lateral';
+          deleteLink.className = 'btn-eliminar-entidad';
+          deleteLink.innerHTML = '<span class="icon-delete">❌</span> Eliminar';
+          deleteItem.appendChild(deleteLink);
+          contenedor.appendChild(deleteItem);
+      }
+
       data.entidades.forEach(ent => {
-        const span = document.createElement('span');
-        span.className = 'leyenda-bloque';
-        span.textContent = ent.nombre;
-        span.style.backgroundColor = ent.color;
-        span.style.color = '#fff';
-        contenedor.appendChild(span);
+        const item = document.createElement('div');
+        item.className = 'leyenda-item';
+        
+        const color = document.createElement('div');
+        color.className = 'leyenda-color';
+        color.style.backgroundColor = ent.color;
+        
+        const nombre = document.createElement('div');
+        nombre.className = 'leyenda-nombre';
+        nombre.textContent = ent.nombre;
+        
+        item.appendChild(color);
+        item.appendChild(nombre);
+        
+        contenedor.appendChild(item);
       });
     })
     .catch((err) => {

@@ -5,6 +5,7 @@
 }
 
 body {
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
   overflow-y: auto; /* FIX: Permitir scroll vertical */
@@ -57,8 +58,9 @@ a:hover {
 
 /* 🍔 Menú hamburguesa */
 .menu-hamburguesa {
-  position: fixed;
-  top: 20px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   left: 20px;
   z-index: 9999;
 }
@@ -112,16 +114,16 @@ a:hover {
 }
 
 .zona-superior {
+  position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Center the title */
   align-items: center;
+  padding: 10px 0;
 }
 
 .zona-superior h2 {
   margin: 0;
-  text-align: center;
-  flex: 1;
-  font-size: 1.35rem; /* 10% menos que 1.5rem */
+  font-size: 1.5rem;
 }
 
 .zona-leyenda {
@@ -135,10 +137,10 @@ a:hover {
 .zona-filtros-turno {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around; /* Distribute space evenly */
   align-items: center;
   gap: var(--spacing-sm);
-  padding: var(--spacing-xxs) var(--spacing-md); /* Reducido de xs a xxs */
+  padding: var(--spacing-sm) var(--spacing-md);
   background-color: var(--background-color-white);
   border-bottom: 1px solid var(--border-color);
 }
@@ -151,43 +153,22 @@ a:hover {
   gap: var(--spacing-xs);
 }
 
-.bloque-desplegable {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
-
-/* 🎛️ Panel lateral de filtros */
 #contenedor-filtros {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: calc(100% + 20px);
-  background-color: var(--background-color-white);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  padding: var(--spacing-sm);
-  z-index: 999;
-  min-width: 280px;
-  display: none;
-}
-
-/* 🔓 Control de visibilidad */
-.contenedor-visible {
-  display: block !important;
-}
-
-.contenedor-oculto {
-  display: none !important;
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
 
 .filtro-fecha,
 .filtro-buscador {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xxs);
-  margin-bottom: var(--spacing-sm);
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.filtro-fecha label,
+.filtro-buscador label {
+    margin-right: 5px;
 }
 
 body.modo-extendido .tab-btn[data-turno] {
