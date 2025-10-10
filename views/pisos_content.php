@@ -26,6 +26,9 @@ $classrooms_second_floor = [
     ['id' => 14, 'class' => 'aula45', 'name' => 'Aula 5 y 6'],
 ];
 ?>
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/global.css">
+<link rel="stylesheet" href="../css/main.css?v=1.0">
 <link rel="stylesheet" href="../css/mapa_pisos.css">
 <div class="map-container">
     <!-- Primer Piso -->
