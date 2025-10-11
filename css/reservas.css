@@ -34,3 +34,19 @@ th[data-sort] {
 th[data-sort] .sort-icons {
   /* margin-left: auto; */ /* Ya no es necesario con position absolute */
 }
+
+/* Colores para el TEXTO de cada tipo de reserva */
+#tabla-reservas .tipo-aula td {
+  color: #0056b3; /* Azul oscuro */
+  font-weight: 500;
+}
+
+#tabla-reservas .tipo-laboratorio td {
+  color: #218838; /* Verde oscuro */
+  font-weight: 500;
+}
+
+#tabla-reservas .tipo-kittv td {
+  color: #b95000; /* Naranja oscuro */
+  font-weight: 500;
+}

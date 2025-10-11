@@ -30,26 +30,36 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['role'] !== 'admin') {
   </div>
 
   <div class="card mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <span>Reservas</span>
-      <div>
-        <button id="btn-imprimir" class="btn btn-secondary">Imprimir</button>
-        <button id="btn-pdf" class="btn btn-danger">Generar PDF</button>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <span>Reservas</span>
+        <div class="d-flex align-items-center">
+          <label for="filtro-tipo" class="form-label me-2 mb-0">Filtrar por tipo:</label>
+          <select id="filtro-tipo" class="form-select me-3" style="width: auto;">
+            <option value="todos">Todos</option>
+            <option value="1">Reserva de Aula</option>
+            <option value="2">Laboratorio Ambulante</option>
+            <option value="3">Kit TV</option>
+          </select>
+          <button id="btn-imprimir" class="btn btn-secondary">Imprimir</button>
+          <button id="btn-pdf" class="btn btn-danger ms-2">Generar PDF</button>
+        </div>
       </div>
-    </div>
     <div class="card-body">
       <div class="table-responsive" id="zona-imprimible">
         <table id="tabla-reservas" class="table table-hover align-middle">
           <thead class="table-light">
             <tr>
-              <th data-sort="fecha">Fecha Reserva <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
-              <th data-sort="hora_inicio">Hora Inicio </th>
-              <th data-sort="hora_fin">Hora Fin </th>
-              <th data-sort="entidad_nombre">Entidad </th>
-              <th data-sort="carrera">Carrera </th>
-              <th data-sort="profesor">Profesor </th>
-              <th data-sort="telefono_contacto">Teléfono </th>
+              <th data-sort="tipo_reserva">Tipo <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
               <th data-sort="timestamp">Fecha Solicitud <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
+              <th data-sort="fecha">Fecha Reserva <span class="sort-icons"><i class="fas fa-sort-up sort-icon" data-direction="asc"></i><i class="fas fa-sort-down sort-icon" data-direction="desc"></i></span></th>
+              <th>Horario</th>
+              <th data-sort="entidad_nombre">Entidad</th>
+              <th data-sort="aula_nombre">Aula</th>
+              <th data-sort="carrera">Carrera</th>
+              <th data-sort="profesor">Profesor</th>
+              <th data-sort="telefono_contacto">Telefono</th>
+              <th>Comentarios</th>
+              <th>Detalles</th>
               <th>Acciones</th>
             </tr>
           </thead>

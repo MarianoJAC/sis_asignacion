@@ -5,7 +5,7 @@ include 'config/conexion.php';
 // Redirigir si ya hay una sesión activa
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     if ($_SESSION['role'] === 'invitado') {
-        header("Location: views/form_reserva.php");
+        header("Location: views/menu_invitado.php");
     } else {
         header("Location: views/grilla.php");
     }
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Redirigir según el rol
         if ($role === 'invitado') {
-            header("Location: views/form_reserva.php");
+            header("Location: views/menu_invitado.php");
         } else {
             header("Location: views/grilla.php");
         }

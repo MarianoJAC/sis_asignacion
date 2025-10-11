@@ -1,6 +1,6 @@
+
 <?php
 session_start();
-// Proteger la página para que solo el rol 'invitado' pueda acceder.
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] !== 'invitado') {
     header("location: ../index.php");
     exit;
@@ -8,21 +8,11 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
 
 require_once '../config/conexion.php';
 
-// Obtener entidades para el dropdown
 $entidades = [];
 $sql_entidades = "SELECT entidad_id, nombre FROM entidades ORDER BY nombre";
 if ($result_entidades = $conexion->query($sql_entidades)) {
     while ($row = $result_entidades->fetch_assoc()) {
         $entidades[] = $row;
-    }
-}
-
-// Obtener aulas para el dropdown
-$aulas = [];
-$sql_aulas = "SELECT aula_id, nombre FROM aulas ORDER BY nombre";
-if ($result_aulas = $conexion->query($sql_aulas)) {
-    while ($row = $result_aulas->fetch_assoc()) {
-        $aulas[] = $row;
     }
 }
 ?>
@@ -32,7 +22,7 @@ if ($result_aulas = $conexion->query($sql_aulas)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitud de Reserva de Aula</title>
+    <title>Solicitud de Kit TV</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/variables.css?v=1.1">
     <link rel="stylesheet" href="../css/global.css?v=1.1">
@@ -44,17 +34,17 @@ if ($result_aulas = $conexion->query($sql_aulas)) {
             <div class="col-md-8 col-lg-6">
                 <div class="card login-card shadow-lg">
                     <div class="card-body">
-                        <h3 class="card-title text-center mb-4">📝 Solicitud de Reserva de Aula</h3>
+                        <h3 class="card-title text-center mb-4">📺 Solicitud de Kit TV</h3>
                         
                         <?php if (isset($_GET['status'])): ?>
                             <div class="alert alert-<?php echo $_GET['status'] === 'success' ? 'success' : 'danger'; ?>" role="alert">
-                                <?php echo $_GET['status'] === 'success' ? '¡Solicitud de reserva enviada con éxito!' : 'Error al enviar la solicitud. Por favor, intente de nuevo.'; ?>
+                                <?php echo $_GET['status'] === 'success' ? '¡Solicitud enviada con éxito!' : 'Error al enviar la solicitud. Por favor, intente de nuevo.'; ?>
                             </div>
                         <?php endif; ?>
 
                         <form action="../acciones/guardar_solicitud.php" method="POST" class="row g-3">
-                            <input type="hidden" name="tipo_reserva" value="1">
-                            
+                            <input type="hidden" name="tipo_reserva" value="3">
+
                             <div class="col-md-6">
                                 <label for="fecha" class="form-label">Fecha de Reserva:</label>
                                 <input type="date" class="form-control" id="fecha" name="fecha" required>
@@ -73,35 +63,13 @@ if ($result_aulas = $conexion->query($sql_aulas)) {
                             </div>
 
                             <div class="col-md-6">
-                                <label for="aula_id" class="form-label">Aula:</label>
-                                <select class="form-select" id="aula_id" name="aula_id" required>
-                                    <option value="">Seleccione un aula</option>
-                                    <?php foreach ($aulas as $aula): ?>
-                                        <option value="<?php echo htmlspecialchars($aula['aula_id']); ?>">
-                                            <?php echo htmlspecialchars($aula['nombre']); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-
-                            <div class="col-md-6">
                                 <label for="carrera" class="form-label">Carrera:</label>
                                 <input type="text" class="form-control" id="carrera" name="carrera" required>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="anio" class="form-label">Año de Carrera:</label>
-                                <select class="form-select" id="anio" name="anio" required>
-                                    <option value="">Seleccione una opción</option>
-                                    <option value="1">1</option>
-                                    <option value="1A">1A</option>
-                                    <option value="1B">1B</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                </select>
+                                <input type="text" class="form-control" id="anio" name="anio" required>
                             </div>
 
                             <div class="col-md-6">
@@ -134,13 +102,11 @@ if ($result_aulas = $conexion->query($sql_aulas)) {
                                 <textarea class="form-control" id="comentarios" name="comentarios" rows="3"></textarea>
                             </div>
 
-                            <div class="d-grid">
+                            <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+                                <a href="menu_invitado.php" class="btn btn-secondary">Volver al Menu</a>
                             </div>
                         </form>
-                         <div class="text-center mt-3">
-                            <a href="../acciones/logout.php" class="btn btn-sm btn-outline-secondary">Cerrar Sesión</a>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -1,9 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
   const tablaBody = document.querySelector('#tabla-reservas tbody');
   const headers = document.querySelectorAll('#tabla-reservas th[data-sort]');
+  const filtroTipo = document.getElementById('filtro-tipo');
 
   let allReservas = [];
-  let sortState = { column: 'fecha_solicitud', direction: 'desc' }; // Usar fecha_solicitud para el orden inicial
+  let sortState = { column: 'timestamp', direction: 'desc' };
+
+  const TIPO_RESERVA_MAP = {
+    1: 'Aula',
+    2: 'Laboratorio',
+    3: 'KitTV'
+  };
 
   // --- LÓGICA DE DATOS ---
 
@@ -16,27 +23,37 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!result.ok) throw new Error(result.error || 'Error desconocido al obtener datos.');
       
       allReservas = result.data;
-      sortAndRender(); // Ordenar y renderizar la tabla inicial
+      sortAndRender();
 
     } catch (error) {
-      tablaBody.innerHTML = `<tr><td colspan="9" class="text-center">❌ Error: ${error.message}</td></tr>`; // Colspan ajustado
+      tablaBody.innerHTML = `<tr><td colspan="9" class="text-center">❌ Error: ${error.message}</td></tr>`;
     }
   }
 
-  // --- LÓGICA DE ORDENACIÓN (CLIENT-SIDE) ---
+  // --- LÓGICA DE ORDENACIÓN Y FILTRADO ---
 
   function sortAndRender() {
     const { column, direction } = sortState;
+    const tipoFiltrado = filtroTipo.value;
 
-    // Ordena el array de reservas en memoria
-    const sortedData = [...allReservas].sort((a, b) => {
+    // 1. Filtrar
+    const filteredData = allReservas.filter(reserva => {
+      if (tipoFiltrado === 'todos') return true;
+      return reserva.tipo_reserva == tipoFiltrado;
+    });
+
+    // 2. Ordenar
+    const sortedData = [...filteredData].sort((a, b) => {
       let valA = a[column];
       let valB = b[column];
 
       // Manejo de fechas y números
-      if (column === 'fecha' || column === 'fecha_solicitud' || column.includes('hora')) {
+      if (column === 'fecha') {
         valA = new Date(valA).getTime();
         valB = new Date(valB).getTime();
+      } else if (column === 'timestamp') {
+        valA = new Date(valA.split(' ')[0].split('/').reverse().join('-') + 'T' + valA.split(' ')[1]).getTime();
+        valB = new Date(valB.split(' ')[0].split('/').reverse().join('-') + 'T' + valB.split(' ')[1]).getTime();
       } else if (!isNaN(valA) && !isNaN(valB)) {
         valA = Number(valA);
         valB = Number(valB);
@@ -56,22 +73,32 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderTable(data) {
     tablaBody.innerHTML = '';
     if (data.length === 0) {
-      tablaBody.innerHTML = '<tr><td colspan="9" class="text-center">No se encontraron reservas.</td></tr>'; // Colspan ajustado
+      tablaBody.innerHTML = '<tr><td colspan="12" class="text-center">No se encontraron reservas con los filtros actuales.</td></tr>';
       return;
     }
 
     data.forEach(reserva => {
       const fila = document.createElement('tr');
-      fila.dataset.id = reserva.id; // Guardar el ID de la reserva en la fila
+      fila.dataset.id = reserva.id;
+      fila.classList.add(`tipo-${TIPO_RESERVA_MAP[reserva.tipo_reserva]?.toLowerCase().replace(' ','') || 'default'}`);
+
+      let detalles = '';
+      if (reserva.tipo_reserva == 2 && reserva.cantidad_pc) {
+        detalles = `${reserva.cantidad_pc} PC(s)`;
+      }
+
       fila.innerHTML = `
+        <td>${TIPO_RESERVA_MAP[reserva.tipo_reserva] || 'Desconocido'}</td>
+        <td>${reserva.fecha_solicitud}</td>
         <td>${formatDate(reserva.fecha)}</td>
-        <td>${formatTime(reserva.hora_inicio)}</td>
-        <td>${formatTime(reserva.hora_fin)}</td>
+        <td>${formatTime(reserva.hora_inicio)} - ${formatTime(reserva.hora_fin)}</td>
         <td>${reserva.entidad_nombre}</td>
+        <td>${reserva.aula_nombre || '-'}</td>
         <td>${reserva.carrera || '-'}</td>
         <td>${reserva.profesor || '-'}</td>
         <td>${reserva.telefono_contacto || '-'}</td>
-        <td>${reserva.fecha_solicitud}</td> <!-- Usar el campo pre-formateado -->
+        <td>${reserva.comentarios || '-'}</td>
+        <td>${detalles || '-'}</td>
         <td>
           <button class="btn btn-danger btn-sm btn-delete" data-id="${reserva.id}">
             Borrar
@@ -88,17 +115,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const iconUp = header.querySelector('.fa-sort-up');
       const iconDown = header.querySelector('.fa-sort-down');
 
+      if (!iconUp || !iconDown) return;
+
       if (sortColumn === sortState.column) {
-        if (sortState.direction === 'asc') {
-          iconUp?.classList.add('active');
-          iconDown?.classList.remove('active');
-        } else {
-          iconUp?.classList.remove('active');
-          iconDown?.classList.add('active');
-        }
+        iconUp.classList.toggle('active', sortState.direction === 'asc');
+        iconDown.classList.toggle('active', sortState.direction === 'desc');
       } else {
-        iconUp?.classList.remove('active');
-        iconDown?.classList.remove('active');
+        iconUp.classList.remove('active');
+        iconDown.classList.remove('active');
       }
     });
   }
@@ -113,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return timeString.substring(0, 5);
   }
 
-  // --- LÓGICA DE BORRADO (SOFT DELETE) ---
+  // --- LÓGICA DE BORRADO ---
   async function handleDelete(id) {
     const result = await Swal.fire({
       title: '¿Estás seguro?',
@@ -137,27 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await response.json();
 
         if (data.ok) {
-          Swal.fire(
-            '¡Borrada!',
-            'La reserva ha sido marcada como eliminada.',
-            'success'
-          );
-          // Eliminar la fila de la tabla y del array allReservas
-          allReservas = allReservas.filter(reserva => reserva.id !== id);
-          sortAndRender(); // Re-renderizar para reflejar el cambio
+          Swal.fire('¡Borrada!', 'La reserva ha sido marcada como eliminada.', 'success');
+          allReservas = allReservas.filter(reserva => reserva.id != id);
+          sortAndRender();
         } else {
-          Swal.fire(
-            'Error',
-            data.error || 'No se pudo marcar la reserva como eliminada.',
-            'error'
-          );
+          Swal.fire('Error', data.error || 'No se pudo marcar la reserva como eliminada.', 'error');
         }
       } catch (error) {
-        Swal.fire(
-          'Error de conexión',
-          'No se pudo conectar con el servidor para eliminar la reserva.',
-          'error'
-        );
+        Swal.fire('Error de conexión', 'No se pudo conectar con el servidor.', 'error');
       }
     }
   }
@@ -167,13 +178,10 @@ document.addEventListener('DOMContentLoaded', () => {
   headers.forEach(header => {
     header.addEventListener('click', (event) => {
       const column = header.dataset.sort;
+      if (!column) return;
+      
       let newDirection = 'asc';
-
-      // Determinar la dirección si se hizo clic en un icono específico
-      if (event.target.classList.contains('sort-icon')) {
-        newDirection = event.target.dataset.direction;
-      } else if (sortState.column === column) {
-        // Si se hizo clic en el encabezado de la columna activa, alternar dirección
+      if (sortState.column === column) {
         newDirection = sortState.direction === 'asc' ? 'desc' : 'asc';
       }
 
@@ -183,7 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Delegación de eventos para los botones de borrar
+  filtroTipo.addEventListener('change', sortAndRender);
+
   tablaBody.addEventListener('click', (event) => {
     if (event.target.classList.contains('btn-delete')) {
       const reservaId = parseInt(event.target.dataset.id);
