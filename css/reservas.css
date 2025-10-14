@@ -35,18 +35,30 @@ th[data-sort] .sort-icons {
   /* margin-left: auto; */ /* Ya no es necesario con position absolute */
 }
 
-/* Colores para el TEXTO de cada tipo de reserva */
-#tabla-reservas .tipo-aula td {
+/* Colores para el texto del tipo de reserva */
+#tabla-reservas tr.tipo-aula td:first-child {
   color: #0056b3; /* Azul oscuro */
-  font-weight: 500;
+  font-weight: bold;
 }
 
-#tabla-reservas .tipo-laboratorio td {
+#tabla-reservas tr.tipo-laboratorio td:first-child {
   color: #218838; /* Verde oscuro */
-  font-weight: 500;
+  font-weight: bold;
 }
 
-#tabla-reservas .tipo-kittv td {
+#tabla-reservas tr.tipo-kittv td:first-child {
   color: #b95000; /* Naranja oscuro */
-  font-weight: 500;
+  font-weight: bold;
+}
+
+/* Ocultar botón de borrar por defecto y mostrarlo en hover */
+#tabla-reservas .btn-delete {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+#tabla-reservas tbody tr:hover .btn-delete {
+  visibility: visible;
+  opacity: 1;
 }

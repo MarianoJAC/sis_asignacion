@@ -52,22 +52,14 @@ body, html {
     background-image: linear-gradient(45deg, #0056b3, #007bff);
 }
 
-.btn-lab {
-    background-image: linear-gradient(45deg, #28a745, #218838);
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
-}
-.btn-lab:hover {
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
-    background-image: linear-gradient(45deg, #218838, #28a745);
+.btn-ia {
+    background-image: linear-gradient(45deg, #6f42c1, #5a32a3);
+    box-shadow: 0 4px 15px rgba(111, 66, 193, 0.2);
 }
 
-.btn-kit {
-    background-image: linear-gradient(45deg, #ffc107, #e0a800);
-    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
-}
-.btn-kit:hover {
-    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.3);
-    background-image: linear-gradient(45deg, #e0a800, #ffc107);
+.btn-ia:hover {
+    box-shadow: 0 6px 20px rgba(111, 66, 193, 0.3);
+    background-image: linear-gradient(45deg, #5a32a3, #6f42c1);
 }
 
 .logout-link {

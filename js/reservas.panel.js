@@ -6,10 +6,16 @@ document.addEventListener('DOMContentLoaded', () => {
   let allReservas = [];
   let sortState = { column: 'timestamp', direction: 'desc' };
 
-  const TIPO_RESERVA_MAP = {
+  const TIPO_RESERVA_DISPLAY_MAP = {
     1: 'Aula',
-    2: 'Laboratorio',
-    3: 'KitTV'
+    2: 'Laboratorio Ambulante',
+    3: 'Kit TV'
+  };
+
+  const TIPO_RESERVA_CLASS_MAP = {
+    1: 'aula',
+    2: 'laboratorio',
+    3: 'kittv'
   };
 
   // --- LÓGICA DE DATOS ---
@@ -80,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     data.forEach(reserva => {
       const fila = document.createElement('tr');
       fila.dataset.id = reserva.id;
-      fila.classList.add(`tipo-${TIPO_RESERVA_MAP[reserva.tipo_reserva]?.toLowerCase().replace(' ','') || 'default'}`);
+      fila.classList.add(`tipo-${TIPO_RESERVA_CLASS_MAP[reserva.tipo_reserva] || 'default'}`);
 
       let detalles = '';
       if (reserva.tipo_reserva == 2 && reserva.cantidad_pc) {
@@ -88,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       fila.innerHTML = `
-        <td>${TIPO_RESERVA_MAP[reserva.tipo_reserva] || 'Desconocido'}</td>
+        <td>${TIPO_RESERVA_DISPLAY_MAP[reserva.tipo_reserva] || 'Desconocido'}</td>
         <td>${reserva.fecha_solicitud}</td>
         <td>${formatDate(reserva.fecha)}</td>
         <td>${formatTime(reserva.hora_inicio)} - ${formatTime(reserva.hora_fin)}</td>

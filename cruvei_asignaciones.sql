@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 10.123.0.78:3306
--- Tiempo de generación: 26-09-2025 a las 18:26:22
+-- Tiempo de generación: 11-10-2025 a las 21:12:35
 -- Versión del servidor: 8.0.16
 -- Versión de PHP: 8.2.29
 
@@ -47,10 +47,67 @@ CREATE TABLE `asignaciones` (
 --
 
 INSERT INTO `asignaciones` (`Id`, `turno`, `fecha`, `carrera`, `anio`, `profesor`, `materia`, `aula_id`, `hora_inicio`, `hora_fin`, `entidad_id`, `comentarios`) VALUES
-(37, 'Vespertino', '2025-09-26', 'Sdgfsdgf', '1A', 'Sdfgsdgf', 'Sdfgsd', 1, '14:30:00', '16:00:00', 6, 'sdfsd'),
-(38, 'Vespertino', '2025-09-26', 'Asdfas', '1A', 'Asfdas', 'Asfdasfd', 2, '13:00:00', '14:00:00', 4, ''),
-(39, 'Vespertino', '2025-09-26', 'Asdf', '1', 'Sdfg', 'Asdfa', 3, '15:08:00', '17:00:00', 2, ''),
-(40, 'Vespertino', '2025-09-26', 'Sdfgsd', '1A', 'Sdgfs', 'Sdfgsd', 4, '15:11:00', '17:00:00', 5, '');
+(64, 'Nocturno', '2025-09-26', 'Desarrollo de Software', '2', 'Patricio Freres', 'Practicas Prof. Ii', 10, '19:00:00', '22:00:00', 3, ''),
+(65, 'Nocturno', '2025-09-26', 'Desarrollo de Software', '1', 'Profe', 'Programación C', 9, '20:00:00', '22:00:00', 3, ''),
+(66, 'Nocturno', '2025-09-26', 'Enfermeria', '1', 'Profe', 'Rcp', 5, '18:00:00', '22:00:00', 4, ''),
+(67, 'Nocturno', '2025-09-26', 'Sdfsdf', '2', 'Pepito', 'Blabla', 1, '19:00:00', '21:00:00', 5, ''),
+(68, 'Nocturno', '2025-09-26', 'Asdas', '1', 'Dfgsg', 'Dsfsdf', 6, '20:00:00', '22:00:00', 2, ''),
+(69, 'Nocturno', '2025-09-26', 'Dfsdf', '2', 'Wwe', 'Sfgsg', 4, '18:00:00', '20:00:00', 6, ''),
+(70, 'Vespertino', '2025-10-22', 'Tecnicatura Superior en Desarrollo de Software', '1', 'Nkjsfnkj', 'Base de Datos', 1, '13:00:00', '17:00:00', 3, ''),
+(71, 'Matutino', '2025-10-03', 'Practicas Iii', '2', 'Sada', 'Asda', 1, '10:00:00', '12:00:00', 3, 'asas'),
+(72, 'Nocturno', '2025-10-03', 'Sdfsd', '1B', 'Sdfs', 'Dsfsd', 8, '20:02:00', '22:00:00', 4, ''),
+(73, 'Vespertino', '2025-10-06', 'Desarrollo de Software', '2', 'Carla Colna', 'Programacion Orientada a Objetos', 1, '16:00:00', '18:00:00', 3, ''),
+(74, 'Vespertino', '2025-10-13', 'Desarrollo de Software', '2', 'Carla Colna', 'Programacion Orientada a Objetos', 1, '16:00:00', '18:00:00', 3, ''),
+(75, 'Vespertino', '2025-10-20', 'Desarrollo de Software', '2', 'Carla Colna', 'Programacion Orientada a Objetos', 1, '16:00:00', '18:00:00', 3, ''),
+(76, 'Vespertino', '2025-10-27', 'Desarrollo de Software', '2', 'Carla Colna', 'Programacion Orientada a Objetos', 1, '16:00:00', '18:00:00', 3, ''),
+(77, 'Vespertino', '2025-10-07', 'Enfermeria', '2', 'a Designar', 'a Designar', 1, '16:00:00', '17:00:00', 4, ''),
+(78, 'Vespertino', '2025-10-14', 'Enfermeria', '2', 'a Designar', 'a Designar', 1, '16:00:00', '17:00:00', 4, ''),
+(79, 'Vespertino', '2025-10-21', 'Enfermeria', '2', 'a Designar', 'a Designar', 1, '16:00:00', '17:00:00', 4, ''),
+(80, 'Vespertino', '2025-10-28', 'Enfermeria', '2', 'a Designar', 'a Designar', 1, '16:00:00', '17:00:00', 4, ''),
+(81, 'Vespertino', '2025-10-08', 'Desarrollo de Software', '3', 'a Designar', 'Algoritmos y Estructuras de Datos', 1, '17:00:00', '18:00:00', 3, ''),
+(82, 'Vespertino', '2025-10-15', 'Desarrollo de Software', '3', 'a Designar', 'Algoritmos y Estructuras de Datos', 1, '17:00:00', '18:00:00', 3, ''),
+(83, 'Vespertino', '2025-10-22', 'Desarrollo de Software', '3', 'a Designar', 'Algoritmos y Estructuras de Datos', 1, '17:00:00', '18:00:00', 3, ''),
+(84, 'Vespertino', '2025-10-29', 'Desarrollo de Software', '3', 'a Designar', 'Algoritmos y Estructuras de Datos', 1, '17:00:00', '18:00:00', 3, ''),
+(85, 'Vespertino', '2025-10-09', 'Desarrollo de Software', '2', 'Ines del Castillo', 'Python', 2, '15:00:00', '17:00:00', 3, ''),
+(86, 'Vespertino', '2025-10-16', 'Desarrollo de Software', '2', 'Ines del Castillo', 'Python', 2, '15:00:00', '17:00:00', 3, ''),
+(87, 'Vespertino', '2025-10-23', 'Desarrollo de Software', '2', 'Ines del Castillo', 'Python', 2, '15:00:00', '17:00:00', 3, ''),
+(88, 'Vespertino', '2025-10-30', 'Desarrollo de Software', '2', 'Ines del Castillo', 'Python', 2, '15:00:00', '17:00:00', 3, ''),
+(89, 'Vespertino', '2025-10-10', 'a Designar', '1', 'a Designar', 'a Designar', 3, '15:00:00', '18:00:00', 5, ''),
+(90, 'Vespertino', '2025-10-17', 'a Designar', '1', 'a Designar', 'a Designar', 3, '15:00:00', '18:00:00', 5, ''),
+(91, 'Vespertino', '2025-10-24', 'a Designar', '1', 'a Designar', 'a Designar', 3, '15:00:00', '18:00:00', 5, ''),
+(92, 'Vespertino', '2025-10-31', 'a Designar', '1', 'a Designar', 'a Designar', 3, '15:00:00', '18:00:00', 5, ''),
+(93, 'Nocturno', '2025-10-08', 'Desarrollo de Software', '2', 'Ines del Castillo', 'Python', 10, '19:00:00', '22:00:00', 3, ''),
+(94, 'Nocturno', '2025-10-15', 'Desarrollo de Software', '2', 'Ines del Castillo', 'Python', 10, '19:00:00', '22:00:00', 3, ''),
+(95, 'Nocturno', '2025-10-22', 'Desarrollo de Software', '2', 'Ines del Castillo', 'Python', 10, '19:00:00', '22:00:00', 3, ''),
+(96, 'Nocturno', '2025-10-29', 'Desarrollo de Software', '2', 'Ines del Castillo', 'Python', 10, '19:00:00', '22:00:00', 3, ''),
+(97, 'Nocturno', '2025-10-06', 'Desarrollo de Software', '2', 'Carla Colina', 'Programacion Orientada a Objetos', 4, '18:00:00', '22:00:00', 3, ''),
+(98, 'Nocturno', '2025-10-13', 'Desarrollo de Software', '2', 'Carla Colina', 'Programacion Orientada a Objetos', 4, '18:00:00', '22:00:00', 3, ''),
+(99, 'Nocturno', '2025-10-20', 'Desarrollo de Software', '2', 'Carla Colina', 'Programacion Orientada a Objetos', 4, '18:00:00', '22:00:00', 3, ''),
+(100, 'Nocturno', '2025-10-27', 'Desarrollo de Software', '2', 'Carla Colina', 'Programacion Orientada a Objetos', 4, '18:00:00', '22:00:00', 3, ''),
+(101, 'Nocturno', '2025-10-07', 'Desarrollo de Software', '2', 'Mauro Ayala', 'Diseño Web', 10, '18:00:00', '20:00:00', 3, ''),
+(102, 'Nocturno', '2025-10-14', 'Desarrollo de Software', '2', 'Mauro Ayala', 'Diseño Web', 10, '18:00:00', '20:00:00', 3, ''),
+(103, 'Nocturno', '2025-10-21', 'Desarrollo de Software', '2', 'Mauro Ayala', 'Diseño Web', 10, '18:00:00', '20:00:00', 3, ''),
+(104, 'Nocturno', '2025-10-28', 'Desarrollo de Software', '2', 'Mauro Ayala', 'Diseño Web', 10, '18:00:00', '20:00:00', 3, ''),
+(105, 'Nocturno', '2025-10-07', 'Desarrollo de Software', '2', 'Matias Cerdeira', 'Algebra y Logica', 10, '20:00:00', '22:00:00', 3, ''),
+(106, 'Nocturno', '2025-10-14', 'Desarrollo de Software', '2', 'Matias Cerdeira', 'Algebra y Logica', 10, '20:00:00', '22:00:00', 3, ''),
+(107, 'Nocturno', '2025-10-21', 'Desarrollo de Software', '2', 'Matias Cerdeira', 'Algebra y Logica', 10, '20:00:00', '22:00:00', 3, ''),
+(108, 'Nocturno', '2025-10-28', 'Desarrollo de Software', '2', 'Matias Cerdeira', 'Algebra y Logica', 10, '20:00:00', '22:00:00', 3, ''),
+(113, 'Nocturno', '2025-10-09', 'Desarrollo de Software', '2', 'Elena Gonzalez', 'Ingles', 6, '18:00:00', '20:00:00', 3, ''),
+(114, 'Nocturno', '2025-10-16', 'Desarrollo de Software', '2', 'Elena Gonzalez', 'Ingles', 6, '18:00:00', '20:00:00', 3, ''),
+(115, 'Nocturno', '2025-10-23', 'Desarrollo de Software', '2', 'Elena Gonzalez', 'Ingles', 6, '18:00:00', '20:00:00', 3, ''),
+(116, 'Nocturno', '2025-10-30', 'Desarrollo de Software', '2', 'Elena Gonzalez', 'Ingles', 6, '18:00:00', '20:00:00', 3, ''),
+(117, 'Nocturno', '2025-10-09', 'Desarrollo de Software', '2', 'Joaquin Delgado', 'Desarrollo de Aplicaciones Moviles', 6, '20:00:00', '22:00:00', 3, ''),
+(118, 'Nocturno', '2025-10-16', 'Desarrollo de Software', '2', 'Joaquin Delgado', 'Desarrollo de Aplicaciones Moviles', 6, '20:00:00', '22:00:00', 3, ''),
+(119, 'Nocturno', '2025-10-23', 'Desarrollo de Software', '2', 'Joaquin Delgado', 'Desarrollo de Aplicaciones Moviles', 6, '20:00:00', '22:00:00', 3, ''),
+(120, 'Nocturno', '2025-10-30', 'Desarrollo de Software', '2', 'Joaquin Delgado', 'Desarrollo de Aplicaciones Moviles', 6, '20:00:00', '22:00:00', 3, ''),
+(121, 'Nocturno', '2025-10-10', 'Desarrollo de Software', '2', 'Joaquin Delgado', 'Desarrollo de Aplicativos Moviles', 10, '18:00:00', '19:00:00', 3, ''),
+(122, 'Nocturno', '2025-10-17', 'Desarrollo de Software', '2', 'Joaquin Delgado', 'Desarrollo de Aplicativos Moviles', 10, '18:00:00', '19:00:00', 3, ''),
+(123, 'Nocturno', '2025-10-24', 'Desarrollo de Software', '2', 'Joaquin Delgado', 'Desarrollo de Aplicativos Moviles', 10, '18:00:00', '19:00:00', 3, ''),
+(124, 'Nocturno', '2025-10-31', 'Desarrollo de Software', '2', 'Joaquin Delgado', 'Desarrollo de Aplicativos Moviles', 10, '18:00:00', '19:00:00', 3, ''),
+(125, 'Nocturno', '2025-10-10', 'Desarrollo de Software', '2', 'Patricio Feres', 'Practicas Profesionalizantes', 10, '19:00:00', '22:00:00', 3, ''),
+(126, 'Matutino', '2025-10-11', 'Desarrollo de Software', '2', 'Matias Cerdeira', 'Probabilidad y Estadisticas', 6, '08:00:00', '10:00:00', 3, ''),
+(127, 'Matutino', '2025-10-18', 'Desarrollo de Software', '2', 'Matias Cerdeira', 'Probabilidad y Estadisticas', 6, '08:00:00', '10:00:00', 3, ''),
+(128, 'Matutino', '2025-10-25', 'Desarrollo de Software', '2', 'Matias Cerdeira', 'Probabilidad y Estadisticas', 6, '08:00:00', '10:00:00', 3, '');
 
 -- --------------------------------------------------------
 
@@ -316,7 +373,119 @@ INSERT INTO `auditoria_acciones` (`id`, `tipo_objeto`, `objeto_id`, `usuario_id`
 (238, 'asignacion', 37, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-09-26\",\"turno\":\"Vespertino\",\"carrera\":\"Sdgfsdgf\",\"anio\":\"1A\",\"profesor\":\"Sdfgsdgf\",\"materia\":\"Sdfgsd\",\"entidad_id\":6,\"hora_inicio\":\"14:30\",\"hora_fin\":\"16:00\",\"comentarios\":\"sdfsd\"}', '2025-09-26 17:44:46'),
 (239, 'asignacion', 38, 5, 'alta', NULL, NULL, '{\"aula_id\":2,\"fecha\":\"2025-09-26\",\"turno\":\"Vespertino\",\"carrera\":\"Asdfas\",\"anio\":\"1A\",\"profesor\":\"Asfdas\",\"materia\":\"Asfdasfd\",\"entidad_id\":4,\"hora_inicio\":\"13:00\",\"hora_fin\":\"14:00\",\"comentarios\":\"\"}', '2025-09-26 17:45:18'),
 (240, 'asignacion', 39, 5, 'alta', NULL, NULL, '{\"aula_id\":3,\"fecha\":\"2025-09-26\",\"turno\":\"Vespertino\",\"carrera\":\"Asdf\",\"anio\":\"1\",\"profesor\":\"Sdfg\",\"materia\":\"Asdfa\",\"entidad_id\":2,\"hora_inicio\":\"15:08\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-09-26 18:07:18'),
-(241, 'asignacion', 40, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-09-26\",\"turno\":\"Vespertino\",\"carrera\":\"Sdfgsd\",\"anio\":\"1A\",\"profesor\":\"Sdgfs\",\"materia\":\"Sdfgsd\",\"entidad_id\":5,\"hora_inicio\":\"15:11\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-09-26 18:10:10');
+(241, 'asignacion', 40, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-09-26\",\"turno\":\"Vespertino\",\"carrera\":\"Sdfgsd\",\"anio\":\"1A\",\"profesor\":\"Sdgfs\",\"materia\":\"Sdfgsd\",\"entidad_id\":5,\"hora_inicio\":\"15:11\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-09-26 18:10:10'),
+(242, 'asignacion', 41, 5, 'alta', NULL, NULL, '{\"aula_id\":9,\"fecha\":\"2025-09-26\",\"turno\":\"Vespertino\",\"carrera\":\"Zzzzzzz\",\"anio\":\"1\",\"profesor\":\"Zzzzzzzz\",\"materia\":\"Zzzzzzzz\",\"entidad_id\":3,\"hora_inicio\":\"17:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-09-26 19:13:08'),
+(243, 'asignacion', 42, 5, 'alta', NULL, NULL, '{\"aula_id\":5,\"fecha\":\"2025-09-26\",\"turno\":\"Vespertino\",\"carrera\":\"Aaaaaaa\",\"anio\":\"1\",\"profesor\":\"Aaaaaa\",\"materia\":\"Aaaaaaa\",\"entidad_id\":3,\"hora_inicio\":\"15:00\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-09-26 19:13:55'),
+(244, 'asignacion', 43, 5, 'alta', NULL, NULL, '{\"aula_id\":3,\"fecha\":\"2025-09-26\",\"turno\":\"Vespertino\",\"carrera\":\"Xxxxxx\",\"anio\":\"1\",\"profesor\":\"Xxxxx\",\"materia\":\"Xxxxxxx\",\"entidad_id\":3,\"hora_inicio\":\"14:00\",\"hora_fin\":\"15:00\",\"comentarios\":\"\"}', '2025-09-26 19:15:18'),
+(245, 'asignacion', 44, 5, 'alta', NULL, NULL, '{\"aula_id\":3,\"fecha\":\"2025-09-26\",\"turno\":\"Vespertino\",\"carrera\":\"Xxxxxxxx\",\"anio\":\"1\",\"profesor\":\"Xxxxxxx\",\"materia\":\"Xxxxxxx\",\"entidad_id\":3,\"hora_inicio\":\"17:00\",\"hora_fin\":\"17:30\",\"comentarios\":\"\"}', '2025-09-26 19:16:10'),
+(246, 'asignacion', 45, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-09-26\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Patricio Freres\",\"materia\":\"Practicas Prof. Ii\",\"entidad_id\":3,\"hora_inicio\":\"19:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-09-26 22:18:06'),
+(247, 'asignacion', 45, 5, 'baja', NULL, '{\"Id\":45,\"turno\":\"Nocturno\",\"fecha\":\"2025-09-26\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Patricio Freres\",\"materia\":\"Practicas Prof. Ii\",\"aula_id\":1,\"hora_inicio\":\"19:00:00\",\"hora_fin\":\"22:00:00\",\"entidad_id\":3,\"comentarios\":\"\"}', NULL, '2025-09-26 22:20:18'),
+(248, 'asignacion', 46, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-09-01\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:09'),
+(249, 'asignacion', 47, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-09-08\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:10'),
+(250, 'asignacion', 48, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-09-15\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:11'),
+(251, 'asignacion', 49, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-09-22\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:12'),
+(252, 'asignacion', 50, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-09-29\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:14'),
+(253, 'asignacion', 51, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-06\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:15'),
+(254, 'asignacion', 52, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-13\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:17'),
+(255, 'asignacion', 53, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-20\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:19'),
+(256, 'asignacion', 54, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-27\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:20'),
+(257, 'asignacion', 55, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-11-03\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:22'),
+(258, 'asignacion', 56, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-11-10\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:23'),
+(259, 'asignacion', 57, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-11-17\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:24'),
+(260, 'asignacion', 58, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-11-24\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:26'),
+(261, 'asignacion', 59, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-12-01\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:27'),
+(262, 'asignacion', 60, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-12-08\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:28'),
+(263, 'asignacion', 61, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-12-15\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:29'),
+(264, 'asignacion', 62, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-12-22\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:31'),
+(265, 'asignacion', 63, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-12-29\",\"turno\":\"Nocturno\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:21:33'),
+(266, 'asignacion', 49, 5, '', NULL, '{\"repeticion\":\"cuatrimestral\",\"plantilla\":{\"Id\":49,\"turno\":\"Nocturno\",\"fecha\":\"2025-09-22\",\"carrera\":\"Sdgsdg\",\"anio\":\"2\",\"profesor\":\"Sdgsdg\",\"materia\":\"Sdgsdg\",\"aula_id\":1,\"hora_inicio\":\"18:00:00\",\"hora_fin\":\"20:00:00\",\"entidad_id\":4,\"comentarios\":\"\"},\"eliminadas\":18}', NULL, '2025-09-26 22:23:59'),
+(267, 'asignacion', 37, 5, 'baja', NULL, '{\"Id\":37,\"turno\":\"Vespertino\",\"fecha\":\"2025-09-26\",\"carrera\":\"Sdgfsdgf\",\"anio\":\"1A\",\"profesor\":\"Sdfgsdgf\",\"materia\":\"Sdfgsd\",\"aula_id\":1,\"hora_inicio\":\"14:30:00\",\"hora_fin\":\"16:00:00\",\"entidad_id\":6,\"comentarios\":\"sdfsd\"}', NULL, '2025-09-26 22:34:06'),
+(268, 'asignacion', 38, 5, 'baja', NULL, '{\"Id\":38,\"turno\":\"Vespertino\",\"fecha\":\"2025-09-26\",\"carrera\":\"Asdfas\",\"anio\":\"1A\",\"profesor\":\"Asfdas\",\"materia\":\"Asfdasfd\",\"aula_id\":2,\"hora_inicio\":\"13:00:00\",\"hora_fin\":\"14:00:00\",\"entidad_id\":4,\"comentarios\":\"\"}', NULL, '2025-09-26 22:34:19'),
+(269, 'asignacion', 43, 5, 'baja', NULL, '{\"Id\":43,\"turno\":\"Vespertino\",\"fecha\":\"2025-09-26\",\"carrera\":\"Xxxxxx\",\"anio\":\"1\",\"profesor\":\"Xxxxx\",\"materia\":\"Xxxxxxx\",\"aula_id\":3,\"hora_inicio\":\"14:00:00\",\"hora_fin\":\"15:00:00\",\"entidad_id\":3,\"comentarios\":\"\"}', NULL, '2025-09-26 22:34:39'),
+(270, 'asignacion', 40, 5, 'baja', NULL, '{\"Id\":40,\"turno\":\"Vespertino\",\"fecha\":\"2025-09-26\",\"carrera\":\"Sdfgsd\",\"anio\":\"1A\",\"profesor\":\"Sdgfs\",\"materia\":\"Sdfgsd\",\"aula_id\":4,\"hora_inicio\":\"15:11:00\",\"hora_fin\":\"17:00:00\",\"entidad_id\":5,\"comentarios\":\"\"}', NULL, '2025-09-26 22:34:46'),
+(271, 'asignacion', 42, 5, 'baja', NULL, '{\"Id\":42,\"turno\":\"Vespertino\",\"fecha\":\"2025-09-26\",\"carrera\":\"Aaaaaaa\",\"anio\":\"1\",\"profesor\":\"Aaaaaa\",\"materia\":\"Aaaaaaa\",\"aula_id\":5,\"hora_inicio\":\"15:00:00\",\"hora_fin\":\"17:00:00\",\"entidad_id\":3,\"comentarios\":\"\"}', NULL, '2025-09-26 22:34:55'),
+(272, 'asignacion', 39, 5, 'baja', NULL, '{\"Id\":39,\"turno\":\"Vespertino\",\"fecha\":\"2025-09-26\",\"carrera\":\"Asdf\",\"anio\":\"1\",\"profesor\":\"Sdfg\",\"materia\":\"Asdfa\",\"aula_id\":3,\"hora_inicio\":\"15:08:00\",\"hora_fin\":\"17:00:00\",\"entidad_id\":2,\"comentarios\":\"\"}', NULL, '2025-09-26 22:35:18'),
+(273, 'asignacion', 41, 5, 'baja', NULL, '{\"Id\":41,\"turno\":\"Vespertino\",\"fecha\":\"2025-09-26\",\"carrera\":\"Zzzzzzz\",\"anio\":\"1\",\"profesor\":\"Zzzzzzzz\",\"materia\":\"Zzzzzzzz\",\"aula_id\":9,\"hora_inicio\":\"17:00:00\",\"hora_fin\":\"18:00:00\",\"entidad_id\":3,\"comentarios\":\"\"}', NULL, '2025-09-26 22:35:29'),
+(274, 'asignacion', 44, 5, 'baja', NULL, '{\"Id\":44,\"turno\":\"Vespertino\",\"fecha\":\"2025-09-26\",\"carrera\":\"Xxxxxxxx\",\"anio\":\"1\",\"profesor\":\"Xxxxxxx\",\"materia\":\"Xxxxxxx\",\"aula_id\":3,\"hora_inicio\":\"17:00:00\",\"hora_fin\":\"17:30:00\",\"entidad_id\":3,\"comentarios\":\"\"}', NULL, '2025-09-26 22:35:42'),
+(275, 'asignacion', 64, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-09-26\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Patricio Freres\",\"materia\":\"Practicas Prof. Ii\",\"entidad_id\":3,\"hora_inicio\":\"19:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-09-26 22:49:56'),
+(276, 'asignacion', 65, 5, 'alta', NULL, NULL, '{\"aula_id\":9,\"fecha\":\"2025-09-26\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"1\",\"profesor\":\"Profe\",\"materia\":\"Programación C\",\"entidad_id\":3,\"hora_inicio\":\"20:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-09-26 22:51:14'),
+(277, 'asignacion', 66, 5, 'alta', NULL, NULL, '{\"aula_id\":5,\"fecha\":\"2025-09-26\",\"turno\":\"Nocturno\",\"carrera\":\"Enfermeria\",\"anio\":\"1\",\"profesor\":\"Profe\",\"materia\":\"Rcp\",\"entidad_id\":4,\"hora_inicio\":\"18:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-09-26 22:52:01'),
+(278, 'asignacion', 67, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-09-26\",\"turno\":\"Nocturno\",\"carrera\":\"Sdfsdf\",\"anio\":\"2\",\"profesor\":\"Pepito\",\"materia\":\"Blabla\",\"entidad_id\":5,\"hora_inicio\":\"18:00\",\"hora_fin\":\"21:00\",\"comentarios\":\"\"}', '2025-09-26 22:52:47'),
+(279, 'asignacion', 68, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-09-26\",\"turno\":\"Nocturno\",\"carrera\":\"Asdas\",\"anio\":\"1\",\"profesor\":\"Dfgsg\",\"materia\":\"Dsfsdf\",\"entidad_id\":2,\"hora_inicio\":\"20:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-09-26 22:53:55'),
+(280, 'asignacion', 69, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-09-26\",\"turno\":\"Nocturno\",\"carrera\":\"Dfsdf\",\"anio\":\"2\",\"profesor\":\"Wwe\",\"materia\":\"Sfgsg\",\"entidad_id\":6,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-09-26 22:56:07'),
+(281, 'asignacion', 67, 5, 'modificacion', 'hora_inicio', '18:00:00', '19:00', '2025-09-26 23:09:53'),
+(282, 'entidad', 105, 5, 'alta', NULL, NULL, '{\"nombre\":\"qwe\",\"color\":\"#2cc9b6\"}', '2025-09-26 23:11:24'),
+(283, 'entidad', 105, 5, 'baja', NULL, '{\"nombre\":\"qwe\",\"color\":\"#2cc9b6\"}', NULL, '2025-09-26 23:11:59'),
+(284, 'asignacion', 70, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-22\",\"turno\":\"Vespertino\",\"carrera\":\"Tecnicatura Superior en Desarrollo de Software\",\"anio\":\"1\",\"profesor\":\"Nkjsfnkj\",\"materia\":\"Base de Datos\",\"entidad_id\":3,\"hora_inicio\":\"13:00\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-09-26 23:27:45'),
+(285, 'asignacion', 71, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-03\",\"turno\":\"Matutino\",\"carrera\":\"Practicas Iii\",\"anio\":\"2\",\"profesor\":\"Sada\",\"materia\":\"Asda\",\"entidad_id\":3,\"hora_inicio\":\"10:00\",\"hora_fin\":\"12:00\",\"comentarios\":\"asas\"}', '2025-10-03 22:26:49'),
+(286, 'asignacion', 72, 5, 'alta', NULL, NULL, '{\"aula_id\":8,\"fecha\":\"2025-10-03\",\"turno\":\"Nocturno\",\"carrera\":\"Sdfsd\",\"anio\":\"1B\",\"profesor\":\"Sdfs\",\"materia\":\"Dsfsd\",\"entidad_id\":4,\"hora_inicio\":\"20:02\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-03 22:27:42'),
+(287, 'entidad', 106, 5, 'alta', NULL, NULL, '{\"nombre\":\"tgedfg\",\"color\":\"#2196f3\"}', '2025-10-10 10:48:08'),
+(288, 'entidad', 106, 5, 'baja', NULL, '{\"nombre\":\"tgedfg\",\"color\":\"#2196f3\"}', NULL, '2025-10-10 10:48:18'),
+(289, 'entidad', 107, 5, 'alta', NULL, NULL, '{\"nombre\":\"sdfsdgf\",\"color\":\"#2196f3\"}', '2025-10-10 10:51:45'),
+(290, 'entidad', 107, 5, 'baja', NULL, '{\"nombre\":\"sdfsdgf\",\"color\":\"#2196f3\"}', NULL, '2025-10-10 10:51:55'),
+(291, 'asignacion', 73, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-06\",\"turno\":\"Vespertino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Carla Colna\",\"materia\":\"Programacion Orientada a Objetos\",\"entidad_id\":3,\"hora_inicio\":\"16:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-10-10 21:47:39'),
+(292, 'asignacion', 74, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-13\",\"turno\":\"Vespertino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Carla Colna\",\"materia\":\"Programacion Orientada a Objetos\",\"entidad_id\":3,\"hora_inicio\":\"16:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-10-10 21:47:40'),
+(293, 'asignacion', 75, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-20\",\"turno\":\"Vespertino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Carla Colna\",\"materia\":\"Programacion Orientada a Objetos\",\"entidad_id\":3,\"hora_inicio\":\"16:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-10-10 21:47:40'),
+(294, 'asignacion', 76, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-27\",\"turno\":\"Vespertino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Carla Colna\",\"materia\":\"Programacion Orientada a Objetos\",\"entidad_id\":3,\"hora_inicio\":\"16:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-10-10 21:47:41'),
+(295, 'asignacion', 77, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-07\",\"turno\":\"Vespertino\",\"carrera\":\"Enfermeria\",\"anio\":\"2\",\"profesor\":\"a Designar\",\"materia\":\"a Designar\",\"entidad_id\":4,\"hora_inicio\":\"16:00\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-10-10 21:49:21'),
+(296, 'asignacion', 78, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-14\",\"turno\":\"Vespertino\",\"carrera\":\"Enfermeria\",\"anio\":\"2\",\"profesor\":\"a Designar\",\"materia\":\"a Designar\",\"entidad_id\":4,\"hora_inicio\":\"16:00\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-10-10 21:49:22'),
+(297, 'asignacion', 79, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-21\",\"turno\":\"Vespertino\",\"carrera\":\"Enfermeria\",\"anio\":\"2\",\"profesor\":\"a Designar\",\"materia\":\"a Designar\",\"entidad_id\":4,\"hora_inicio\":\"16:00\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-10-10 21:49:22'),
+(298, 'asignacion', 80, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-28\",\"turno\":\"Vespertino\",\"carrera\":\"Enfermeria\",\"anio\":\"2\",\"profesor\":\"a Designar\",\"materia\":\"a Designar\",\"entidad_id\":4,\"hora_inicio\":\"16:00\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-10-10 21:49:23'),
+(299, 'asignacion', 81, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-08\",\"turno\":\"Vespertino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"3\",\"profesor\":\"a Designar\",\"materia\":\"Algoritmos y Estructuras de Datos\",\"entidad_id\":3,\"hora_inicio\":\"17:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-10-10 21:51:31'),
+(300, 'asignacion', 82, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-15\",\"turno\":\"Vespertino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"3\",\"profesor\":\"a Designar\",\"materia\":\"Algoritmos y Estructuras de Datos\",\"entidad_id\":3,\"hora_inicio\":\"17:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-10-10 21:51:32'),
+(301, 'asignacion', 83, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-22\",\"turno\":\"Vespertino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"3\",\"profesor\":\"a Designar\",\"materia\":\"Algoritmos y Estructuras de Datos\",\"entidad_id\":3,\"hora_inicio\":\"17:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-10-10 21:51:33'),
+(302, 'asignacion', 84, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-29\",\"turno\":\"Vespertino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"3\",\"profesor\":\"a Designar\",\"materia\":\"Algoritmos y Estructuras de Datos\",\"entidad_id\":3,\"hora_inicio\":\"17:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-10-10 21:51:34'),
+(303, 'asignacion', 85, 5, 'alta', NULL, NULL, '{\"aula_id\":2,\"fecha\":\"2025-10-09\",\"turno\":\"Vespertino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Ines del Castillo\",\"materia\":\"Python\",\"entidad_id\":3,\"hora_inicio\":\"15:00\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-10-10 21:52:58'),
+(304, 'asignacion', 86, 5, 'alta', NULL, NULL, '{\"aula_id\":2,\"fecha\":\"2025-10-16\",\"turno\":\"Vespertino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Ines del Castillo\",\"materia\":\"Python\",\"entidad_id\":3,\"hora_inicio\":\"15:00\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-10-10 21:52:59'),
+(305, 'asignacion', 87, 5, 'alta', NULL, NULL, '{\"aula_id\":2,\"fecha\":\"2025-10-23\",\"turno\":\"Vespertino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Ines del Castillo\",\"materia\":\"Python\",\"entidad_id\":3,\"hora_inicio\":\"15:00\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-10-10 21:52:59'),
+(306, 'asignacion', 88, 5, 'alta', NULL, NULL, '{\"aula_id\":2,\"fecha\":\"2025-10-30\",\"turno\":\"Vespertino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Ines del Castillo\",\"materia\":\"Python\",\"entidad_id\":3,\"hora_inicio\":\"15:00\",\"hora_fin\":\"17:00\",\"comentarios\":\"\"}', '2025-10-10 21:53:00'),
+(307, 'asignacion', 89, 5, 'alta', NULL, NULL, '{\"aula_id\":3,\"fecha\":\"2025-10-10\",\"turno\":\"Vespertino\",\"carrera\":\"a Designar\",\"anio\":\"1\",\"profesor\":\"a Designar\",\"materia\":\"a Designar\",\"entidad_id\":5,\"hora_inicio\":\"15:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-10-10 21:53:43'),
+(308, 'asignacion', 90, 5, 'alta', NULL, NULL, '{\"aula_id\":3,\"fecha\":\"2025-10-17\",\"turno\":\"Vespertino\",\"carrera\":\"a Designar\",\"anio\":\"1\",\"profesor\":\"a Designar\",\"materia\":\"a Designar\",\"entidad_id\":5,\"hora_inicio\":\"15:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-10-10 21:53:43'),
+(309, 'asignacion', 91, 5, 'alta', NULL, NULL, '{\"aula_id\":3,\"fecha\":\"2025-10-24\",\"turno\":\"Vespertino\",\"carrera\":\"a Designar\",\"anio\":\"1\",\"profesor\":\"a Designar\",\"materia\":\"a Designar\",\"entidad_id\":5,\"hora_inicio\":\"15:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-10-10 21:53:44'),
+(310, 'asignacion', 92, 5, 'alta', NULL, NULL, '{\"aula_id\":3,\"fecha\":\"2025-10-31\",\"turno\":\"Vespertino\",\"carrera\":\"a Designar\",\"anio\":\"1\",\"profesor\":\"a Designar\",\"materia\":\"a Designar\",\"entidad_id\":5,\"hora_inicio\":\"15:00\",\"hora_fin\":\"18:00\",\"comentarios\":\"\"}', '2025-10-10 21:53:45'),
+(311, 'asignacion', 93, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-08\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Ines del Castillo\",\"materia\":\"Python\",\"entidad_id\":3,\"hora_inicio\":\"19:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 21:59:55'),
+(312, 'asignacion', 94, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-15\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Ines del Castillo\",\"materia\":\"Python\",\"entidad_id\":3,\"hora_inicio\":\"19:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 21:59:56'),
+(313, 'asignacion', 95, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-22\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Ines del Castillo\",\"materia\":\"Python\",\"entidad_id\":3,\"hora_inicio\":\"19:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 21:59:56'),
+(314, 'asignacion', 96, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-29\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Ines del Castillo\",\"materia\":\"Python\",\"entidad_id\":3,\"hora_inicio\":\"19:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 21:59:57'),
+(315, 'asignacion', 97, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-10-06\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Carla Colina\",\"materia\":\"Programacion Orientada a Objetos\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:01:01'),
+(316, 'asignacion', 98, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-10-13\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Carla Colina\",\"materia\":\"Programacion Orientada a Objetos\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:01:01'),
+(317, 'asignacion', 99, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-10-20\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Carla Colina\",\"materia\":\"Programacion Orientada a Objetos\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:01:02'),
+(318, 'asignacion', 100, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-10-27\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Carla Colina\",\"materia\":\"Programacion Orientada a Objetos\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:01:03'),
+(319, 'asignacion', 101, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-07\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Mauro Ayala\",\"materia\":\"Diseño Web\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-10-10 22:02:26'),
+(320, 'asignacion', 102, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-14\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Mauro Ayala\",\"materia\":\"Diseño Web\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-10-10 22:02:27'),
+(321, 'asignacion', 103, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-21\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Mauro Ayala\",\"materia\":\"Diseño Web\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-10-10 22:02:28'),
+(322, 'asignacion', 104, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-28\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Mauro Ayala\",\"materia\":\"Diseño Web\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-10-10 22:02:29'),
+(323, 'asignacion', 105, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-07\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Matias Cerdeira\",\"materia\":\"Algebra y Logica\",\"entidad_id\":3,\"hora_inicio\":\"20:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:03:21'),
+(324, 'asignacion', 106, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-14\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Matias Cerdeira\",\"materia\":\"Algebra y Logica\",\"entidad_id\":3,\"hora_inicio\":\"20:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:03:22'),
+(325, 'asignacion', 107, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-21\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Matias Cerdeira\",\"materia\":\"Algebra y Logica\",\"entidad_id\":3,\"hora_inicio\":\"20:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:03:23'),
+(326, 'asignacion', 108, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-28\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Matias Cerdeira\",\"materia\":\"Algebra y Logica\",\"entidad_id\":3,\"hora_inicio\":\"20:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:03:24'),
+(327, 'asignacion', 109, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-09\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Elena Gonzalez\",\"materia\":\"Ingles\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-10-10 22:04:26'),
+(328, 'asignacion', 110, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-16\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Elena Gonzalez\",\"materia\":\"Ingles\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-10-10 22:04:27'),
+(329, 'asignacion', 111, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-23\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Elena Gonzalez\",\"materia\":\"Ingles\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-10-10 22:04:28'),
+(330, 'asignacion', 112, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-30\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Elena Gonzalez\",\"materia\":\"Ingles\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-10-10 22:04:28'),
+(331, 'asignacion', 109, 5, '', NULL, '{\"repeticion\":\"mensual\",\"plantilla\":{\"Id\":109,\"turno\":\"Nocturno\",\"fecha\":\"2025-10-09\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Elena Gonzalez\",\"materia\":\"Ingles\",\"aula_id\":10,\"hora_inicio\":\"18:00:00\",\"hora_fin\":\"20:00:00\",\"entidad_id\":3,\"comentarios\":\"\"},\"eliminadas\":4}', NULL, '2025-10-10 22:04:56'),
+(332, 'asignacion', 113, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-09\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Elena Gonzalez\",\"materia\":\"Ingles\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-10-10 22:05:45'),
+(333, 'asignacion', 114, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-16\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Elena Gonzalez\",\"materia\":\"Ingles\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-10-10 22:05:46'),
+(334, 'asignacion', 115, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-23\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Elena Gonzalez\",\"materia\":\"Ingles\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-10-10 22:05:47'),
+(335, 'asignacion', 116, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-30\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Elena Gonzalez\",\"materia\":\"Ingles\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"20:00\",\"comentarios\":\"\"}', '2025-10-10 22:05:47'),
+(336, 'asignacion', 117, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-09\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Joaquin Delgado\",\"materia\":\"Desarrollo de Aplicaciones Moviles\",\"entidad_id\":3,\"hora_inicio\":\"20:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:06:32'),
+(337, 'asignacion', 118, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-16\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Joaquin Delgado\",\"materia\":\"Desarrollo de Aplicaciones Moviles\",\"entidad_id\":3,\"hora_inicio\":\"20:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:06:33');
+INSERT INTO `auditoria_acciones` (`id`, `tipo_objeto`, `objeto_id`, `usuario_id`, `accion`, `campo_modificado`, `valor_anterior`, `valor_nuevo`, `fecha`) VALUES
+(338, 'asignacion', 119, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-23\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Joaquin Delgado\",\"materia\":\"Desarrollo de Aplicaciones Moviles\",\"entidad_id\":3,\"hora_inicio\":\"20:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:06:34'),
+(339, 'asignacion', 120, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-30\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Joaquin Delgado\",\"materia\":\"Desarrollo de Aplicaciones Moviles\",\"entidad_id\":3,\"hora_inicio\":\"20:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:06:35'),
+(340, 'asignacion', 121, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-10\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Joaquin Delgado\",\"materia\":\"Desarrollo de Aplicativos Moviles\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"19:00\",\"comentarios\":\"\"}', '2025-10-10 22:07:26'),
+(341, 'asignacion', 122, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-17\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Joaquin Delgado\",\"materia\":\"Desarrollo de Aplicativos Moviles\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"19:00\",\"comentarios\":\"\"}', '2025-10-10 22:07:27'),
+(342, 'asignacion', 123, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-24\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Joaquin Delgado\",\"materia\":\"Desarrollo de Aplicativos Moviles\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"19:00\",\"comentarios\":\"\"}', '2025-10-10 22:07:27'),
+(343, 'asignacion', 124, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-31\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Joaquin Delgado\",\"materia\":\"Desarrollo de Aplicativos Moviles\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"19:00\",\"comentarios\":\"\"}', '2025-10-10 22:07:28'),
+(344, 'asignacion', 125, 5, 'alta', NULL, NULL, '{\"aula_id\":10,\"fecha\":\"2025-10-10\",\"turno\":\"Nocturno\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Patricio Feres\",\"materia\":\"Practicas Profesionalizantes\",\"entidad_id\":3,\"hora_inicio\":\"19:00\",\"hora_fin\":\"22:00\",\"comentarios\":\"\"}', '2025-10-10 22:08:08'),
+(345, 'asignacion', 126, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-11\",\"turno\":\"Matutino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Matias Cerdeira\",\"materia\":\"Probabilidad y Estadisticas\",\"entidad_id\":3,\"hora_inicio\":\"08:00\",\"hora_fin\":\"10:00\",\"comentarios\":\"\"}', '2025-10-10 22:09:17'),
+(346, 'asignacion', 127, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-18\",\"turno\":\"Matutino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Matias Cerdeira\",\"materia\":\"Probabilidad y Estadisticas\",\"entidad_id\":3,\"hora_inicio\":\"08:00\",\"hora_fin\":\"10:00\",\"comentarios\":\"\"}', '2025-10-10 22:09:18'),
+(347, 'asignacion', 128, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-25\",\"turno\":\"Matutino\",\"carrera\":\"Desarrollo de Software\",\"anio\":\"2\",\"profesor\":\"Matias Cerdeira\",\"materia\":\"Probabilidad y Estadisticas\",\"entidad_id\":3,\"hora_inicio\":\"08:00\",\"hora_fin\":\"10:00\",\"comentarios\":\"\"}', '2025-10-10 22:09:19'),
+(348, 'asignacion', 129, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-10-08\",\"turno\":\"Matutino\",\"carrera\":\"Ghjg\",\"anio\":\"1\",\"profesor\":\"Uhui\",\"materia\":\"Jklk\",\"entidad_id\":6,\"hora_inicio\":\"08:00\",\"hora_fin\":\"10:00\",\"comentarios\":\"\"}', '2025-10-11 02:09:05'),
+(349, 'asignacion', 130, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-10-15\",\"turno\":\"Matutino\",\"carrera\":\"Ghjg\",\"anio\":\"1\",\"profesor\":\"Uhui\",\"materia\":\"Jklk\",\"entidad_id\":6,\"hora_inicio\":\"08:00\",\"hora_fin\":\"10:00\",\"comentarios\":\"\"}', '2025-10-11 02:09:06'),
+(350, 'asignacion', 131, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-10-22\",\"turno\":\"Matutino\",\"carrera\":\"Ghjg\",\"anio\":\"1\",\"profesor\":\"Uhui\",\"materia\":\"Jklk\",\"entidad_id\":6,\"hora_inicio\":\"08:00\",\"hora_fin\":\"10:00\",\"comentarios\":\"\"}', '2025-10-11 02:09:07'),
+(351, 'asignacion', 132, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-10-29\",\"turno\":\"Matutino\",\"carrera\":\"Ghjg\",\"anio\":\"1\",\"profesor\":\"Uhui\",\"materia\":\"Jklk\",\"entidad_id\":6,\"hora_inicio\":\"08:00\",\"hora_fin\":\"10:00\",\"comentarios\":\"\"}', '2025-10-11 02:09:07'),
+(352, 'asignacion', 129, 5, '', NULL, '{\"repeticion\":\"mensual\",\"plantilla\":{\"Id\":129,\"turno\":\"Matutino\",\"fecha\":\"2025-10-08\",\"carrera\":\"Ghjg\",\"anio\":\"1\",\"profesor\":\"Uhui\",\"materia\":\"Jklk\",\"aula_id\":4,\"hora_inicio\":\"08:00:00\",\"hora_fin\":\"10:00:00\",\"entidad_id\":6,\"comentarios\":\"\"},\"eliminadas\":4}', NULL, '2025-10-11 02:11:15');
 
 -- --------------------------------------------------------
 
@@ -400,7 +569,8 @@ INSERT INTO `recursos_por_aula` (`id`, `aula_id`, `recurso`) VALUES
 (7, 9, 'Proyector'),
 (8, 12, 'TV'),
 (9, 13, 'TV'),
-(10, 14, 'TV');
+(10, 14, 'TV'),
+(11, 6, 'Pantalla interactiva');
 
 -- --------------------------------------------------------
 
@@ -410,8 +580,10 @@ INSERT INTO `recursos_por_aula` (`id`, `aula_id`, `recurso`) VALUES
 
 CREATE TABLE `reservas` (
   `id` int(11) NOT NULL,
+  `tipo_reserva` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1: Aula, 2: Laboratorio, 3: Kit TV',
   `fecha` date NOT NULL,
   `entidad_id` int(11) NOT NULL,
+  `aula_id` int(11) DEFAULT NULL,
   `carrera` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `anio` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `materia` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -419,6 +591,7 @@ CREATE TABLE `reservas` (
   `hora_inicio` time NOT NULL,
   `hora_fin` time NOT NULL,
   `telefono_contacto` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cantidad_pc` int(11) DEFAULT NULL COMMENT 'Para Laboratorio Ambulante',
   `comentarios` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `eliminado` tinyint(1) NOT NULL DEFAULT '0'
@@ -428,11 +601,23 @@ CREATE TABLE `reservas` (
 -- Volcado de datos para la tabla `reservas`
 --
 
-INSERT INTO `reservas` (`id`, `fecha`, `entidad_id`, `carrera`, `anio`, `materia`, `profesor`, `hora_inicio`, `hora_fin`, `telefono_contacto`, `comentarios`, `timestamp`, `eliminado`) VALUES
-(1, '2025-11-10', 3, 'lplpasd', '3', 'asdasdasdas', 'asdasd', '18:00:00', '22:00:00', '1162648300', 'prueba', '2025-09-19 22:07:52', 1),
-(2, '2025-10-20', 4, 'aaaaaaa', '3', '333333', 'dddddddd', '19:00:00', '22:00:00', '113335647', 'va bien', '2025-09-19 22:24:48', 1),
-(3, '2025-08-09', 4, 'asdas', 'asdfas', 'dsafsadf', 'sdfsdf', '10:00:00', '12:00:00', '231231243', 'wdfsfsfs', '2025-09-19 22:26:46', 1),
-(4, '2025-10-05', 3, 'sosguar', '3', 'aaaaaa', 'eeeee', '21:00:00', '22:00:00', '1162648300', 'SDFSDFSDF', '2025-09-20 00:14:08', 1);
+INSERT INTO `reservas` (`id`, `tipo_reserva`, `fecha`, `entidad_id`, `aula_id`, `carrera`, `anio`, `materia`, `profesor`, `hora_inicio`, `hora_fin`, `telefono_contacto`, `cantidad_pc`, `comentarios`, `timestamp`, `eliminado`) VALUES
+(1, 1, '2025-11-10', 3, NULL, 'lplpasd', '3', 'asdasdasdas', 'asdasd', '18:00:00', '22:00:00', '1162648300', NULL, 'prueba', '2025-09-19 22:07:52', 1),
+(2, 1, '2025-10-20', 4, NULL, 'aaaaaaa', '3', '333333', 'dddddddd', '19:00:00', '22:00:00', '113335647', NULL, 'va bien', '2025-09-19 22:24:48', 1),
+(3, 1, '2025-08-09', 4, NULL, 'asdas', 'asdfas', 'dsafsadf', 'sdfsdf', '10:00:00', '12:00:00', '231231243', NULL, 'wdfsfsfs', '2025-09-19 22:26:46', 1),
+(4, 1, '2025-10-05', 3, NULL, 'sosguar', '3', 'aaaaaa', 'eeeee', '21:00:00', '22:00:00', '1162648300', NULL, 'SDFSDFSDF', '2025-09-20 00:14:08', 1),
+(5, 1, '2025-09-27', 4, NULL, 'Ingenieria Informatica', '2', 'uygg', 'jose sanchez', '10:00:00', '12:30:00', '154384997', NULL, 'proyector ', '2025-09-26 22:39:53', 0),
+(6, 3, '2025-10-14', 3, NULL, 'Desarrollo de Software', '3', 'truco', 'dieguito', '19:00:00', '22:00:00', '12121212121', NULL, 'asdjiasjdijasdasd', '2025-10-11 00:01:47', 0),
+(7, 2, '2025-10-16', 6, NULL, 'qwwqe', '2', 'Practicas Profesionalizantes II', 'Hernan Ledesma', '21:00:00', '22:00:00', '333333333', 5, 'son cinco, no 3', '2025-10-11 00:03:18', 0),
+(8, 1, '2025-10-15', 4, NULL, 'sdasd', '5', 'cataclismo', 'Patricio Feres', '16:00:00', '18:00:00', '444444', NULL, 'verrrrrrrrr', '2025-10-11 00:04:32', 0),
+(9, 1, '2025-10-29', 4, 6, 'qwwqe', '3', 'truco', 'Hernan Ledesma', '21:00:00', '22:00:00', 'tytytytyt', NULL, 'lo puse mal', '2025-10-11 00:26:12', 0),
+(10, 1, '2025-11-03', 3, 13, 'qwwqe', '2', 'truco', 'pepe', '21:00:00', '22:00:00', '34234234', NULL, 'otro para ver si el horario esta ok. son 21.32', '2025-10-11 00:32:18', 0),
+(11, 3, '2025-10-20', 1, NULL, 'Desarrollo de Software', '3', 'matematicas', 'otro', '12:00:00', '15:00:00', '666666666', NULL, 'no se tiene que ver la hora', '2025-10-11 00:35:03', 0),
+(15, 1, '2025-10-13', 1, 3, 'desarrollo', '2', 'c', 'pepeito', '10:00:00', '12:00:00', '123123123', NULL, 'guarda ya zorra', '2025-10-11 19:50:32', 1),
+(17, 1, '2025-10-16', 3, 1, 'asd', '1', 'asd', 'asdfas', '20:00:00', '13:00:00', '1231231243', NULL, 'ninguno', '2025-10-11 20:49:04', 0),
+(18, 1, '2025-10-16', 6, 1, 'sdasd', '3', 'asdasdf', 'asdasfd', '09:00:00', '12:00:00', '112431234', NULL, 'ninguno', '2025-10-11 20:52:01', 0),
+(19, 1, '2025-10-16', 3, 1, 'asd', '1', 'asfa', 'gfdsds', '10:00:00', '13:00:00', '123123', NULL, '', '2025-10-11 21:05:20', 0),
+(20, 1, '2025-10-08', 5, 1, 'asd', '2', 'qwe', 'sdfsfdg', '10:00:00', '11:00:00', '1231231', 4, '', '2025-10-11 21:10:31', 0);
 
 -- --------------------------------------------------------
 
@@ -503,7 +688,8 @@ ALTER TABLE `recursos_por_aula`
 --
 ALTER TABLE `reservas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `entidad_id` (`entidad_id`);
+  ADD KEY `entidad_id` (`entidad_id`),
+  ADD KEY `fk_reservas_aula` (`aula_id`);
 
 --
 -- Indices de la tabla `usuarios`
@@ -520,13 +706,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `asignaciones`
 --
 ALTER TABLE `asignaciones`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
 -- AUTO_INCREMENT de la tabla `auditoria_acciones`
 --
 ALTER TABLE `auditoria_acciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=242;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=353;
 
 --
 -- AUTO_INCREMENT de la tabla `aulas`
@@ -538,7 +724,7 @@ ALTER TABLE `aulas`
 -- AUTO_INCREMENT de la tabla `entidades`
 --
 ALTER TABLE `entidades`
-  MODIFY `entidad_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
+  MODIFY `entidad_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT de la tabla `recursos_por_aula`
@@ -550,7 +736,7 @@ ALTER TABLE `recursos_por_aula`
 -- AUTO_INCREMENT de la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
@@ -585,6 +771,7 @@ ALTER TABLE `recursos_por_aula`
 -- Filtros para la tabla `reservas`
 --
 ALTER TABLE `reservas`
+  ADD CONSTRAINT `fk_reservas_aula` FOREIGN KEY (`aula_id`) REFERENCES `aulas` (`aula_id`),
   ADD CONSTRAINT `reservas_ibfk_entidad` FOREIGN KEY (`entidad_id`) REFERENCES `entidades` (`entidad_id`);
 COMMIT;
 
