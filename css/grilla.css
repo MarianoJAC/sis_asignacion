@@ -136,6 +136,9 @@
   color: #555;
   position: relative;
   overflow: hidden;
+  width: 250px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .disponible-label {

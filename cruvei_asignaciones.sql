@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 10.123.0.78:3306
--- Tiempo de generación: 11-10-2025 a las 21:12:35
+-- Tiempo de generación: 14-10-2025 a las 18:46:15
 -- Versión del servidor: 8.0.16
 -- Versión de PHP: 8.2.29
 
@@ -107,7 +107,9 @@ INSERT INTO `asignaciones` (`Id`, `turno`, `fecha`, `carrera`, `anio`, `profesor
 (125, 'Nocturno', '2025-10-10', 'Desarrollo de Software', '2', 'Patricio Feres', 'Practicas Profesionalizantes', 10, '19:00:00', '22:00:00', 3, ''),
 (126, 'Matutino', '2025-10-11', 'Desarrollo de Software', '2', 'Matias Cerdeira', 'Probabilidad y Estadisticas', 6, '08:00:00', '10:00:00', 3, ''),
 (127, 'Matutino', '2025-10-18', 'Desarrollo de Software', '2', 'Matias Cerdeira', 'Probabilidad y Estadisticas', 6, '08:00:00', '10:00:00', 3, ''),
-(128, 'Matutino', '2025-10-25', 'Desarrollo de Software', '2', 'Matias Cerdeira', 'Probabilidad y Estadisticas', 6, '08:00:00', '10:00:00', 3, '');
+(128, 'Matutino', '2025-10-25', 'Desarrollo de Software', '2', 'Matias Cerdeira', 'Probabilidad y Estadisticas', 6, '08:00:00', '10:00:00', 3, ''),
+(133, 'Nocturno', '2025-10-14', 'Fiesta Marechal', '2', 'Emiliano', 'Fiesta Marechal', 4, '18:00:00', '21:00:00', 3, ''),
+(134, 'Nocturno', '2025-10-13', 'Sada', '1B', 'Asfa', 'Asasfd', 1, '19:00:00', '20:08:00', 4, '');
 
 -- --------------------------------------------------------
 
@@ -485,7 +487,22 @@ INSERT INTO `auditoria_acciones` (`id`, `tipo_objeto`, `objeto_id`, `usuario_id`
 (349, 'asignacion', 130, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-10-15\",\"turno\":\"Matutino\",\"carrera\":\"Ghjg\",\"anio\":\"1\",\"profesor\":\"Uhui\",\"materia\":\"Jklk\",\"entidad_id\":6,\"hora_inicio\":\"08:00\",\"hora_fin\":\"10:00\",\"comentarios\":\"\"}', '2025-10-11 02:09:06'),
 (350, 'asignacion', 131, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-10-22\",\"turno\":\"Matutino\",\"carrera\":\"Ghjg\",\"anio\":\"1\",\"profesor\":\"Uhui\",\"materia\":\"Jklk\",\"entidad_id\":6,\"hora_inicio\":\"08:00\",\"hora_fin\":\"10:00\",\"comentarios\":\"\"}', '2025-10-11 02:09:07'),
 (351, 'asignacion', 132, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-10-29\",\"turno\":\"Matutino\",\"carrera\":\"Ghjg\",\"anio\":\"1\",\"profesor\":\"Uhui\",\"materia\":\"Jklk\",\"entidad_id\":6,\"hora_inicio\":\"08:00\",\"hora_fin\":\"10:00\",\"comentarios\":\"\"}', '2025-10-11 02:09:07'),
-(352, 'asignacion', 129, 5, '', NULL, '{\"repeticion\":\"mensual\",\"plantilla\":{\"Id\":129,\"turno\":\"Matutino\",\"fecha\":\"2025-10-08\",\"carrera\":\"Ghjg\",\"anio\":\"1\",\"profesor\":\"Uhui\",\"materia\":\"Jklk\",\"aula_id\":4,\"hora_inicio\":\"08:00:00\",\"hora_fin\":\"10:00:00\",\"entidad_id\":6,\"comentarios\":\"\"},\"eliminadas\":4}', NULL, '2025-10-11 02:11:15');
+(352, 'asignacion', 129, 5, '', NULL, '{\"repeticion\":\"mensual\",\"plantilla\":{\"Id\":129,\"turno\":\"Matutino\",\"fecha\":\"2025-10-08\",\"carrera\":\"Ghjg\",\"anio\":\"1\",\"profesor\":\"Uhui\",\"materia\":\"Jklk\",\"aula_id\":4,\"hora_inicio\":\"08:00:00\",\"hora_fin\":\"10:00:00\",\"entidad_id\":6,\"comentarios\":\"\"},\"eliminadas\":4}', NULL, '2025-10-11 02:11:15'),
+(353, 'asignacion', 133, 5, 'alta', NULL, NULL, '{\"aula_id\":4,\"fecha\":\"2025-10-14\",\"turno\":\"Nocturno\",\"carrera\":\"Fiesta Marechal\",\"anio\":\"2\",\"profesor\":\"Emiliano\",\"materia\":\"Fiesta Marechal\",\"entidad_id\":3,\"hora_inicio\":\"18:00\",\"hora_fin\":\"21:00\",\"comentarios\":\"\"}', '2025-10-13 19:34:38'),
+(354, 'asignacion', 134, 5, 'alta', NULL, NULL, '{\"aula_id\":1,\"fecha\":\"2025-10-13\",\"turno\":\"Nocturno\",\"carrera\":\"Sada\",\"anio\":\"1B\",\"profesor\":\"Asfa\",\"materia\":\"Asasfd\",\"entidad_id\":4,\"hora_inicio\":\"19:00\",\"hora_fin\":\"20:08\",\"comentarios\":\"\"}', '2025-10-13 23:06:19'),
+(355, 'asignacion', 135, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-17\",\"turno\":\"Matutino\",\"carrera\":\"Saas\",\"anio\":\"1\",\"profesor\":\"Asdfas\",\"materia\":\"Asasdf\",\"entidad_id\":4,\"hora_inicio\":\"10:00\",\"hora_fin\":\"12:00\",\"comentarios\":\"\"}', '2025-10-14 17:31:28'),
+(356, 'asignacion', 135, 5, 'modificacion', 'carrera', 'Saas', 'Saasasdfas Asdasasdf', '2025-10-14 17:31:48'),
+(357, 'asignacion', 136, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-16\",\"turno\":\"Matutino\",\"carrera\":\"Dfdfghdfdfd Dfhdfghdfghsd\",\"anio\":\"1A\",\"profesor\":\"Aasas Afasfasdf\",\"materia\":\"Sdfsadfasf\",\"entidad_id\":5,\"hora_inicio\":\"09:00\",\"hora_fin\":\"11:00\",\"comentarios\":\"\"}', '2025-10-14 17:32:07'),
+(358, 'asignacion', 137, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-15\",\"turno\":\"Matutino\",\"carrera\":\"Sdfgsdgdfhgdf Dfhd\",\"anio\":\"1B\",\"profesor\":\"Wefwef\",\"materia\":\"Fdghdsfgwtgwe Wegf Wefwefgwefw\",\"entidad_id\":5,\"hora_inicio\":\"08:00\",\"hora_fin\":\"12:00\",\"comentarios\":\"\"}', '2025-10-14 17:32:36'),
+(359, 'asignacion', 138, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-14\",\"turno\":\"Matutino\",\"carrera\":\"Gsddfgsdgfs Sdgfsdgfsd\",\"anio\":\"2\",\"profesor\":\"Sdgfsdgfsdgf\",\"materia\":\"Sdfgsdfgsdfg Sdgfsdgfghghghsdgsd\",\"entidad_id\":2,\"hora_inicio\":\"07:10\",\"hora_fin\":\"12:00\",\"comentarios\":\"\"}', '2025-10-14 17:33:06'),
+(360, 'asignacion', 139, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-13\",\"turno\":\"Matutino\",\"carrera\":\"Dgfhdfhgd Dfhdfhgdfhgd Fhgd Df Hg\",\"anio\":\"1A\",\"profesor\":\"Sdsdqwq Qfqqwwfqdqw Qwfqwdf\",\"materia\":\"Sdgfsdgfsd\",\"entidad_id\":2,\"hora_inicio\":\"07:00\",\"hora_fin\":\"09:00\",\"comentarios\":\"\"}', '2025-10-14 17:33:33'),
+(361, 'asignacion', 139, 5, 'baja', NULL, '{\"Id\":139,\"turno\":\"Matutino\",\"fecha\":\"2025-10-13\",\"carrera\":\"Dgfhdfhgd Dfhdfhgdfhgd Fhgd Df Hg\",\"anio\":\"1A\",\"profesor\":\"Sdsdqwq Qfqqwwfqdqw Qwfqwdf\",\"materia\":\"Sdgfsdgfsd\",\"aula_id\":6,\"hora_inicio\":\"07:00:00\",\"hora_fin\":\"09:00:00\",\"entidad_id\":2,\"comentarios\":\"\"}', NULL, '2025-10-14 17:33:47'),
+(362, 'asignacion', 138, 5, 'baja', NULL, '{\"Id\":138,\"turno\":\"Matutino\",\"fecha\":\"2025-10-14\",\"carrera\":\"Gsddfgsdgfs Sdgfsdgfsd\",\"anio\":\"2\",\"profesor\":\"Sdgfsdgfsdgf\",\"materia\":\"Sdfgsdfgsdfg Sdgfsdgfghghghsdgsd\",\"aula_id\":6,\"hora_inicio\":\"07:10:00\",\"hora_fin\":\"12:00:00\",\"entidad_id\":2,\"comentarios\":\"\"}', NULL, '2025-10-14 17:33:51'),
+(363, 'asignacion', 137, 5, 'baja', NULL, '{\"Id\":137,\"turno\":\"Matutino\",\"fecha\":\"2025-10-15\",\"carrera\":\"Sdfgsdgdfhgdf Dfhd\",\"anio\":\"1B\",\"profesor\":\"Wefwef\",\"materia\":\"Fdghdsfgwtgwe Wegf Wefwefgwefw\",\"aula_id\":6,\"hora_inicio\":\"08:00:00\",\"hora_fin\":\"12:00:00\",\"entidad_id\":5,\"comentarios\":\"\"}', NULL, '2025-10-14 17:33:57'),
+(364, 'asignacion', 136, 5, 'baja', NULL, '{\"Id\":136,\"turno\":\"Matutino\",\"fecha\":\"2025-10-16\",\"carrera\":\"Dfdfghdfdfd Dfhdfghdfghsd\",\"anio\":\"1A\",\"profesor\":\"Aasas Afasfasdf\",\"materia\":\"Sdfsadfasf\",\"aula_id\":6,\"hora_inicio\":\"09:00:00\",\"hora_fin\":\"11:00:00\",\"entidad_id\":5,\"comentarios\":\"\"}', NULL, '2025-10-14 17:34:01'),
+(365, 'asignacion', 140, 5, 'alta', NULL, NULL, '{\"aula_id\":6,\"fecha\":\"2025-10-17\",\"turno\":\"Matutino\",\"carrera\":\"Sdsdfg\",\"anio\":\"1\",\"profesor\":\"Dfdfgsdf\",\"materia\":\"Dsfgsdgf\",\"entidad_id\":3,\"hora_inicio\":\"08:00\",\"hora_fin\":\"10:00\",\"comentarios\":\"\"}', '2025-10-14 17:34:24'),
+(366, 'asignacion', 140, 5, 'baja', NULL, '{\"Id\":140,\"turno\":\"Matutino\",\"fecha\":\"2025-10-17\",\"carrera\":\"Sdsdfg\",\"anio\":\"1\",\"profesor\":\"Dfdfgsdf\",\"materia\":\"Dsfgsdgf\",\"aula_id\":6,\"hora_inicio\":\"08:00:00\",\"hora_fin\":\"10:00:00\",\"entidad_id\":3,\"comentarios\":\"\"}', NULL, '2025-10-14 17:34:41'),
+(367, 'asignacion', 135, 5, 'baja', NULL, '{\"Id\":135,\"turno\":\"Matutino\",\"fecha\":\"2025-10-17\",\"carrera\":\"Saasasdfas Asdasasdf\",\"anio\":\"1\",\"profesor\":\"Asdfas\",\"materia\":\"Asasdf\",\"aula_id\":6,\"hora_inicio\":\"10:00:00\",\"hora_fin\":\"12:00:00\",\"entidad_id\":4,\"comentarios\":\"\"}', NULL, '2025-10-14 17:34:47');
 
 -- --------------------------------------------------------
 
@@ -594,30 +611,49 @@ CREATE TABLE `reservas` (
   `cantidad_pc` int(11) DEFAULT NULL COMMENT 'Para Laboratorio Ambulante',
   `comentarios` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `eliminado` tinyint(1) NOT NULL DEFAULT '0'
+  `eliminado` tinyint(1) NOT NULL DEFAULT '0',
+  `notificada` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci TABLESPACE `cruvei_asignaciones`;
 
 --
 -- Volcado de datos para la tabla `reservas`
 --
 
-INSERT INTO `reservas` (`id`, `tipo_reserva`, `fecha`, `entidad_id`, `aula_id`, `carrera`, `anio`, `materia`, `profesor`, `hora_inicio`, `hora_fin`, `telefono_contacto`, `cantidad_pc`, `comentarios`, `timestamp`, `eliminado`) VALUES
-(1, 1, '2025-11-10', 3, NULL, 'lplpasd', '3', 'asdasdasdas', 'asdasd', '18:00:00', '22:00:00', '1162648300', NULL, 'prueba', '2025-09-19 22:07:52', 1),
-(2, 1, '2025-10-20', 4, NULL, 'aaaaaaa', '3', '333333', 'dddddddd', '19:00:00', '22:00:00', '113335647', NULL, 'va bien', '2025-09-19 22:24:48', 1),
-(3, 1, '2025-08-09', 4, NULL, 'asdas', 'asdfas', 'dsafsadf', 'sdfsdf', '10:00:00', '12:00:00', '231231243', NULL, 'wdfsfsfs', '2025-09-19 22:26:46', 1),
-(4, 1, '2025-10-05', 3, NULL, 'sosguar', '3', 'aaaaaa', 'eeeee', '21:00:00', '22:00:00', '1162648300', NULL, 'SDFSDFSDF', '2025-09-20 00:14:08', 1),
-(5, 1, '2025-09-27', 4, NULL, 'Ingenieria Informatica', '2', 'uygg', 'jose sanchez', '10:00:00', '12:30:00', '154384997', NULL, 'proyector ', '2025-09-26 22:39:53', 0),
-(6, 3, '2025-10-14', 3, NULL, 'Desarrollo de Software', '3', 'truco', 'dieguito', '19:00:00', '22:00:00', '12121212121', NULL, 'asdjiasjdijasdasd', '2025-10-11 00:01:47', 0),
-(7, 2, '2025-10-16', 6, NULL, 'qwwqe', '2', 'Practicas Profesionalizantes II', 'Hernan Ledesma', '21:00:00', '22:00:00', '333333333', 5, 'son cinco, no 3', '2025-10-11 00:03:18', 0),
-(8, 1, '2025-10-15', 4, NULL, 'sdasd', '5', 'cataclismo', 'Patricio Feres', '16:00:00', '18:00:00', '444444', NULL, 'verrrrrrrrr', '2025-10-11 00:04:32', 0),
-(9, 1, '2025-10-29', 4, 6, 'qwwqe', '3', 'truco', 'Hernan Ledesma', '21:00:00', '22:00:00', 'tytytytyt', NULL, 'lo puse mal', '2025-10-11 00:26:12', 0),
-(10, 1, '2025-11-03', 3, 13, 'qwwqe', '2', 'truco', 'pepe', '21:00:00', '22:00:00', '34234234', NULL, 'otro para ver si el horario esta ok. son 21.32', '2025-10-11 00:32:18', 0),
-(11, 3, '2025-10-20', 1, NULL, 'Desarrollo de Software', '3', 'matematicas', 'otro', '12:00:00', '15:00:00', '666666666', NULL, 'no se tiene que ver la hora', '2025-10-11 00:35:03', 0),
-(15, 1, '2025-10-13', 1, 3, 'desarrollo', '2', 'c', 'pepeito', '10:00:00', '12:00:00', '123123123', NULL, 'guarda ya zorra', '2025-10-11 19:50:32', 1),
-(17, 1, '2025-10-16', 3, 1, 'asd', '1', 'asd', 'asdfas', '20:00:00', '13:00:00', '1231231243', NULL, 'ninguno', '2025-10-11 20:49:04', 0),
-(18, 1, '2025-10-16', 6, 1, 'sdasd', '3', 'asdasdf', 'asdasfd', '09:00:00', '12:00:00', '112431234', NULL, 'ninguno', '2025-10-11 20:52:01', 0),
-(19, 1, '2025-10-16', 3, 1, 'asd', '1', 'asfa', 'gfdsds', '10:00:00', '13:00:00', '123123', NULL, '', '2025-10-11 21:05:20', 0),
-(20, 1, '2025-10-08', 5, 1, 'asd', '2', 'qwe', 'sdfsfdg', '10:00:00', '11:00:00', '1231231', 4, '', '2025-10-11 21:10:31', 0);
+INSERT INTO `reservas` (`id`, `tipo_reserva`, `fecha`, `entidad_id`, `aula_id`, `carrera`, `anio`, `materia`, `profesor`, `hora_inicio`, `hora_fin`, `telefono_contacto`, `cantidad_pc`, `comentarios`, `timestamp`, `eliminado`, `notificada`) VALUES
+(1, 1, '2025-11-10', 3, NULL, 'lplpasd', '3', 'asdasdasdas', 'asdasd', '18:00:00', '22:00:00', '1162648300', NULL, 'prueba', '2025-09-19 22:07:52', 1, 1),
+(2, 1, '2025-10-20', 4, NULL, 'aaaaaaa', '3', '333333', 'dddddddd', '19:00:00', '22:00:00', '113335647', NULL, 'va bien', '2025-09-19 22:24:48', 1, 1),
+(3, 1, '2025-08-09', 4, NULL, 'asdas', 'asdfas', 'dsafsadf', 'sdfsdf', '10:00:00', '12:00:00', '231231243', NULL, 'wdfsfsfs', '2025-09-19 22:26:46', 1, 1),
+(4, 1, '2025-10-05', 3, NULL, 'sosguar', '3', 'aaaaaa', 'eeeee', '21:00:00', '22:00:00', '1162648300', NULL, 'SDFSDFSDF', '2025-09-20 00:14:08', 1, 1),
+(5, 1, '2025-09-27', 4, NULL, 'Ingenieria Informatica', '2', 'uygg', 'jose sanchez', '10:00:00', '12:30:00', '154384997', NULL, 'proyector ', '2025-09-26 22:39:53', 0, 1),
+(6, 3, '2025-10-14', 3, NULL, 'Desarrollo de Software', '3', 'truco', 'dieguito', '19:00:00', '22:00:00', '12121212121', NULL, 'asdjiasjdijasdasd', '2025-10-11 00:01:47', 0, 1),
+(7, 2, '2025-10-16', 6, NULL, 'qwwqe', '2', 'Practicas Profesionalizantes II', 'Hernan Ledesma', '21:00:00', '22:00:00', '333333333', 5, 'son cinco, no 3', '2025-10-11 00:03:18', 1, 1),
+(8, 1, '2025-10-15', 4, NULL, 'sdasd', '5', 'cataclismo', 'Patricio Feres', '16:00:00', '18:00:00', '444444', NULL, 'verrrrrrrrr', '2025-10-11 00:04:32', 1, 1),
+(9, 1, '2025-10-29', 4, 6, 'qwwqe', '3', 'truco', 'Hernan Ledesma', '21:00:00', '22:00:00', 'tytytytyt', NULL, 'lo puse mal', '2025-10-11 00:26:12', 0, 1),
+(10, 1, '2025-11-03', 3, 13, 'qwwqe', '2', 'truco', 'pepe', '21:00:00', '22:00:00', '34234234', NULL, 'otro para ver si el horario esta ok. son 21.32', '2025-10-11 00:32:18', 0, 1),
+(11, 3, '2025-10-20', 1, NULL, 'Desarrollo de Software', '3', 'matematicas', 'otro', '12:00:00', '15:00:00', '666666666', NULL, 'no se tiene que ver la hora', '2025-10-11 00:35:03', 1, 1),
+(15, 1, '2025-10-13', 1, 3, 'desarrollo', '2', 'c', 'pepeito', '10:00:00', '12:00:00', '123123123', NULL, 'guarda ya zorra', '2025-10-11 19:50:32', 1, 1),
+(17, 1, '2025-10-16', 3, 1, 'asd', '1', 'asd', 'asdfas', '20:00:00', '13:00:00', '1231231243', NULL, 'ninguno', '2025-10-11 20:49:04', 0, 1),
+(18, 1, '2025-10-16', 6, 1, 'sdasd', '3', 'asdasdf', 'asdasfd', '09:00:00', '12:00:00', '112431234', NULL, 'ninguno', '2025-10-11 20:52:01', 0, 1),
+(19, 1, '2025-10-16', 3, 1, 'asd', '1', 'asfa', 'gfdsds', '10:00:00', '13:00:00', '123123', NULL, '', '2025-10-11 21:05:20', 1, 1),
+(20, 1, '2025-10-08', 5, 1, 'asd', '2', 'qwe', 'sdfsfdg', '10:00:00', '11:00:00', '1231231', 4, '', '2025-10-11 21:10:31', 1, 1),
+(21, 1, '2025-10-23', 6, 1, 'qwqe', '3', 'qwefd', 'ergfergfer', '10:05:00', '12:15:00', '23423521341', 5, '', '2025-10-11 21:18:59', 1, 1),
+(22, 3, '2025-10-24', 6, 5, 'dwfwefwe', '1', 'sadqwedx', 'werfwef', '16:00:00', '18:00:00', '13241414', 0, '', '2025-10-11 21:19:35', 1, 1),
+(23, 1, '2025-10-16', 4, 9, 'rtdfg', 'vv', 'fghfgh', 'tttttttt', '13:00:00', '14:00:00', 'gdfgdfgdfgfg', 55, '', '2025-10-13 21:08:27', 1, 1),
+(24, 1, '2025-10-24', 3, 5, 'fyrfty', '3', 'ttttttgggg', 'kkkk', '13:00:00', '17:00:00', '111111', 0, '', '2025-10-13 21:10:36', 1, 1),
+(25, 2, '2025-10-17', 3, 8, 'asd', '2', 'asdasdf', 'pep', '08:00:00', '10:00:00', '12123111', 10, '', '2025-10-14 12:35:55', 1, 1),
+(26, 2, '2025-10-16', 3, 13, 'asasf', '3', 'sadasfd', 'asdas', '16:00:00', '18:00:00', '34111', 12, '', '2025-10-14 12:44:25', 1, 1),
+(27, 2, '2025-10-16', 6, 6, 'asasdf', '2', 'sdfgsdgfs', 'asdqq', '08:00:00', '10:00:00', '123412431243', 12, '', '2025-10-14 13:04:52', 1, 1),
+(28, 2, '2025-10-16', 6, 2, 'sdfasdf', '3', 'sasfdas', 'asfasfd', '08:00:00', '11:00:00', '1231231234', 123, '', '2025-10-14 13:19:12', 1, 1),
+(29, 2, '2025-10-15', 4, 5, 'asdfasdf', '1', 'asdasdf', 'sdfgsdgf', '09:00:00', '10:00:00', '123123123', 12, '', '2025-10-14 13:21:21', 1, 1),
+(30, 2, '2025-10-16', 6, 4, 'qwfdqdf', '1', 'asdfasfd', 'sdfsdgs', '10:00:00', '12:00:00', '12431241241', 12, '', '2025-10-14 13:42:52', 1, 1),
+(31, 1, '2025-10-15', 6, 2, 'asdasdf', '2', 'asdfasfd', 'sdsdgsd', '14:00:00', '19:00:00', '12341241243', 0, '', '2025-10-14 18:29:15', 0, 1),
+(32, 3, '2025-10-17', 5, 3, 'sdfafsa', '2', 'dsfasfd', 'asasdf', '18:00:00', '19:00:00', '12312412', 0, '', '2025-10-14 18:31:23', 0, 1),
+(33, 1, '2025-10-22', 5, 3, 'asdfasdf', '2', 'asdasd', 'asadasdas', '15:00:00', '16:00:00', '123123123', 0, '', '2025-10-14 18:33:16', 1, 1),
+(34, 1, '2025-10-21', 3, 3, 'asdasdfa', '3', 'asdfasdfa', 'asfasdf', '16:00:00', '17:00:00', '12312312', 0, '', '2025-10-14 18:38:59', 1, 1),
+(35, 1, '2025-10-16', 4, 2, 'asasdf', '1', 'asdfasfd', 'sadfasdf', '16:00:00', '17:00:00', '1231234124', 0, '', '2025-10-14 18:40:13', 0, 1),
+(36, 2, '2025-10-24', 1, 5, 'qwqfdqwd', '3', 'asfdasfd', 'qweq', '19:00:00', '20:00:00', '121231243124', 12, '', '2025-10-14 18:40:42', 0, 1),
+(37, 3, '2025-10-30', 3, 5, 'wefgwefg', '1', 'qwedfqwedf', 'fsdfwef', '13:00:00', '15:00:00', '4124123123', 0, '', '2025-10-14 18:41:14', 0, 1),
+(38, 1, '2025-10-14', 3, 13, 'sdfgwegf', '1', 'dsfasf', 'wetrwert', '13:00:00', '14:00:00', '12314124', 0, '', '2025-10-14 18:43:15', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -706,13 +742,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `asignaciones`
 --
 ALTER TABLE `asignaciones`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
 
 --
 -- AUTO_INCREMENT de la tabla `auditoria_acciones`
 --
 ALTER TABLE `auditoria_acciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=353;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=368;
 
 --
 -- AUTO_INCREMENT de la tabla `aulas`
@@ -736,7 +772,7 @@ ALTER TABLE `recursos_por_aula`
 -- AUTO_INCREMENT de la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`

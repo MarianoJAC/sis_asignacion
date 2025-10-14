@@ -1,6 +1,8 @@
 <?php
 // Inicia la sesión para todas las llamadas a la API
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Incluye la configuración de la base de datos una sola vez
 require_once __DIR__ . '/../config/conexion.php';
@@ -38,5 +40,26 @@ function validar_autenticado() {
     if (!isset($_SESSION['usuario_id'])) {
         responder_error('Acceso no autenticado.', 401);
     }
+}
+
+/**
+ * Obtiene los IDs de todos los usuarios con rol 'admin'.
+ *
+ * @global mysqli $conexion
+ * @return array Un array de IDs de administradores.
+ */
+function get_admin_ids() {
+    global $conexion;
+    $admin_ids = [];
+    $query = "SELECT id FROM usuarios WHERE role = 'admin'";
+    $result = $conexion->query($query);
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $admin_ids[] = $row['id'];
+        }
+    } else {
+        error_log("Error al obtener IDs de administradores: " . $conexion->error);
+    }
+    return $admin_ids;
 }
 ?>

@@ -7,7 +7,7 @@
   <!-- 🧼 Estilos institucionales -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/variables.css?v=1.3">
-  <link rel="stylesheet" href="../css/global.css?v=1.3">
+  <link rel="stylesheet" href="../css/global.css?v=2.0">
     <link rel="stylesheet" href="../css/main.css?v=1.0">
     <link rel="stylesheet" href="../css/leyenda.css?v=1.0">
   <link rel="stylesheet" href="../css/mapa.css?v=1.0">
@@ -43,18 +43,18 @@ $usuario = $_SESSION['username'] ?? 'Usuario';
   <div class="zona-superior">
     <h2>Asignaciones CRUI</h2>
     <div class="menu-hamburguesa">
-      <button id="btn-menu"><i class="fas fa-bars"></i></button>
-      <div id="menu-desplegable" class="menu-oculto">
-        <div class="menu-usuario">👤 <?= htmlspecialchars($usuario) ?></div>
-        <?php if ($esAdmin): ?>
-          <a href="auditoria_panel.php">🛡️ Auditoría</a>
-          <a href="reservas.php">📋 Ver Reservas</a>
-          <a href="configuracion.php">⚙️ Configuración</a>
-        <?php endif; ?>
-        <a href="asignacionesTurnoActual.php">🕒 Turno Actual</a>
-        <a href="../acciones/logout.php">🔓 Cerrar sesión</a>
-      </div>
+      <button id="btn-menu"><span id="globito-notificacion" class="globito-notificacion"></span><i class="fas fa-bars"></i></button>
     </div>
+  </div>
+
+  <div id="menu-desplegable" class="menu-oculto">
+    <div class="menu-usuario">👤 <?= htmlspecialchars($usuario) ?></div>
+    <?php if ($esAdmin): ?>
+      <a href="auditoria_panel.php">🛡️ Auditoría</a>
+                <a href="reservas.php">📋 Ver Reservas <span id="notificacion-reservas" class="badge-notificacion"></span></a>      <a href="configuracion.php">⚙️ Configuración</a>
+    <?php endif; ?>
+    <a href="asignacionesTurnoActual.php">🕒 Turno Actual</a>
+    <a href="../acciones/logout.php">🔓 Cerrar sesión</a>
   </div>
 
   <div class="zona-leyenda" style="display: none;">

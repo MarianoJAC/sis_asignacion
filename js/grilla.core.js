@@ -125,13 +125,80 @@ btnResetFecha?.addEventListener('click', () => {
 
 if (btnMenu && menuDesplegable) {
   btnMenu.addEventListener('click', () => {
-    const visible = menuDesplegable.style.display === 'block';
-    menuDesplegable.style.display = visible ? 'none' : 'block';
+    menuDesplegable.classList.toggle('menu-visible');
   });
 
   document.addEventListener('click', (e) => {
     if (!menuDesplegable.contains(e.target) && !btnMenu.contains(e.target)) {
-      menuDesplegable.style.display = 'none';
+      menuDesplegable.classList.remove('menu-visible');
     }
   });
+}
+
+// Notificaciones de nuevas reservas para administradores
+if (window.esAdmin) {
+  const notificacionReservasBadge = document.getElementById('notificacion-reservas');
+  const globitoNotificacion = document.getElementById('globito-notificacion');
+  let newReservationsCount = 0;
+  let currentNewReservationIds = []; // Para almacenar los IDs de las reservas nuevas
+
+  const updateNotificationBadge = () => {
+    if (newReservationsCount > 0) {
+      notificacionReservasBadge.textContent = newReservationsCount;
+      notificacionReservasBadge.classList.add('visible');
+      globitoNotificacion.classList.add('visible');
+    } else {
+      notificacionReservasBadge.textContent = '';
+      notificacionReservasBadge.classList.remove('visible');
+      globitoNotificacion.classList.remove('visible');
+    }
+  };
+
+  const fetchNewReservations = async () => {
+    try {
+      const response = await fetch('../acciones/get_nuevas_reservas.php');
+      const result = await response.json();
+
+      if (result.ok && result.data.length > 0) {
+        newReservationsCount = result.data.length;
+        currentNewReservationIds = result.data.map(reserva => reserva.id);
+        updateNotificationBadge();
+      } else if (result.ok && result.data.length === 0) {
+        newReservationsCount = 0;
+        currentNewReservationIds = [];
+        updateNotificationBadge();
+      }
+    } catch (error) {
+      console.error('Error al obtener nuevas reservas:', error);
+    }
+  };
+
+  // Ejecutar al cargar y luego cada 30 segundos
+  fetchNewReservations();
+  setInterval(fetchNewReservations, 30000); // 30 segundos
+
+  // Resetear contador y ocultar badge al hacer clic en 'Ver Reservas'
+  const verReservasLink = document.querySelector('#menu-desplegable a[href="reservas.php"]');
+  if (verReservasLink) {
+    verReservasLink.addEventListener('click', async (e) => {
+      // Marcar las reservas como vistas en la base de datos
+      if (currentNewReservationIds.length > 0) {
+        try {
+          await fetch('../acciones/marcar_reservas_vistas.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ reserva_ids: currentNewReservationIds }),
+          });
+        } catch (error) {
+          console.error('Error al marcar reservas como vistas:', error);
+        }
+      }
+      newReservationsCount = 0;
+      currentNewReservationIds = [];
+      updateNotificationBadge();
+      // Permitir la navegación normal
+    });
+  }
 }

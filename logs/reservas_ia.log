@@ -272,3 +272,184 @@
 )
 
 [2025-10-14 10:42:52] Reservation saved successfully.
+[2025-10-14 15:29:15] Request received.
+[2025-10-14 15:29:15] Request data: Array
+(
+    [fecha] => 2025-10-15
+    [tipo_reserva] => Aula
+    [entidad_id] => 6
+    [aula_id] => 2
+    [carrera] => asdasdf
+    [anio] => 2
+    [materia] => asdfasfd
+    [profesor] => sdsdgsd
+    [hora_inicio] => 14:00
+    [hora_fin] => 19:00
+    [telefono_contacto] => 12341241243
+    [comentarios] => 
+)
+
+[2025-10-14 15:29:15] Reservation saved successfully.
+[2025-10-14 15:31:22] Request received.
+[2025-10-14 15:31:22] Request data: Array
+(
+    [fecha] => 2025-10-17
+    [tipo_reserva] => Kit TV
+    [entidad_id] => 5
+    [aula_id] => 3
+    [carrera] => sdfafsa
+    [anio] => 2
+    [materia] => dsfasfd
+    [profesor] => asasdf
+    [hora_inicio] => 18:00
+    [hora_fin] => 19:00
+    [telefono_contacto] => 12312412
+    [comentarios] => 
+)
+
+[2025-10-14 15:31:23] Reservation saved successfully.
+[2025-10-14 15:33:15] Request received.
+[2025-10-14 15:33:15] Request data: Array
+(
+    [fecha] => 2025-10-22
+    [tipo_reserva] => Aula
+    [entidad_id] => 5
+    [aula_id] => 3
+    [carrera] => asdfasdf
+    [anio] => 2
+    [materia] => asdasd
+    [profesor] => asadasdas
+    [hora_inicio] => 15:00
+    [hora_fin] => 16:00
+    [telefono_contacto] => 123123123
+    [comentarios] => 
+)
+
+[2025-10-14 15:33:16] Reservation saved successfully.
+[2025-10-14 15:38:59] Request received.
+[2025-10-14 15:38:59] Request data: Array
+(
+    [fecha] => 2025-10-21
+    [tipo_reserva] => Aula
+    [entidad_id] => 3
+    [aula_id] => 3
+    [carrera] => asdasdfa
+    [anio] => 3
+    [materia] => asdfasdfa
+    [profesor] => asfasdf
+    [hora_inicio] => 16:00
+    [hora_fin] => 17:00
+    [telefono_contacto] => 12312312
+    [comentarios] => 
+)
+
+[2025-10-14 15:38:59] Reservation saved successfully.
+[2025-10-14 15:40:13] Request received.
+[2025-10-14 15:40:13] Request data: Array
+(
+    [fecha] => 2025-10-16
+    [tipo_reserva] => Aula
+    [entidad_id] => 4
+    [aula_id] => 2
+    [carrera] => asasdf
+    [anio] => 1
+    [materia] => asdfasfd
+    [profesor] => sadfasdf
+    [hora_inicio] => 16:00
+    [hora_fin] => 17:00
+    [telefono_contacto] => 1231234124
+    [comentarios] => 
+)
+
+[2025-10-14 15:40:13] Reservation saved successfully.
+[2025-10-14 15:40:42] Request received.
+[2025-10-14 15:40:42] Request data: Array
+(
+    [fecha] => 2025-10-24
+    [tipo_reserva] => Laboratorio Ambulante
+    [entidad_id] => 1
+    [aula_id] => 5
+    [cantidad_pc] => 12
+    [carrera] => qwqfdqwd
+    [anio] => 3
+    [materia] => asfdasfd
+    [profesor] => qweq
+    [hora_inicio] => 19:00
+    [hora_fin] => 20:00
+    [telefono_contacto] => 121231243124
+    [comentarios] => 
+)
+
+[2025-10-14 15:40:42] Reservation saved successfully.
+[2025-10-14 15:41:13] Request received.
+[2025-10-14 15:41:13] Request data: Array
+(
+    [fecha] => 2025-10-30
+    [tipo_reserva] => Kit TV
+    [entidad_id] => 3
+    [aula_id] => 5
+    [carrera] => wefgwefg
+    [anio] => 1
+    [materia] => qwedfqwedf
+    [profesor] => fsdfwef
+    [hora_inicio] => 13:00
+    [hora_fin] => 15:00
+    [telefono_contacto] => 4124123123
+    [comentarios] => 
+)
+
+[2025-10-14 15:41:14] Reservation saved successfully.
+[2025-10-14 15:43:15] Request received.
+[2025-10-14 15:43:15] Request data: Array
+(
+    [fecha] => 2025-10-14
+    [tipo_reserva] => Aula
+    [entidad_id] => 3
+    [aula_id] => 13
+    [carrera] => sdfgwegf
+    [anio] => 1
+    [materia] => dsfasf
+    [profesor] => wetrwert
+    [hora_inicio] => 13:00
+    [hora_fin] => 14:00
+    [telefono_contacto] => 12314124
+    [comentarios] => 
+)
+
+[2025-10-14 15:43:15] Reservation saved successfully.
+[2025-10-14 15:51:43] Request received.
+[2025-10-14 15:51:43] Request data: Array
+(
+    [fecha] => 2025-10-16
+    [tipo_reserva] => Aula
+    [entidad_id] => 3
+    [aula_id] => 5
+    [carrera] => asasfdasfd
+    [anio] => 3
+    [materia] => asfasfdaf
+    [profesor] => pepe
+    [hora_inicio] => 13:00
+    [hora_fin] => 15:00
+    [telefono_contacto] => 12314121
+    [comentarios] => 
+)
+
+[2025-10-14 15:51:44] Reservation saved successfully.
+[2025-10-14 15:56:30] Request received.
+[2025-10-14 15:56:30] Request data: Array
+(
+    [fecha] => 2025-10-15
+    [tipo_reserva] => Kit TV
+    [entidad_id] => 4
+    [aula_id] => 5
+    [carrera] => qdqdf
+    [anio] => 3
+    [materia] => asfasfd
+    [profesor] => qwdfqfde
+    [hora_inicio] => 13:00
+    [hora_fin] => 14:00
+    [telefono_contacto] => 12314124
+    [comentarios] => 
+)
+
+[2025-10-14 15:56:31] Reservation saved successfully.

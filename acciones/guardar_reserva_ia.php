@@ -93,6 +93,25 @@ if ($stmt = $conexion->prepare($sql)) {
     );
 
     if ($stmt->execute()) {
+        $reserva_id = $conexion->insert_id;
+
+        // Insertar notificaciones para administradores
+        require_once 'api_utils.php';
+        $admin_ids = get_admin_ids();
+        if (!empty($admin_ids)) {
+            $sql_notif = "INSERT INTO admin_notificaciones (admin_id, reserva_id, vista) VALUES (?, ?, FALSE)";
+            $stmt_notif = $conexion->prepare($sql_notif);
+            if ($stmt_notif) {
+                foreach ($admin_ids as $admin_id) {
+                    $stmt_notif->bind_param("ii", $admin_id, $reserva_id);
+                    $stmt_notif->execute();
+                }
+                $stmt_notif->close();
+            } else {
+                log_message("Error al preparar la consulta de notificación: " . $conexion->error);
+            }
+        }
+
         log_message('Reservation saved successfully.');
         echo json_encode(['ok' => true]);
     } else {

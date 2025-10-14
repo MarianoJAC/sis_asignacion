@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             next: 'ask_entidad',
         },
         'ask_entidad': {
-            question: '¿A qué entidad perteneces?:',
+            question: '¿A qué entidad perteneces?',
             key: 'entidad_id',
             next: 'ask_aula',
         },
