@@ -41,9 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <td><span class="badge bg-secondary">${escapeHTML(user.role)}</span></td>
         <td>
           <div class="btn-group" role="group">
-            <button class="btn btn-sm btn-warning btn-edit btn-editar-asignacion" data-id="${user.id}" title="Editar usuario"><i class="fas fa-edit"></i></button>
-            <button class="btn btn-sm btn-info btn-change-password" data-id="${user.id}" title="Cambiar contraseña"><i class="fas fa-key"></i></button>
-            <button class="btn btn-sm btn-danger btn-delete btn-eliminar-asignacion" data-id="${user.id}" title="Eliminar usuario"><i class="fas fa-trash"></i></button>
+            <button class="btn btn-sm btn-warning btn-edit btn-editar-asignacion btn-icon-only" data-id="${user.id}" title="Editar usuario"><img src="../iconos/editarusuario.png" alt="Editar" class="action-icon"></button>
+            <button class="btn btn-sm btn-info btn-change-password btn-icon-only" data-id="${user.id}" title="Cambiar contraseña"><img src="../iconos/contraseña.png" alt="Cambiar Contraseña" class="action-icon"></button>
+            <button class="btn btn-sm btn-danger btn-delete btn-eliminar-asignacion btn-icon-only" data-id="${user.id}" title="Eliminar usuario"><img src="../iconos/eliminarusuario.png" alt="Eliminar" class="action-icon"></button>
           </div>
         </td>
       `;

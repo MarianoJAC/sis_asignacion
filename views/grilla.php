@@ -7,7 +7,7 @@
   <!-- 🧼 Estilos institucionales -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/variables.css?v=1.3">
-  <link rel="stylesheet" href="../css/global.css?v=2.0">
+  <link rel="stylesheet" href="../css/global.css?v=2.9">
     <link rel="stylesheet" href="../css/main.css?v=1.0">
     <link rel="stylesheet" href="../css/leyenda.css?v=1.0">
   <link rel="stylesheet" href="../css/mapa.css?v=1.0">
@@ -43,19 +43,29 @@ $usuario = $_SESSION['username'] ?? 'Usuario';
   <div class="zona-superior">
     <h2>Asignaciones CRUI</h2>
     <div class="menu-hamburguesa">
-      <button id="btn-menu"><span id="globito-notificacion" class="globito-notificacion"></span><i class="fas fa-bars"></i></button>
+      <button id="btn-menu"><span id="globito-notificacion" class="globito-notificacion"></span><img src="../iconos/menuhamburguesa.png" alt="Menú" class="hamburger-icon"></button>
     </div>
   </div>
 
-  <div id="menu-desplegable" class="menu-oculto">
-    <div class="menu-usuario">👤 <?= htmlspecialchars($usuario) ?></div>
-    <?php if ($esAdmin): ?>
-      <a href="auditoria_panel.php">🛡️ Auditoría</a>
-                <a href="reservas.php">📋 Ver Reservas <span id="notificacion-reservas" class="badge-notificacion"></span></a>      <a href="configuracion.php">⚙️ Configuración</a>
-    <?php endif; ?>
-    <a href="asignacionesTurnoActual.php">🕒 Turno Actual</a>
-    <a href="../acciones/logout.php">🔓 Cerrar sesión</a>
-  </div>
+    <div id="menu-desplegable" class="menu-oculto">
+
+      <div class="menu-usuario"><img src="../iconos/usuario.png" alt="Usuario" class="menu-item-icon menu-usuario-icon"> <?= htmlspecialchars($usuario) ?></div>
+
+      <?php if ($esAdmin): ?>
+
+        <a href="auditoria_panel.php"><img src="../iconos/auditoria.png" alt="Auditoría" class="menu-item-icon"> Auditoría</a>
+
+        <a href="reservas.php"><img src="../iconos/reservas.png" alt="Ver Reservas" class="menu-item-icon"> Ver Reservas <span id="notificacion-reservas" class="badge-notificacion"></span></a>
+
+        <a href="configuracion.php"><img src="../iconos/configuracion.png" alt="Configuración" class="menu-item-icon"> Configuración</a>
+
+      <?php endif; ?>
+
+      <a href="asignacionesTurnoActual.php"><img src="../iconos/turnoactual.png" alt="Turno Actual" class="menu-item-icon"> Turno Actual</a>
+
+      <a href="../acciones/logout.php"><img src="../iconos/cerrarsesion.png" alt="Cerrar Sesión" class="menu-item-icon"> Cerrar sesión</a>
+
+    </div>
 
   <div class="zona-leyenda" style="display: none;">
   <div class="leyenda-row" id="leyenda-dinamica"></div>

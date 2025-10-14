@@ -6,3 +6,19 @@
 .titulo-modulo {
   color: var(--primary-color);
 }
+
+.action-icon {
+  width: 32px; /* Double the size */
+  height: 32px; /* Double the size */
+  vertical-align: middle;
+}
+
+.btn-icon-only {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.btn-icon-only:hover {
+  background-color: transparent !important;
+}

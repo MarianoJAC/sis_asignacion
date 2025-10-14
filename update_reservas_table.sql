@@ -1,1 +1,0 @@
-ALTER TABLE `reservas` ADD `notificada` BOOLEAN NOT NULL DEFAULT FALSE;

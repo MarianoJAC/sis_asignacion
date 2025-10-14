@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="col-md-6 col-lg-4">
         <div class="card login-card shadow-lg">
           <div class="card-body">
-            <h3 class="card-title text-center mb-4">🔐 Acceso al Sistema</h3>
+            <h3 class="card-title text-center mb-4"><img src="iconos/acceso.png" alt="Acceso" class="login-icon"> Acceso al Sistema</h3>
             <?php if (isset($error)): ?>
               <div class="alert alert-danger" role="alert">
                 <?= htmlspecialchars($error) ?>

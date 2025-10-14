@@ -19,8 +19,8 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['role'] !== 'admin') {
   <!-- Estilos personalizados -->
   <link rel="stylesheet" href="../css/variables.css?v=1.1">
   <link rel="stylesheet" href="../css/global.css?v=1.3">
-  <link rel="stylesheet" href="../css/configuracion.css?v=1.0">
-  <link rel="stylesheet" href="../css/configuracion.styles.css?v=1.0">
+  <link rel="stylesheet" href="../css/configuracion.css?v=1.3">
+  <link rel="stylesheet" href="../css/configuracion.styles.css?v=1.3">
 </head>
 <body>
 

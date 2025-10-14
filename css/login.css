@@ -1,11 +1,12 @@
 :root {
   --primary-color: #0d6efd; /* Azul de Bootstrap */
-  --background-start: #f8f9fa; /* Gris claro */
-  --background-end: #e9ecef;   /* Gris un poco más oscuro */
+  --background-start: #e0ffe0; /* Verde muy claro, casi blanco */
+  --background-mid: #a0e0a0;   /* Verde claro */
+  --background-end: #60c060;   /* Verde medio */
 }
 
 body {
-  background: linear-gradient(135deg, var(--background-start), var(--background-end));
+  background: linear-gradient(45deg, var(--background-start), var(--background-mid), var(--background-end));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,4 +38,11 @@ body {
 .btn-primary {
   padding: 0.75rem;
   font-weight: 600;
+}
+
+.login-icon {
+  width: 20px; /* Adjust size as needed */
+  height: 24px; /* Adjust size as needed */
+  vertical-align: middle;
+  margin-right: 10px;
 }

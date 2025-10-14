@@ -73,16 +73,22 @@ a:hover {
 }
 
 #btn-menu .fas {
-  font-size: 34px !important;
+  /* font-size: 34px !important; */ /* Removed as it's now an image */
+}
+
+.hamburger-icon {
+  width: 34px; /* Same size as the previous font icon */
+  height: 34px; /* Same size as the previous font icon */
+  vertical-align: middle;
 }
 
 #menu-desplegable {
   position: fixed;
   top: 0;
-  left: -300px; /* Oculto a la izquierda */
-  width: 300px;
+  left: -270px; /* Oculto a la izquierda */
+  width: 270px;
   height: auto;
-  max-height: 100vh;
+  max-height: 90vh;
   overflow-y: auto;
   background: #fff;
   border-right: 1px solid #ccc;
@@ -121,6 +127,18 @@ a:hover {
   font-size: 1.5rem; /* Increased font size */
   padding: 10px 0; /* Added padding */
   border-bottom: 1px solid #eee; /* Add a separator */
+}
+
+.menu-item-icon {
+  width: 25px; /* 25% larger than 20px */
+  height: 25px; /* 25% larger than 20px */
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.menu-usuario-icon {
+  width: 30px; /* 50% larger than 20px */
+  height: 30px; /* 50% larger than 20px */
 }
 
 .badge-notificacion {
