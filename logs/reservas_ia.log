@@ -453,3 +453,21 @@
 )
 
 [2025-10-14 15:56:31] Reservation saved successfully.
+[2025-10-15 15:08:16] Request received.
+[2025-10-15 15:08:16] Request data: Array
+(
+    [fecha] => 2025-10-16
+    [tipo_reserva] => Aula
+    [entidad_id] => 6
+    [aula_id] => 4
+    [carrera] => asasdf
+    [anio] => 1
+    [materia] => asdfasdf
+    [profesor] => sdgfsdfg
+    [hora_inicio] => 14:00
+    [hora_fin] => 18:00
+    [telefono_contacto] => 12312312312
+    [comentarios] => 
+)
+
+[2025-10-15 15:08:17] Reservation saved successfully.

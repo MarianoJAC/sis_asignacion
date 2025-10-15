@@ -98,7 +98,7 @@ $usuario = $_SESSION['username'] ?? 'Usuario';
     <div class="filtro-fecha">
       <label for="selector-fecha"><strong>Fecha:</strong></label>
       <input type="date" id="selector-fecha" class="selector-fecha" />
-      <button id="btn-reset-fecha" class="btn-reset-fecha">🧹</button>
+      <button id="btn-reset-fecha" class="btn-reset-fecha" style="background: none; border: none;"><img src="../iconos/limpiafiltro.png" alt="Limpiar Filtro" style="width: 30px; height: 30px;"></button>
     </div>
   </div>
 </div>
