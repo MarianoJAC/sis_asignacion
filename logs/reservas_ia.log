@@ -508,3 +508,40 @@
 )
 
 [2025-10-17 19:18:58] Reservation saved successfully.
+[2025-10-17 20:23:42] Request received.
+[2025-10-17 20:23:42] Request data: Array
+(
+    [fecha] => 2025-10-23
+    [tipo_reserva] => Laboratorio Ambulante
+    [entidad_id] => 6
+    [cantidad_pc] => 12
+    [carrera] => wewer
+    [anio] => dfsdf
+    [materia] => fdgdfg
+    [profesor] => dfgdfg
+    [hora_inicio] => 18:00
+    [hora_fin] => 22:00
+    [telefono_contacto] => 23423423
+    [comentarios] => dfgdfgd
+)
+
+[2025-10-17 20:23:42] Missing required field: aula_id
+[2025-10-17 20:25:27] Request received.
+[2025-10-17 20:25:27] Request data: Array
+(
+    [fecha] => 2025-10-24
+    [tipo_reserva] => Laboratorio Ambulante
+    [entidad_id] => 6
+    [cantidad_pc] => 32
+    [aula_id] => 2
+    [carrera] => wfdwef
+    [anio] => 2
+    [materia] => sdfsf
+    [profesor] => sdfwf
+    [hora_inicio] => 19:00
+    [hora_fin] => 22:00
+    [telefono_contacto] => 23423423
+    [comentarios] => 
+)
+
+[2025-10-17 20:25:28] Reservation saved successfully.

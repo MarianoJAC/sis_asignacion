@@ -5,6 +5,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const calendarContainer = document.getElementById('calendar-container');
     const calendarControls = document.getElementById('calendar-controls');
     const confirmDateBtn = document.getElementById('confirm-date-btn');
+    const chatInputContainer = document.getElementById('chat-input-container');
+
+    function setChatInputVisible(visible) {
+        if (visible) {
+            chatInputContainer.style.display = 'flex';
+            userInput.disabled = false;
+            sendBtn.disabled = false;
+        } else {
+            chatInputContainer.style.display = 'none';
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+        }
+    }
 
     const timePickerStartInput = document.getElementById('time-picker-start');
     const timePickerEndInput = document.getElementById('time-picker-end');
@@ -39,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'ask_notebooks': {
             question: '¿Cuántas notebooks necesitas?',
             key: 'cantidad_pc',
-            next: 'ask_carrera',
+            next: 'ask_aula',
         },
         'ask_carrera': {
             question: '¿Para qué carrera es la reserva?',
@@ -155,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         calendar = new VanillaCalendar(calendarContainer, {
             settings: {
+                lang: 'es-ES',
                 selected: {
                     dates: [todayStr],
                 },
@@ -233,54 +247,46 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentState = questions[conversationState.currentQuestion];
         if (currentState && currentState.question) {
             addMessage(currentState.question, 'bot');
-            if (conversationState.currentQuestion === 'welcome') {
-                reservationTypeButtons.style.display = 'flex';
-                const reservationTypes = [
-                    { name: 'Aula', style: 'background-color: #cfe2ff; color: #0056b3; border-color: #b6d4fe; font-weight: bold;' },
-                    { name: 'Laboratorio Ambulante', style: 'background-color: #d1e7dd; color: #218838; border-color: #c3e6cb; font-weight: bold;' },
-                    { name: 'Kit TV', style: 'background-color: #fff3cd; color: #b95000; border-color: #ffeeba; font-weight: bold;' }
-                ];
-                reservationTypeButtons.innerHTML = reservationTypes.map(type =>
-                    `<button class="btn" style="${type.style}">${type.name}</button>`
-                ).join('');
-                userInput.disabled = true;
-                sendBtn.disabled = true;
-            } else if (conversationState.currentQuestion === 'ask_fecha') {
-                calendarContainer.style.display = 'block';
-                calendarControls.style.display = 'block';
-                userInput.disabled = true;
-                sendBtn.disabled = true;
-            } else if (conversationState.currentQuestion === 'ask_hora_inicio') {
-                timePickerContainer.style.display = 'block';
-                userInput.disabled = true;
-                sendBtn.disabled = true;
-            } else if (conversationState.currentQuestion === 'ask_entidad') {
-                entitySelectorContainer.classList.remove('hidden');
-                entitySelectorContainer.classList.add('d-flex');
-                entitySelect.innerHTML = '<option selected disabled>Entidad...</option>';
-                entitySelect.innerHTML += conversationState.entities.map(e => `<option value="${e.id}" data-nombre="${e.nombre}">${e.nombre}</option>`).join('');
-                userInput.disabled = true;
-                sendBtn.disabled = true;
-            } else if (conversationState.currentQuestion === 'ask_aula') {
-                aulaSelectorContainer.classList.remove('hidden');
-                aulaSelectorContainer.classList.add('d-flex');
-                aulaSelect.innerHTML = '<option selected disabled>Aula...</option>';
-                aulaSelect.innerHTML += conversationState.aulas.map(a => `<option value="${a.id}" data-nombre="${a.nombre}">${a.nombre}</option>`).join('');
-                userInput.disabled = true;
-                sendBtn.disabled = true;
-            } else if (conversationState.currentQuestion === 'confirm') {
-                confirmButtons.style.display = 'flex';
-                confirmButtons.innerHTML = '<button class="btn btn-danger">Reiniciar</button><button class="btn btn-success">Confirmar</button>';
-                userInput.disabled = true;
-                sendBtn.disabled = true;
-            } else if (conversationState.currentQuestion === 'ask_if_comment') {
-                commentButtons.style.display = 'flex';
-                commentButtons.innerHTML = '<button class="btn btn-secondary">No</button><button class="btn btn-primary">Sí</button>';
-                userInput.disabled = true;
-                sendBtn.disabled = true;
+
+            const nonInputStates = ['welcome', 'ask_fecha', 'ask_hora_inicio', 'ask_entidad', 'ask_aula', 'confirm', 'ask_if_comment'];
+            if (nonInputStates.includes(conversationState.currentQuestion)) {
+                setChatInputVisible(false);
+
+                if (conversationState.currentQuestion === 'welcome') {
+                    reservationTypeButtons.style.display = 'flex';
+                    const reservationTypes = [
+                        { name: 'Aula', style: 'background-color: #cfe2ff; color: #0056b3; border-color: #b6d4fe; font-weight: bold;' },
+                        { name: 'Laboratorio Ambulante', style: 'background-color: #d1e7dd; color: #218838; border-color: #c3e6cb; font-weight: bold;' },
+                        { name: 'Kit TV', style: 'background-color: #fff3cd; color: #b95000; border-color: #ffeeba; font-weight: bold;' }
+                    ];
+                    reservationTypeButtons.innerHTML = reservationTypes.map(type =>
+                        `<button class="btn" style="${type.style}">${type.name}</button>`
+                    ).join('');
+                } else if (conversationState.currentQuestion === 'ask_fecha') {
+                    chatBox.style.height = '200px';
+                    calendarContainer.style.display = 'block';
+                    calendarControls.style.display = 'block';
+                } else if (conversationState.currentQuestion === 'ask_hora_inicio') {
+                    timePickerContainer.style.display = 'block';
+                } else if (conversationState.currentQuestion === 'ask_entidad') {
+                    entitySelectorContainer.classList.remove('hidden');
+                    entitySelectorContainer.classList.add('d-flex');
+                    entitySelect.innerHTML = '<option selected disabled>Entidad...</option>';
+                    entitySelect.innerHTML += conversationState.entities.map(e => `<option value="${e.id}" data-nombre="${e.nombre}">${e.nombre}</option>`).join('');
+                } else if (conversationState.currentQuestion === 'ask_aula') {
+                    aulaSelectorContainer.classList.remove('hidden');
+                    aulaSelectorContainer.classList.add('d-flex');
+                    aulaSelect.innerHTML = '<option selected disabled>Aula...</option>';
+                    aulaSelect.innerHTML += conversationState.aulas.map(a => `<option value="${a.id}" data-nombre="${a.nombre}">${a.nombre}</option>`).join('');
+                } else if (conversationState.currentQuestion === 'confirm') {
+                    confirmButtons.style.display = 'flex';
+                    confirmButtons.innerHTML = '<button class="btn btn-danger">Reiniciar</button><button class="btn btn-success">Confirmar</button>';
+                } else if (conversationState.currentQuestion === 'ask_if_comment') {
+                    commentButtons.style.display = 'flex';
+                    commentButtons.innerHTML = '<button class="btn btn-secondary">No</button><button class="btn btn-primary">Sí</button>';
+                }
             } else {
-                userInput.disabled = false;
-                sendBtn.disabled = false;
+                setChatInputVisible(true);
             }
         }
     }
@@ -361,10 +367,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const displayDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // DD-MM-YYYY
             addMessage(`Fecha seleccionada: ${displayDate}`, 'user');
             
+            chatBox.style.height = '300px';
             calendarContainer.style.display = 'none';
             calendarControls.style.display = 'none';
-            userInput.disabled = false;
-            sendBtn.disabled = false;
 
             conversationState.currentQuestion = questions['ask_fecha'].next;
             askQuestion();
@@ -380,8 +385,6 @@ document.addEventListener('DOMContentLoaded', () => {
             addMessage(`Tipo de reserva seleccionado: ${selectedType}`, 'user');
             reservationTypeButtons.style.display = 'none';
             reservationTypeButtons.innerHTML = '';
-            userInput.disabled = false;
-            sendBtn.disabled = false;
             conversationState.currentQuestion = questions['welcome'].next;
             askQuestion();
         }
@@ -403,8 +406,6 @@ document.addEventListener('DOMContentLoaded', () => {
         entitySelectorContainer.classList.add('hidden');
         entitySelectorContainer.classList.remove('d-flex');
         entitySelect.innerHTML = '';
-        userInput.disabled = false;
-        sendBtn.disabled = false;
 
         const tipoReserva = conversationState.reservationData['tipo_reserva'];
         if (tipoReserva === 'Laboratorio Ambulante') {
@@ -433,8 +434,6 @@ document.addEventListener('DOMContentLoaded', () => {
         aulaSelectorContainer.classList.add('hidden');
         aulaSelectorContainer.classList.remove('d-flex');
         aulaSelect.innerHTML = '';
-        userInput.disabled = false;
-        sendBtn.disabled = false;
 
         // After selecting an aula, always proceed to the next step in the sequence.
         // The decision to ask for notebooks is now handled after selecting the entity.
@@ -471,8 +470,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 addMessage('Sí', 'user');
                 conversationState.currentQuestion = 'ask_comentarios';
                 askQuestion();
-                userInput.disabled = false;
-                sendBtn.disabled = false;
                 userInput.focus();
             } else {
                 addMessage('No', 'user');
@@ -503,8 +500,6 @@ document.addEventListener('DOMContentLoaded', () => {
             addMessage(`Hora de fin seleccionada: ${endTimeStr}`, 'user');
 
             timePickerContainer.style.display = 'none';
-            userInput.disabled = false;
-            sendBtn.disabled = false;
 
             conversationState.currentQuestion = questions['ask_hora_fin'].next;
             askQuestion();

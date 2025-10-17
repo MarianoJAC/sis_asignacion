@@ -28,7 +28,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
             overflow: hidden;
         }
         .chat-box {
-            height: 400px;
+            height: 300px;
             overflow-y: auto;
             padding: 1rem;
             background-color: #f9f9f9;
@@ -121,7 +121,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
             </div>
             <div id="confirm-buttons" class="d-flex justify-content-center gap-2" style="display: none; margin: 1rem auto;"></div>
             <div id="comment-buttons" class="d-flex justify-content-center gap-2" style="display: none; margin: 1rem auto;"></div>
-            <div class="chat-input card-footer">
+            <div class="chat-input card-footer" id="chat-input-container">
                 <input type="text" class="form-control" id="user-input" placeholder="Escribe tu respuesta...">
                 <button class="btn btn-primary ms-2" id="send-btn">Enviar</button>
             </div>
