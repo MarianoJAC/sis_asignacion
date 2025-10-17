@@ -471,3 +471,40 @@
 )
 
 [2025-10-15 15:08:17] Reservation saved successfully.
+[2025-10-17 19:10:43] Request received.
+[2025-10-17 19:10:43] Request data: Array
+(
+    [fecha] => 2025-11-06
+    [tipo_reserva] => Aula
+    [entidad_id] => 3
+    [aula_id] => 6
+    [cantidad_pc] => 2
+    [carrera] => Para Programación
+    [anio] => 2
+    [materia] => Programación Orientada a Objetos
+    [profesor] => Carla Colina
+    [hora_inicio] => 18:00
+    [hora_fin] => 21:00
+    [telefono_contacto] => 1162966442
+    [comentarios] => 
+)
+
+[2025-10-17 19:10:44] Reservation saved successfully.
+[2025-10-17 19:18:57] Request received.
+[2025-10-17 19:18:57] Request data: Array
+(
+    [fecha] => 2025-10-24
+    [tipo_reserva] => Aula
+    [entidad_id] => 1
+    [aula_id] => 4
+    [carrera] => asdas
+    [anio] => 3
+    [materia] => asdasda
+    [profesor] => asdad
+    [hora_inicio] => 17:00
+    [hora_fin] => 21:00
+    [telefono_contacto] => 12312312
+    [comentarios] => 
+)
+
+[2025-10-17 19:18:58] Reservation saved successfully.

@@ -406,7 +406,14 @@ document.addEventListener('DOMContentLoaded', () => {
         userInput.disabled = false;
         sendBtn.disabled = false;
 
-        conversationState.currentQuestion = questions['ask_entidad'].next;
+        const tipoReserva = conversationState.reservationData['tipo_reserva'];
+        if (tipoReserva === 'Laboratorio Ambulante') {
+            conversationState.currentQuestion = 'ask_notebooks';
+        } else if (tipoReserva === 'Kit TV') {
+            conversationState.currentQuestion = 'ask_carrera';
+        } else { // Default to 'Aula'
+            conversationState.currentQuestion = 'ask_aula';
+        }
         askQuestion();
     });
 
@@ -429,12 +436,9 @@ document.addEventListener('DOMContentLoaded', () => {
         userInput.disabled = false;
         sendBtn.disabled = false;
 
-        const selectedAulaNameLower = selectedAulaName.toLowerCase();
-        if (conversationState.reservationData['tipo_reserva'] === 'Laboratorio Ambulante' || selectedAulaNameLower.includes('laboratorio')) {
-            conversationState.currentQuestion = 'ask_notebooks';
-        } else {
-            conversationState.currentQuestion = questions['ask_aula'].next; // 'ask_carrera'
-        }
+        // After selecting an aula, always proceed to the next step in the sequence.
+        // The decision to ask for notebooks is now handled after selecting the entity.
+        conversationState.currentQuestion = questions['ask_aula'].next; // 'ask_carrera'
         askQuestion();
     });
 
