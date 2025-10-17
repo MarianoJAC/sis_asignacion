@@ -10,9 +10,7 @@
     display: block;
 }
 
-.mapa + .mapa {
-    margin-top: 5%; /* espacio entre las dos imágenes */
-}
+
 
 .mapa img {
     position: absolute;
@@ -20,7 +18,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Use contain to fit the image */
+    object-fit: cover; /* Use cover to fill the container */
     z-index: var(--z-index-cell);
     transform: none; /* Remove transform */
 }

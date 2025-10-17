@@ -2,58 +2,50 @@
 
 #mapa-lateral {
   position: fixed;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1000;
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
-  border-right: none;
-  border-radius: 10px 0 0 10px;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
   transition: all 0.3s ease-in-out;
-  width: 40px;
+  width: 300px; /* Initial width */
+  height: 40px; /* Initial height */
   overflow: hidden;
-  height: 90vh; /* Increased height */
-  max-height: 90vh; /* Increased height */
   display: flex;
   flex-direction: column;
 }
 
 #mapa-lateral:hover {
-  width: 80vw; /* Make it wider to show the maps */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  width: 80vw; /* Expanded width */
+  height: 90vh; /* Expanded height */
+  box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #mapa-lateral-toggle {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
   text-align: center;
   font-weight: bold;
   cursor: pointer;
   padding: 10px 5px;
   background-color: #e9ecef;
-  border-radius: 10px 0 0 10px;
-  position: absolute;
-  top: 50%;
-  right: 100%;
-  transform: translate(100%, -50%);
-  transition: all 0.3s ease;
+  border-radius: 10px 10px 0 0;
 }
 
 #mapa-lateral:hover #mapa-lateral-toggle {
-    opacity: 0;
+    display: none; /* Hide toggle when expanded */
 }
 
 #mapa-lateral-contenido {
-  padding: 0; /* Remove padding */
+  padding: 10px;
   opacity: 0;
   transition: opacity 0.3s ease 0.2s;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  height: 100%; /* Make it take the full height */
-  align-items: center; /* Center the iframe horizontally */
-  justify-content: center; /* Center the iframe vertically */
+  align-items: center;
+  justify-content: center;
 }
 
 #mapa-lateral:hover #mapa-lateral-contenido {

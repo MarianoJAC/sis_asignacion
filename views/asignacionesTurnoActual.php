@@ -86,7 +86,7 @@
 
 <div class="board-container">
     <div class="board-header">
-        <h2>ASIGNACIONES EN CURSO</h2>
+        <h2>MATERIAS EN CURSO</h2>
         <div class="icon-container" id="fullscreen-btn">
             <i class="fas fa-expand"></i>
         </div>

@@ -55,10 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const turno = btn.dataset.turno;
         setState({ forceRender: true });
         actualizarGrilla(turno);
-      });
-    }
-  });
-});
+                  });
+                }
+              });
+            });
 
 export function fetchGrillaData() {
   return fetch('../acciones/get_grilla.php')

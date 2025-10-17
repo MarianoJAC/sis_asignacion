@@ -1607,3 +1607,40 @@
 [2025-10-15 15:22:34] DEBUG: Inserción exitosa para 2025-10-13. ID: 141. Total creadas: 1
 [2025-10-15 15:22:35] DEBUG: Transacción completada (commit). Total final: 1
 [2025-10-15 15:22:35] DEBUG: ---FIN DE GUARDAR ASIGNACION---
+[2025-10-17 20:02:28] DEBUG: ---INICIO DE GUARDAR ASIGNACION---
+[2025-10-17 20:02:28] DEBUG: Array
+(
+    [input] => Array
+        (
+            [entidad_id] => 4
+            [carrera] => vsds
+            [anio] => 1B
+            [materia] => dsvdf
+            [profesor] => dfvdsfv
+            [hora_inicio] => 10:00
+            [hora_fin] => 12:00
+            [comentarios] => 
+            [aula_id] => 14
+            [fecha] => 2025-10-15
+            [turno] => Matutino
+            [repeticion] => dia
+        )
+
+)
+
+[2025-10-17 20:02:28] DEBUG: Array
+(
+    [Fechas calculadas] => Array
+        (
+            [0] => 2025-10-15
+        )
+
+)
+
+[2025-10-17 20:02:28] DEBUG: Transacción iniciada.
+[2025-10-17 20:02:29] DEBUG: Procesando fecha: 2025-10-15
+[2025-10-17 20:02:29] DEBUG: Verificación de duplicados para 2025-10-15: 0 encontrados.
+[2025-10-17 20:02:29] DEBUG: Ejecutando inserción para 2025-10-15...
+[2025-10-17 20:02:29] DEBUG: Inserción exitosa para 2025-10-15. ID: 145. Total creadas: 1
+[2025-10-17 20:02:30] DEBUG: Transacción completada (commit). Total final: 1
+[2025-10-17 20:02:30] DEBUG: ---FIN DE GUARDAR ASIGNACION---

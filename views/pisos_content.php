@@ -34,7 +34,7 @@ $classrooms_second_floor = [
     <!-- Primer Piso -->
     <section class="mapa piso primer-piso active">
         <img src="../imagenes/piso1.jpg" alt="Mapa del primer piso">
-        <a href="#segPiso" id="priPiso" class="marca-agua">Planta Baja</a>
+        <a href="#" id="priPiso" class="marca-agua change-map" data-target="segundo-piso">Planta Baja</a>
 
         <?php foreach ($classrooms_first_floor as $classroom): ?>
             <a href="grilla.php?aula_id=<?php echo $classroom['id']; ?>&origen=mapa"
@@ -52,7 +52,7 @@ $classrooms_second_floor = [
     <!-- Segundo Piso -->
     <section class="mapa piso segundo-piso">
         <img src="../imagenes/piso2.jpg" alt="Mapa del segundo piso">
-        <a href="#priPiso" id="segPiso" class="marca-agua">Primer Piso</a>
+        <a href="#" id="segPiso" class="marca-agua change-map" data-target="primer-piso">Primer Piso</a>
         <?php foreach ($classrooms_second_floor as $classroom): ?>
           <a href="grilla.php?aula_id=<?php echo $classroom['id']; ?>&origen=mapa"
              class="aula <?php echo $classroom['class']; ?>" target="_parent">
