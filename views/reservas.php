@@ -26,12 +26,12 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['role'] !== 'admin') {
 <div class="container-fluid mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="titulo-modulo">Panel de Solicitudes de Reserva</h2>
-    <a href="grilla.php" class="btn btn-primary">Volver a la grilla</a>
+    <a href="grilla.php" class="btn btn-primary">Volver</a>
   </div>
 
   <div class="card mb-4">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <span>Reservas</span>
+        <span></span>
         <div class="d-flex align-items-center">
           <label for="filtro-tipo" class="form-label me-2 mb-0">Filtrar por tipo:</label>
           <select id="filtro-tipo" class="form-select me-3" style="width: auto;">
@@ -40,8 +40,8 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['role'] !== 'admin') {
             <option value="2">Laboratorio Ambulante</option>
             <option value="3">Kit TV</option>
           </select>
-          <button id="btn-imprimir" class="btn btn-secondary">Imprimir</button>
-          <button id="btn-pdf" class="btn btn-danger ms-2">Generar PDF</button>
+          <button id="btn-imprimir" class="btn btn-sm btn-outline-secondary">Imprimir</button>
+          <button id="btn-pdf" class="btn btn-sm btn-outline-danger ms-2">Generar PDF</button>
         </div>
       </div>
     <div class="card-body">

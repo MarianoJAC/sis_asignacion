@@ -1,5 +1,3 @@
-
-
 * {
   box-sizing: border-box;
 }
@@ -26,10 +24,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 { font-size: var(--font-size-xxlarge); }
+
 h2 { font-size: var(--font-size-xlarge); }
+
 h3 { font-size: var(--font-size-large); }
+
 h4 { font-size: var(--font-size-normal); }
+
 h5 { font-size: var(--font-size-small); }
+
 h6 { font-size: var(--font-size-xsmall); }
 
 p {
@@ -58,11 +61,7 @@ a:hover {
 
 /* 🍔 Menú hamburguesa */
 .menu-hamburguesa {
-  position: absolute;
-  top: 70px;
-  transform: translateY(-50%);
-  left: 2px;
-  z-index: 9999;
+  /* Resetting styles to allow flexbox to control positioning */
 }
 
 #btn-menu {
@@ -184,11 +183,15 @@ a:hover {
 }
 
 /* 🧩 Layout institucional */
+.grilla-main-wrapper {
+    margin: var(--spacing-md) 20px var(--spacing-md) 30px;
+}
+
 .zona-controles {
   display: flex;
   flex-direction: column;
   gap: 0; /* Reducido de --spacing-xs */
-  padding: 0 var(--spacing-md) var(--spacing-xs) var(--spacing-md); /* Reducido padding vertical */
+  padding: 0 0 var(--spacing-xs) 0; /* Reducido padding vertical y eliminado horizontal */
 }
 
 .zona-superior {
@@ -251,4 +254,8 @@ a:hover {
 
 body.modo-extendido .tab-btn[data-turno] {
   display: none !important;
+}
+
+.titulo-modulo {
+  color: var(--primary-color);
 }

@@ -35,10 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
     users.forEach(user => {
       const fila = document.createElement('tr');
       fila.dataset.id = user.id;
+      const displayRole = {
+        'admin': 'Administrador',
+        'invitado': 'Invitado',
+        'viewer': 'Visualizador',
+      }[user.role] || user.role; // Fallback to original if not found
+
       fila.innerHTML = `
         <td>${user.id}</td>
         <td>${escapeHTML(user.username)}</td>
-        <td><span class="badge bg-secondary">${escapeHTML(user.role)}</span></td>
+        <td><span class="badge bg-secondary">${escapeHTML(displayRole)}</span></td>
         <td>
           <div class="btn-group" role="group">
             <button class="btn btn-sm btn-warning btn-edit btn-editar-asignacion btn-icon-only" data-id="${user.id}" title="Editar usuario"><img src="../iconos/editarusuario.png" alt="Editar" class="action-icon"></button>

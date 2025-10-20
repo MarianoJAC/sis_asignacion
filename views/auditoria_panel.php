@@ -23,13 +23,13 @@ exit;
 
 <div class="container-fluid mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="titulo-modulo">Auditoría del Sistema</h2>
-    <a href="grilla.php" class="btn btn-primary">Volver a la grilla</a>
+    <h2 class="titulo-modulo">Auditoría</h2>
+    <a href="grilla.php" class="btn btn-primary">Volver</a>
   </div>
 
   <div class="card mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
-      <span>Filtros</span>
+      <span></span>
       <div>
         <button id="btn-imprimir" class="btn btn-sm btn-outline-secondary">Imprimir</button>
         <button id="btn-pdf" class="btn btn-sm btn-outline-danger">Generar PDF</button>

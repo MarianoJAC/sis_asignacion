@@ -103,12 +103,15 @@ function procesarAgregarAsignacion(form, submitBtn) {
               renderGrilla(turnoActual, grilla, state.aulaSeleccionada, targetId);
             } else if (!state.modoExtendido) {
               setState({ forceRender: true });
-              actualizarGrilla(turnoActual);
+                                                        actualizarGrilla(turnoActual);
+                                                        renderLeyenda();
+                                          renderLeyenda();
+                            renderLeyenda();
             } else {
               mostrarMensaje('error', 'No se encontró el contenedor de grilla');
             }
 
-            renderLeyenda();
+            
           })
           .catch((err) => {
             mostrarMensaje('error', 'No se pudo actualizar la grilla: ' + err.message);
@@ -234,7 +237,7 @@ function procesarEdicionAsignacion(form, submitBtn) {
                 mostrarMensaje('error', 'No se encontró el contenedor de grilla');
               }
 
-              renderLeyenda();
+              
             })
             .catch((err) => {
               mostrarMensaje('error', 'No se pudo actualizar la grilla: ' + err.message);
@@ -336,8 +339,7 @@ function procesarEliminarEntidad(form, submitBtn) {
           .then(grilla => {
             setState({ datosGlobales: grilla, forceRender: true });
             actualizarGrilla(turnoActual);
-            renderLeyenda();
-          })
+            renderLeyenda();})
           .catch((err) => {
             mostrarMensaje('error', 'No se pudo actualizar la grilla: ' + err.message);
           });
@@ -399,7 +401,7 @@ function procesarEliminarAsignacion(form, submitBtn) {
                 mostrarMensaje('error', 'No se encontró el contenedor de grilla');
               }
 
-              renderLeyenda();
+              
             })
             .catch((err) => {
               mostrarMensaje('error', 'No se pudo actualizar la grilla: ' + err.message);

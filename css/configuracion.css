@@ -1,11 +1,8 @@
 /* Estilos para la tabla de usuarios */
 #tabla-usuarios .btn-group .btn {
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
-.titulo-modulo {
-  color: var(--primary-color);
-}
 
 .action-icon {
   width: 32px; /* Double the size */
@@ -21,4 +18,12 @@
 
 .btn-icon-only:hover {
   background-color: transparent !important;
+}
+
+#tabla-usuarios tbody td {
+  text-align: center;
+}
+
+#tabla-usuarios thead th {
+  text-align: center;
 }

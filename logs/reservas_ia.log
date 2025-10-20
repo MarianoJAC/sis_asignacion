@@ -545,3 +545,73 @@
 )
 
 [2025-10-17 20:25:28] Reservation saved successfully.
+[2025-10-19 19:16:57] Request received.
+[2025-10-19 19:16:57] Request data: Array
+(
+    [fecha] => 2025-10-20
+    [tipo_reserva] => Kit TV
+    [entidad_id] => 6
+    [carrera] => asasdf
+    [anio] => 2
+    [materia] => asdfasfd
+    [profesor] => dsfgsdfg
+    [hora_inicio] => 17:00
+    [hora_fin] => 18:00
+    [telefono_contacto] => 3123123
+    [comentarios] => 
+)
+
+[2025-10-19 19:16:57] Missing required field: aula_id
+[2025-10-19 19:22:52] Request received.
+[2025-10-19 19:22:52] Request data: Array
+(
+    [fecha] => 2025-10-21
+    [tipo_reserva] => Kit TV
+    [entidad_id] => 4
+    [carrera] => sdaafs
+    [anio] => 2
+    [materia] => asfda
+    [profesor] => asfdasfd
+    [hora_inicio] => 17:00
+    [hora_fin] => 19:00
+    [telefono_contacto] => 123123123
+    [comentarios] => 
+)
+
+[2025-10-19 19:22:53] Reservation saved successfully.
+[2025-10-19 19:23:40] Request received.
+[2025-10-19 19:23:40] Request data: Array
+(
+    [fecha] => 2025-10-21
+    [tipo_reserva] => Laboratorio Ambulante
+    [entidad_id] => 3
+    [cantidad_pc] => 12
+    [carrera] => gfdqwd
+    [anio] => 3
+    [materia] => wefwedf
+    [profesor] => wefwqwed
+    [hora_inicio] => 18:00
+    [hora_fin] => 22:00
+    [telefono_contacto] => 23123123
+    [comentarios] => 
+)
+
+[2025-10-19 19:23:41] Reservation saved successfully.
+[2025-10-19 19:25:07] Request received.
+[2025-10-19 19:25:07] Request data: Array
+(
+    [fecha] => 2025-10-29
+    [tipo_reserva] => Aula
+    [entidad_id] => 6
+    [aula_id] => 7
+    [carrera] => weweqs
+    [anio] => 3
+    [materia] => efgwefgwe
+    [profesor] => qwqdqwd
+    [hora_inicio] => 17:00
+    [hora_fin] => 23:00
+    [telefono_contacto] => 123123123
+    [comentarios] => 
+)
+
+[2025-10-19 19:25:08] Reservation saved successfully.

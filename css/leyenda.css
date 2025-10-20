@@ -6,7 +6,7 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 1000;
-  background-color: #f8f9fa;
+  background-color: #e9ecef; /* Match toggle background */
   border: 1px solid #dee2e6;
   border-left: none;
   border-radius: 0 10px 10px 0;
@@ -98,4 +98,34 @@
 
 .icon-delete {
   font-size: 14px; /* Smaller font size for the 'x' */
+}
+
+#entidades-top-tab-toggle {
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 5px 5px;
+  background-color: #e9ecef; /* Slightly darker gray */
+  color: #333;
+  display: inline-block;
+}
+
+#entidades-top-tab {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background-color: #e9ecef; /* Match toggle background */
+  border: 1px solid #dee2e6;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  transition: all 0.3s ease-in-out;
+  height: 26px; /* Collapsed height */
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* More prominent shadow */
+}
+
+#entidades-top-tab:hover #entidades-top-tab-toggle {
+    display: none; /* Hide toggle when expanded */
 }

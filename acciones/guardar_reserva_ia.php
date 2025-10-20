@@ -41,8 +41,22 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
 log_message('Request data: ' . print_r($data, true));
 
+// Convertir el tipo de reserva de string a int
+$tipo_reserva_str = $data['tipo_reserva'] ?? 'Aula';
+$tipo_reserva_int = 1; // Por defecto Aula
+if ($tipo_reserva_str === 'Laboratorio Ambulante') {
+    $tipo_reserva_int = 2;
+} elseif ($tipo_reserva_str === 'Kit TV') {
+    $tipo_reserva_int = 3;
+}
+
 // Validar datos
-$required_fields = ['fecha', 'entidad_id', 'aula_id', 'carrera', 'anio', 'materia', 'profesor', 'hora_inicio', 'hora_fin', 'telefono_contacto'];
+$required_fields = ['fecha', 'entidad_id', 'carrera', 'anio', 'materia', 'profesor', 'hora_inicio', 'hora_fin', 'telefono_contacto'];
+// Solo requerir 'aula_id' si es una reserva de aula (tipo 1)
+if ($tipo_reserva_int === 1) {
+    $required_fields[] = 'aula_id';
+}
+
 foreach ($required_fields as $field) {
     if (empty($data[$field])) {
         log_message("Missing required field: {$field}");
@@ -51,18 +65,9 @@ foreach ($required_fields as $field) {
     }
 }
 
-// Convertir el tipo de reserva de string a int
-$tipo_reserva_str = $data['tipo_reserva'] ?? 'Aula';
-$tipo_reserva_int = 1; // Por defecto Aula
-if ($tipo_reserva_str === 'Laboratorio Ambulante') {
-        $tipo_reserva_int = 2;
-    } elseif ($tipo_reserva_str === 'Kit TV') {    $tipo_reserva_int = 3;
-}
-
-
 $fecha = $data['fecha'];
 $entidad_id = $data['entidad_id'];
-$aula_id = $data['aula_id'];
+$aula_id = $data['aula_id'] ?? null;
 $carrera = $data['carrera'];
 $anio = $data['anio'];
 $materia = $data['materia'];

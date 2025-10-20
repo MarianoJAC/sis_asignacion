@@ -47,7 +47,7 @@ function htmlNuevaEntidad() {
       <div id="aviso-duplicado" class="alert alert-danger" style="display:none;"></div>
       <div class="modal-footer d-flex justify-content-center">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-primary">✅ Guardar</button>
+        <button type="submit" class="btn btn-primary"> Guardar</button>
       </div>
     </form>
   `;
@@ -75,7 +75,7 @@ function htmlEliminarEntidad(entidades) {
       <div class="mb-3">${optionsHtml}</div>
       <div class="modal-footer d-flex justify-content-center">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-danger">❌ Eliminar</button>
+        <button type="submit" class="btn btn-danger"> Eliminar</button>
       </div>
     </form>
   `;
@@ -116,7 +116,7 @@ function htmlEliminarAsignacion(asignaciones, aula, fecha, turno) {
       <input type="hidden" name="turno" value="${turno}">
       <div class="modal-footer d-flex justify-content-center">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-danger">❌ Eliminar</button>
+        <button type="submit" class="btn btn-danger"> Eliminar</button>
       </div>
     </form>
   `;
@@ -142,7 +142,7 @@ function htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno) {
 
     <div class="form-buttons">
       <button type="button" id="btn-cancelar-edicion" data-bs-dismiss="modal">Cancelar</button>
-      <button type="submit">✏️ Editar</button>
+      <button type="submit"> Editar</button>
     </div>
   </form></div>`;
 

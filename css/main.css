@@ -3,7 +3,7 @@
 /* --- Contenido de grilla.css --- */
 /* 📦 Contenedor scrollable */
 #grilla-container {
-  max-height: 75vh;
+  max-height: 85vh;
   overflow: auto;
   position: relative;
   background-color: var(--background-color-white);
@@ -331,26 +331,21 @@
 }
 
 .tab-btn:hover {
-  background-color: var(--border-color);
   text-decoration: none;
 }
 
 .tab-btn {
   font-size: 1.0125rem;
-  padding: 3px 10px;
-  border: none;
-  background: var(--background-color-light);
-  cursor: pointer;
   font-weight: bold;
-  border-radius: var(--border-radius-sm);
-  color: var(--text-color-dark);
-  transition: background-color 0.2s ease, color 0.2s ease;
   text-decoration: none;
 }
 
+.tab-btn:not(.active) {
+  color: var(--text-color-dark); /* Letras negras para inactivos */
+}
+
 .tab-btn.active {
-  background: var(--primary-color);
-  color: var(--background-color-white);
+  /* Bootstrap handles background and color */
 }
 
 #almapa {
@@ -478,4 +473,66 @@ body.modo-extendido .bloque-turnos button[data-turno] {
   max-width: 480px;
   min-width: 180px;
   transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+/* --- Estilos para la nueva barra de controles --- */
+.barra-controles {
+  display: flex;
+  justify-content: flex-start; /* Alinear todo al inicio */
+  align-items: center;
+  padding: var(--spacing-sm) 0; /* Eliminado padding horizontal */
+  background-color: #fff;
+  border-bottom: 1px solid var(--border-color);
+  gap: var(--spacing-md);
+}
+
+#contenedor-filtros {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-left: auto; /* Empujar los filtros a la derecha */
+  padding-right: var(--spacing-md); /* Añadir padding a la derecha */
+  margin-right: 10px; /* Mover un poco a la izquierda del borde */
+}
+
+.filtro-buscador,
+.filtro-fecha {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.bloque-turnos {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-left: 30px; /* Espacio a la derecha del menú */
+}
+
+.menu-hamburguesa {
+  /* El botón de menú ya está posicionado por el flex container */
+}
+
+/* --- Estilos para el modo extendido y breadcrumb --- */
+#breadcrumb-container {
+    display: none; /* Oculto por defecto */
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+}
+
+#breadcrumb-container strong {
+    font-weight: bold;
+}
+
+body.modo-extendido .barra-controles {
+    justify-content: flex-start; /* Alinear al inicio */
+}
+
+body.modo-extendido #breadcrumb-container {
+    display: flex; /* Visible en modo extendido */
+}
+
+body.modo-extendido .bloque-turnos,
+body.modo-extendido #contenedor-filtros {
+    display: none; /* Ocultar controles normales */
 }

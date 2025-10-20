@@ -64,16 +64,7 @@ export function renderGrilla(turnoSeleccionado, datos, aulaIdFiltrada = null, ta
 
   });
 
-  if (!targetId) {
-    if (aulaIdFiltrada !== null) {
-      const aula = aulas.find(a => a.aula_id == aulaIdFiltrada);
-      if (aula) {
-        document.querySelector('h2').textContent = `Asignaciones de ${aula.nombre}`;
-      }
-    } else {
-      document.querySelector('h2').textContent = `Asignaciones CRUI`;
-    }
-  }
+
 
   const destino = targetId
     ? document.getElementById(targetId)
@@ -83,14 +74,7 @@ export function renderGrilla(turnoSeleccionado, datos, aulaIdFiltrada = null, ta
     renderGrillaSafe(destino, turnoSeleccionado, datos, aulaIdFiltrada, targetId, fechaFiltrada, ocultarColumnaAula, fechasUnicas, grid, aulasFiltradas);
   }
 
-  if ((!targetId || targetId === 'principal') && aulaIdFiltrada !== null) {
-    const aula = datos.aulas?.find(a => a.aula_id == aulaIdFiltrada);
-    if (aula) {
-      document.querySelector('h2').textContent = `Asignaciones de ${aula.nombre} - Turno ${turnoSeleccionado}`;
-    } else {
-      document.querySelector('h2').textContent = `Asignaciones CRUI - Turno ${turnoSeleccionado}`;
-    }
-  }
+
 
 }
 
@@ -355,19 +339,28 @@ export function renderGrillaTodosLosTurnos(datos, aulaIdFiltrada = null) {
     return;
   }
 
-  container.textContent = '';
-
-  const turnos = ['Matutino', 'Vespertino', 'Nocturno'];
-
   const aula = aulaIdFiltrada !== null
     ? datos.aulas?.find(a => a.aula_id == aulaIdFiltrada)
     : null;
 
-  if (aula) {
-    document.querySelector('h2').textContent = `Asignaciones del ${aula.nombre} (todos los turnos)`;
-  } else {
-    document.querySelector('h2').textContent = `Asignaciones CRUI (todos los turnos)`;
+  const breadcrumbContainer = document.getElementById('breadcrumb-container');
+  if (breadcrumbContainer) {
+      if (aula) {
+          breadcrumbContainer.innerHTML = `
+              <span class="text-muted"><i class="fas fa-chevron-right"></i></span> 
+              <strong>${aula.nombre}</strong> 
+              <button id="btn-salir-extendido" class="btn btn-outline-secondary btn-sm ms-3">Ver todas las aulas</button>
+          `;
+      } else {
+          breadcrumbContainer.innerHTML = ''; // Limpiar si no hay aula
+      }
   }
+
+  container.textContent = '';
+
+  const turnos = ['Matutino', 'Vespertino', 'Nocturno'];
+
+
 
   document.body.classList.add('modo-extendido');
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));

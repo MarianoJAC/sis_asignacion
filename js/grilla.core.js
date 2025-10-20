@@ -3,7 +3,8 @@ import {
   cargarAsignacionesPorAula,
   cargarAsignacionesPorAulaTodosLosTurnos,
   actualizarVisibilidadFiltros,
-  actualizarGrilla
+  actualizarGrilla,
+  renderVistaGeneral
 } from './grilla.render.js';
 
 import {
@@ -202,3 +203,15 @@ if (window.esAdmin) {
     });
   }
 }
+
+document.addEventListener('click', (e) => {
+    if (e.target && e.target.id === 'btn-salir-extendido') {
+        e.preventDefault();
+        document.body.classList.remove('modo-extendido');
+        const breadcrumbContainer = document.getElementById('breadcrumb-container');
+        if (breadcrumbContainer) {
+            breadcrumbContainer.innerHTML = '';
+        }
+        renderVistaGeneral();
+    }
+});

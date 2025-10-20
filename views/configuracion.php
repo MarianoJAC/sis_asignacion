@@ -27,14 +27,14 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['role'] !== 'admin') {
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="titulo-modulo">Gestión de Usuarios</h2>
-    <a href="grilla.php" class="btn btn-primary">Volver a la grilla</a>
+    <a href="grilla.php" class="btn btn-primary">Volver</a>
   </div>
 
   <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-      <span>Usuarios del Sistema</span>
-      <button id="btn-agregar-usuario" class="btn btn-success">
-        <i class="fas fa-plus"></i> Agregar Usuario
+      <span></span>
+      <button id="btn-agregar-usuario" class="btn btn-primary">
+        Agregar
       </button>
     </div>
     <div class="card-body">

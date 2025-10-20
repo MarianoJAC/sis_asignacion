@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'ask_notebooks': {
             question: '¿Cuántas notebooks necesitas?',
             key: 'cantidad_pc',
-            next: 'ask_aula',
+            next: 'ask_carrera',
         },
         'ask_carrera': {
             question: '¿Para qué carrera es la reserva?',

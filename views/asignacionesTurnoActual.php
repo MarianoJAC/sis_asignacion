@@ -82,7 +82,7 @@
 </head>
 <body>
 
-<a href="grilla.php" id="volver-btn" class="btn btn-primary btn-sm mb-3">Volver a la grilla</a>
+<a href="grilla.php" id="volver-btn" class="btn btn-primary btn-sm mb-3">Volver</a>
 
 <div class="board-container">
     <div class="board-header">

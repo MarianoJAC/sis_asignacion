@@ -1,3 +1,10 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$esAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+$usuario = $_SESSION['username'] ?? 'Usuario';
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,34 +27,50 @@
   <link rel="icon" href="../iconos/calendario.ico" type="image/x-icon">
 </head>
 <body>
-<?php
-session_start();
-$esAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
-$usuario = $_SESSION['username'] ?? 'Usuario';
-?>
-
-  <div id="leyenda-lateral">
+<div id="leyenda-lateral">
     <div id="leyenda-lateral-toggle">ENTIDADES</div>
     <div id="leyenda-lateral-contenido">
       <!-- El contenido de la leyenda se generará aquí -->
     </div>
 </div>
+
 <div id="mapa-lateral">
     <div id="mapa-lateral-toggle">MAPA</div>
     <div id="mapa-lateral-contenido">
         <iframe src="pisos_content.php" frameborder="0"></iframe>
     </div>
 </div>
-
+<div class="grilla-main-wrapper">
 <div id="zona-controles" class="zona-controles">
-  <div class="zona-superior">
-    <h2>Asignaciones CRUI</h2>
+  <div class="barra-controles">
     <div class="menu-hamburguesa">
       <button id="btn-menu"><span id="globito-notificacion" class="globito-notificacion"></span><img src="../iconos/menuhamburguesa.png" alt="Menú" class="hamburger-icon"></button>
     </div>
+    <div id="breadcrumb-container"></div>
+
+    <!-- 🕒 Botones de turno -->
+    <div class="bloque-turnos">
+      <button class="tab-btn btn btn-outline-primary" data-turno="Matutino">Matutino</button>
+      <button class="tab-btn btn btn-outline-primary" data-turno="Vespertino">Vespertino</button>
+      <button class="tab-btn btn btn-outline-primary" data-turno="Nocturno">Nocturno</button>
+    </div>
+
+    <div id="contenedor-filtros">
+      <!-- 🔍 Buscador de aula -->
+      <div class="filtro-buscador">
+        <label for="input-buscador"><strong>Buscar:</strong></label>
+        <input type="text" id="input-buscador" class="input-buscador" placeholder="Ej: Proyector, TV.." />
+      </div>
+      <!-- 🗓️ Selector de fecha -->
+      <div class="filtro-fecha">
+        <label for="selector-fecha"><strong>Fecha:</strong></label>
+        <input type="date" id="selector-fecha" class="selector-fecha" />
+        <button id="btn-reset-fecha" class="btn-reset-fecha" style="background: none; border: none;"><img src="../iconos/limpiafiltro.png" alt="Limpiar Filtro" style="width: 30px; height: 30px;"></button>
+      </div>
+    </div>
   </div>
 
-    <div id="menu-desplegable" class="menu-oculto">
+  <div id="menu-desplegable" class="menu-oculto">
 
       <div class="menu-usuario"><img src="../iconos/usuario.png" alt="Usuario" class="menu-item-icon menu-usuario-icon"> <?= htmlspecialchars($usuario) ?></div>
 
@@ -67,47 +90,12 @@ $usuario = $_SESSION['username'] ?? 'Usuario';
 
     </div>
 
-  <div class="zona-leyenda" style="display: none;">
-  <div class="leyenda-row" id="leyenda-dinamica"></div>
-  <?php if ($esAdmin): ?>
-  <div class="acciones-entidad">
-    <button class="btn-agregar btn-entidad" id="btn-agregar-entidad">➕</button>
-    <button class="btn-eliminar btn-entidad" id="btn-eliminar-entidad">❌</button>
-  </div>
-<?php endif; ?>
-</div>
-
-
-<div class="zona-filtros-turno">
-  <!-- 🕒 Botones de turno -->
-  <div class="bloque-turnos">
-    <button class="tab-btn" data-turno="Matutino">Matutino</button>
-    <button class="tab-btn" data-turno="Vespertino">Vespertino</button>
-    <button class="tab-btn" data-turno="Nocturno">Nocturno</button>
-
-    <button class="tab-btn" id="btn-ver-todas">Todas las Aulas</button>
-  </div>
-
-  <div id="contenedor-filtros">
-    <!-- 🔍 Buscador de aula -->
-    <div class="filtro-buscador">
-      <label for="input-buscador"><strong>Buscar:</strong></label>
-      <input type="text" id="input-buscador" class="input-buscador" placeholder="Ej: Proyector, TV.." />
-    </div>
-    <!-- 🗓️ Selector de fecha -->
-    <div class="filtro-fecha">
-      <label for="selector-fecha"><strong>Fecha:</strong></label>
-      <input type="date" id="selector-fecha" class="selector-fecha" />
-      <button id="btn-reset-fecha" class="btn-reset-fecha" style="background: none; border: none;"><img src="../iconos/limpiafiltro.png" alt="Limpiar Filtro" style="width: 30px; height: 30px;"></button>
-    </div>
-  </div>
-</div>
-
   <!-- 🟡 Comentario flotante -->
   <div id="comentario-global" class="comentario-flotante"></div>
 
   <!-- 🟢 Contenedor principal -->
   <div id="grilla-container">Cargando grilla...</div>
+</div>
 
   <!-- Bootstrap Modal -->
   <div class="modal fade" id="main-modal" tabindex="-1" aria-labelledby="main-modal-label" aria-hidden="true">
