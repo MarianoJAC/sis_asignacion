@@ -84,6 +84,7 @@
   text-align: left;
   vertical-align: top;
   z-index: var(--z-index-cell);
+  min-width: 250px;
 }
 
 /* 🧭 Filas con separación */
