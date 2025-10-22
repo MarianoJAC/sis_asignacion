@@ -246,3 +246,63 @@
   display: block;
   margin-bottom: var(--spacing-xxs);
 }
+
+/* 📱 Media Query para pantallas pequeñas */
+@media (max-width: 768px) {
+  /*  GRID RESPONSIVE */
+  .grid-table thead {
+    display: none; /* Ocultar encabezado original */
+  }
+
+  .grid-table, .grid-table tbody, .grid-table tr, .grid-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .grid-table tr {
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+  }
+
+  .grid-table td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .grid-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    width: calc(50% - 20px);
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+  }
+
+  /* Desactivar sticky para la primera columna */
+  .grid-table td:first-child {
+    position: static;
+    background-color: transparent;
+    font-weight: normal;
+    font-size: var(--font-size-normal);
+    text-align: right;
+    border-right: none;
+  }
+
+  .grid-table td:first-child:before {
+    content: "Aula"; /* O el texto que corresponda */
+  }
+  
+  .disponible-wrapper {
+    width: 100%;
+  }
+  
+  .asignacion {
+    max-width: 100%;
+  }
+}

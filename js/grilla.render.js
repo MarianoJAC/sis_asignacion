@@ -133,6 +133,7 @@ function renderGrillaSafe(destino, turnoSeleccionado, datos, aulaIdFiltrada, tar
 
     if (!ocultarColumnaAula) {
       const tdAula = document.createElement('td');
+      tdAula.setAttribute('data-label', 'Aula');
       if (mostrarNombreAula) {
         const strong = document.createElement('strong');
         strong.textContent = aula.nombre;
@@ -162,6 +163,7 @@ function renderGrillaSafe(destino, turnoSeleccionado, datos, aulaIdFiltrada, tar
 
     fechasUnicas.forEach(fecha => {
        const td = document.createElement('td');
+      td.setAttribute('data-label', formatearFecha(fecha));
   const aulaId = Number(aula.aula_id || aula.id);
   const asignacionesFecha = grid[aulaId]?.[fecha] || [];
 
