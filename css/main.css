@@ -537,3 +537,7 @@ body.modo-extendido .bloque-turnos,
 body.modo-extendido #contenedor-filtros {
     display: none; /* Ocultar controles normales */
 }
+
+.btn-fixed-width {
+  width: 100px;
+}

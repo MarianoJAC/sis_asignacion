@@ -124,15 +124,16 @@ function htmlEliminarAsignacion(asignaciones, aula, fecha, turno) {
 }
 
 function htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno) {
-  let html = `<div class="modal-contenido">
-    <h3>Seleccioná una asignación para editar</h3>
-    <form id="form-seleccionar-edicion" class="modal-formulario">`;
+  let html = `<div class="container p-3">
+    <h3 class="mb-3">Seleccioná una asignación para editar</h3>
+    <form id="form-seleccionar-edicion">`;
 
   asignaciones.forEach(asig => {
     const detalle = `${asig.materia} – ${asig.hora_inicio.slice(0,5)}-${asig.hora_fin.slice(0,5)} – ${asig.profesor}`;
-    html += `<label class="opcion-eliminar">
-      <input type="radio" name="asignacion_id" value="${asig.Id}"> ${detalle}
-    </label>`;
+    html += `<div class="form-check mb-2">
+      <input class="form-check-input" type="radio" name="asignacion_id" id="asig-${asig.Id}" value="${asig.Id}">
+      <label class="form-check-label" for="asig-${asig.Id}">${detalle}</label>
+    </div>`;
   });
 
   html += `
@@ -140,9 +141,9 @@ function htmlSeleccionarAsignacion(asignaciones, aula, fecha, turno) {
     <input type="hidden" name="fecha" value="${fecha}">
     <input type="hidden" name="turno" value="${turno}">
 
-    <div class="form-buttons">
-      <button type="button" id="btn-cancelar-edicion" data-bs-dismiss="modal">Cancelar</button>
-      <button type="submit"> Editar</button>
+    <div class="d-flex justify-content-end mt-3">
+      <button type="button" class="btn btn-secondary me-2 btn-fixed-width" id="btn-cancelar-edicion" data-bs-dismiss="modal">Cancelar</button>
+      <button type="submit" class="btn btn-primary btn-fixed-width"> Editar</button>
     </div>
   </form></div>`;
 

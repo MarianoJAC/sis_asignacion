@@ -167,15 +167,25 @@
                     tr.dataset.horaInicio = asig.hora_inicio;
                     tr.dataset.horaFin = asig.hora_fin;
 
-                    tr.innerHTML = `
-                        <td>${asig.horario}</td>
-                        <td>${asig.materia}</td>
-                        <td style="color: ${asig.color_entidad}; font-weight: 700;">${asig.entidad}</td>
-                        <td>${asig.profesor}</td>
-                        <td class="aula-cell">${asig.aula}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
+                                        tr.innerHTML = `
+
+                                            <td>${asig.horario}</td>
+
+                                            <td>${asig.materia}</td>
+
+                                            <td style="color: ${asig.color_entidad}; font-weight: 700;">${asig.entidad}</td>
+
+                                            <td>${asig.profesor}</td>
+
+                                            <td class="aula-cell">${asig.aula}</td>
+
+                                        `;
+
+                    
+
+                                        tbody.appendChild(tr);
+
+                                    });
                 actualizarVisibilidad();
             }
         } catch (error) {

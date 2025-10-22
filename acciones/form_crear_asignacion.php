@@ -94,7 +94,7 @@ function options($tabla, $id_col, $name_col) {
     </div>
 
     <div class="modal-footer mt-4 d-flex justify-content-center">
-        <button type="button" class="btn btn-secondary" id="btn-cancelar-creacion" data-bs-dismiss="modal">❌ Cancelar</button>
-        <button type="submit" class="btn btn-primary">✅ Guardar</button>
+        <button type="button" class="btn btn-secondary" id="btn-cancelar-creacion" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary"> Guardar</button>
     </div>
 </form>
