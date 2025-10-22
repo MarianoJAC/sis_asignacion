@@ -69,6 +69,7 @@ a:hover {
   border: none;
   cursor: pointer;
   color: #333;
+  position: relative;
 }
 
 #btn-menu .fas {
@@ -94,7 +95,7 @@ a:hover {
   box-shadow: 2px 0 6px rgba(0,0,0,0.2);
   padding: 20px;
   transition: left 0.3s ease-in-out;
-  z-index: 10000;
+  z-index: 10002;
 }
 
 #menu-desplegable.menu-visible {

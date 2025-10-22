@@ -159,6 +159,7 @@ if (window.esAdmin) {
     try {
       const response = await fetch('../acciones/get_nuevas_reservas.php');
       const result = await response.json();
+      console.log('Nuevas reservas:', result);
 
       if (result.ok && result.data.length > 0) {
         newReservationsCount = result.data.length;
@@ -176,7 +177,7 @@ if (window.esAdmin) {
 
   // Ejecutar al cargar y luego cada 30 segundos
   fetchNewReservations();
-  setInterval(fetchNewReservations, 30000); // 30 segundos
+  setInterval(fetchNewReservations, 1800000); // 30 minutos
 
   // Resetear contador y ocultar badge al hacer clic en 'Ver Reservas'
   const verReservasLink = document.querySelector('#menu-desplegable a[href="reservas.php"]');

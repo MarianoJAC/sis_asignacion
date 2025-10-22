@@ -95,8 +95,8 @@
         <thead>
             <tr>
                 <th>HORA</th>
-                <th>ENTIDAD</th>
                 <th>MATERIA</th>
+                <th>ENTIDAD</th>
                 <th>PROFESOR</th>
                 <th>AULA</th>
             </tr>
@@ -123,12 +123,32 @@
         }
     });
 
+    function timeToMinutes(timeString) {
+        const [hours, minutes, seconds] = timeString.split(':').map(Number);
+        return hours * 60 + minutes;
+    }
+
     async function cargarAsignaciones() {
         try {
             const response = await fetch('../acciones/get_asignaciones_turno_actual.php');
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             
             const asignaciones = await response.json();
+
+            // Sort assignments by hora_inicio, then by hora_fin
+            asignaciones.sort((a, b) => {
+                const timeA_inicio = timeToMinutes(a.hora_inicio);
+                const timeB_inicio = timeToMinutes(b.hora_inicio);
+
+                if (timeA_inicio !== timeB_inicio) {
+                    return timeA_inicio - timeB_inicio;
+                }
+
+                // If start times are the same, sort by hora_fin
+                const timeA_fin = timeToMinutes(a.hora_fin);
+                const timeB_fin = timeToMinutes(b.hora_fin);
+                return timeA_fin - timeB_fin;
+            });
             
             const newContent = JSON.stringify(asignaciones);
             if (tbody.dataset.content === newContent) {
@@ -149,8 +169,8 @@
 
                     tr.innerHTML = `
                         <td>${asig.horario}</td>
-                        <td style="color: ${asig.color_entidad}; font-weight: 700;">${asig.entidad}</td>
                         <td>${asig.materia}</td>
+                        <td style="color: ${asig.color_entidad}; font-weight: 700;">${asig.entidad}</td>
                         <td>${asig.profesor}</td>
                         <td class="aula-cell">${asig.aula}</td>
                     `;
@@ -166,17 +186,23 @@
 
     function actualizarVisibilidad() {
         const ahora = new Date();
-        const horaActual = ahora.toTimeString().split(' ')[0];
+        const currentMinutes = ahora.getHours() * 60 + ahora.getMinutes();
 
         const filas = tbody.querySelectorAll('tr');
         let asignacionesVisibles = 0;
         
         filas.forEach(fila => {
-            const horaInicio = fila.dataset.horaInicio;
-            const horaFin = fila.dataset.horaFin;
+            const [hInicio, mInicio] = fila.dataset.horaInicio.split(':').map(Number);
+            const inicioMinutes = hInicio * 60 + mInicio;
 
-            const haComenzado = horaActual >= horaInicio;
-            const haFinalizado = horaFin && horaActual > horaFin;
+            const [hFin, mFin] = fila.dataset.horaFin.split(':').map(Number);
+            const finMinutes = hFin * 60 + mFin;
+
+            // Calculate display start time 30 minutes before actual start
+            const displayStartMinutes = inicioMinutes - 30;
+
+            const haComenzado = currentMinutes >= displayStartMinutes;
+            const haFinalizado = currentMinutes >= finMinutes;
 
             if (haComenzado && !haFinalizado) {
                 fila.style.display = '';
