@@ -361,7 +361,7 @@ function procesarEliminarAsignacion(form, submitBtn) {
   const id = form.elements['asignacion_id']?.value;
 
   if (!id) {
-    mostrarMensaje('info', 'Seleccioná una asignación para eliminar');
+    mostrarMensaje('warning', 'Seleccioná una asignación para eliminar');
     if (submitBtn) submitBtn.disabled = false;
     return;
   }

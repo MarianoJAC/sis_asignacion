@@ -1,7 +1,7 @@
 
 export function mostrarMensaje(tipo = 'info', texto = '', opciones = {}) {
   Swal.fire({
-    icon: tipo === 'success' ? false : tipo, // Disable icon only for 'success' type
+    icon: tipo, // 'success', 'error', 'warning', 'info'
     text: texto,
     toast: true,
     timer: 3000,
